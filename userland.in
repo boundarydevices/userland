@@ -60,7 +60,7 @@ config ROOT
 
 choice
    prompt "Board Type "
-      default SCANPASS
+      default SCANCRAM
 
       config SCANPASS
       bool
