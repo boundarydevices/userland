@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: mad.make,v 1.2 2004-06-06 14:56:23 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -124,9 +124,6 @@ mad_targetinstall: $(STATEDIR)/mad.targetinstall
 mad_targetinstall_deps = $(STATEDIR)/mad.compile
 
 $(STATEDIR)/mad.targetinstall: $(mad_targetinstall_deps)
-	@$(call targetinfo, $@)
-	install $(MAD_DIR)/madplay $(ROOTDIR)/usr/bin
-	$(CROSSSTRIP) $(ROOTDIR)/usr/bin/madplay
 	touch $@
 
 # ----------------------------------------------------------------------------
