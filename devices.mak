@@ -77,7 +77,7 @@ ifdef KERNEL_ARCH_PXA
 	@echo -e "/dev/random\t\tc\t666\t0\t0\t1\t8\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/urandom\t\tc\t666\t0\t0\t1\t9\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/raw\t\td\t777\t0\t0\t-\t-\t-\t-\t-" >> devices.txt                               
-#	@echo -e "/dev/raw/raw1\t\tc\t666\t0\t0\t162\t1\t0\t0\t-" >> devices.txt        mkcramfs - can't find parent
+	@echo -e "/dev/raw/raw1\t\tc\t666\t0\t0\t162\t1\t0\t0\t-" >> devices.txt
 # I'm skipping /dev/vcs0-12
 else
 	$(error "??? KERNEL_ARCH_PXA is not set ???" )
@@ -143,7 +143,8 @@ else
 endif
 ifdef KERNEL_MCP_UCB1400_TS
 	@echo "#KERNEL_MCP_UCB1400_TS" >> devices.txt
-	@echo -e "/dev/touchscreen\tc\t666\t0\t0\t10\t14\t0\t0\t-" >> devices.txt
+	@echo -e "/dev/touchscreen\t\td\t777\t0\t0\t-\t-\t-\t-\t-" >> devices.txt
+	@echo -e "/dev/touchscreen/ucb1x00\tc\t666\t0\t0\t10\t14\t0\t0\t-" >> devices.txt
 else
 	@echo "#KERNEL_MCP_UCB1400_TS is not set" >> devices.txt
 endif
