@@ -136,6 +136,12 @@ menuconfig config .config: userland.in kconf/kconfig/mconf
 userland: .config
 	make -f userland.mak all
 
+devices.txt: .config $(CONFIG_KERNELPATH)/.config
+	make -f devices.mak all
+
+devices:
+	make -f devices.mak all
+
 all: help
 
 clean:
