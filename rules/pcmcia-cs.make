@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pcmcia-cs.make,v 1.4 2004-06-21 13:57:24 ericn Exp $
+# $Id: pcmcia-cs.make,v 1.5 2004-06-24 13:52:41 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -139,6 +139,9 @@ $(STATEDIR)/pcmcia-cs.targetinstall: $(pcmcia-cs_targetinstall_deps)
 	mkdir -p $(ROOTDIR)/etc/pcmcia
 	cp -fv $(PCMCIA-CS_DIR)/etc/config.opts $(ROOTDIR)/etc/pcmcia
 	cp $(CONFIG_ARCHIVEPATH)/pcmciaConfig $(ROOTDIR)/etc/pcmcia/config
+	echo "#!/bin/sh" > $(ROOTDIR)/etc/pcmcia/network
+	chmod a+x $(ROOTDIR)/etc/pcmcia/network
+	cd root/bin && ln -sf ../js/network
 	chmod a+rw $(ROOTDIR)/etc/pcmcia/*
 	touch $@
 
