@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.8  2004-06-18 14:44:24  ericn
+# Revision 1.9  2004-06-19 23:31:44  ericn
+# -can't strip all libs (ld-linux.so chokes)
+#
+# Revision 1.8  2004/06/18 14:44:24  ericn
 # -strip before mkfs
 #
 # Revision 1.7  2004/06/18 04:16:51  ericn
@@ -237,7 +240,7 @@ $(ROOTDIR)/etc/init.d/rcS: targetinstall
 rootfs: $(ROOTDIR) targetinstall devices.txt $(ROOTDIR)/etc/init.d/rcS
 
 cramfs.img: $(BUILDDIR)/cramfs-1.1/mkcramfs rootfs devices
-	-$(CROSSSTRIP) $(ROOTDIR)/lib/*
+#	-$(CROSSSTRIP) $(ROOTDIR)/lib/*
 	-$(CROSSSTRIP) $(ROOTDIR)/bin/*
 	cd $(ROOTDIR)/etc && /sbin/ldconfig -r ../ -v
 	$(BUILDDIR)/cramfs-1.1/mkcramfs -q -D devices.txt $(ROOTDIR) $@
@@ -246,7 +249,7 @@ cramfs: cramfs.img
 
 
 jffs2.img: rootfs devices
-	-$(CROSSSTRIP) $(ROOTDIR)/lib/*
+#	-$(CROSSSTRIP) $(ROOTDIR)/lib/*
 	-$(CROSSSTRIP) $(ROOTDIR)/bin/*
 	mkfs.jffs2 -l -q -v --devtable=devices.txt --root=$(ROOTDIR) -o $@
 
