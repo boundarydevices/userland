@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pcmcia-cs.make,v 1.2 2004-06-09 03:54:08 ericn Exp $
+# $Id: pcmcia-cs.make,v 1.3 2004-06-19 14:06:55 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -12,7 +12,7 @@
 #
 # We provide this package
 #
-ifdef CONFIG_PCMCIA-CS
+ifdef CONFIG_PCMCIA_TOOLS
 PACKAGES += pcmcia-cs
 endif
 
