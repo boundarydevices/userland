@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tinylogin.make,v 1.1 2004-06-09 13:07:46 ericn Exp $
+# $Id: tinylogin.make,v 1.2 2004-06-09 13:45:07 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -99,7 +99,7 @@ tinylogin_compile_deps = $(STATEDIR)/tinylogin.prepare
 $(STATEDIR)/tinylogin.compile: $(tinylogin_compile_deps)
 	@$(call targetinfo, $@)
 	$(TINYLOGIN_PATH) \
-   $(TINYLOGIN_ENV) make -C $(TINYLOGIN_DIR) CROSS=arm-linux- 
+   $(TINYLOGIN_ENV) make -C $(TINYLOGIN_DIR) CROSS=arm-linux- all
 	touch $@
 
 # ----------------------------------------------------------------------------

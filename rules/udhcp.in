@@ -1,0 +1,11 @@
+config UDHCP
+	bool
+   default y
+	prompt "Compile udhcp"
+   help
+      The udhcp server/client package is a small DHCP client and server
+      primarily geared towards embedded systems. It does however, strive 
+      to be fully functional, and RFC compliant.
+     
+      See http://udhcp.busybox.net for details
+
