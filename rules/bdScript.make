@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.10 2004-09-10 13:22:23 ericn Exp $
+# $Id: bdScript.make,v 1.11 2004-09-19 15:34:16 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -46,10 +46,10 @@ ifdef CONFIG_BDSCRIPT_CVS
    $(STATEDIR)/bdScript.get:
 		@$(call targetinfo, $@)
 		cd $(BUILDDIR) && cvs checkout bdScript
+		cd $(BUILDDIR) && cvs checkout sampleScripts
 ifdef CONFIG_BDSCRIPT_BIGDEMO
 		cd $(BUILDDIR) && cvs checkout ticketing
 		cd $(BUILDDIR) && cvs checkout myPalDemo
-		cd $(BUILDDIR) && cvs checkout sampleScripts
 else
 		echo "Not building demos"
 endif      
@@ -189,13 +189,13 @@ $(STATEDIR)/bdScript.targetinstall: $(bdScript_targetinstall_deps)
 	cp $(BDSCRIPT_DIR)/jsExec $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/flashVar $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/wget $(ROOTDIR)/bin && chmod a+x $(ROOTDIR)/bin/wget
-ifdef CONFIG_BDSCRIPT_BIGDEMO
 	mkdir -p $(ROOTDIR)/js
+	cp $(BUILDDIR)/sampleScripts/network $(ROOTDIR)/js/ && chmod a+x $(ROOTDIR)/js/network
+	cp $(BUILDDIR)/sampleScripts/dhcp $(ROOTDIR)/js/ && chmod a+x $(ROOTDIR)/js/dhcp
+ifdef CONFIG_BDSCRIPT_BIGDEMO
 	cp -rv $(BUILDDIR)/ticketing/* $(ROOTDIR)/js/
 	cp -rv $(BUILDDIR)/myPalDemo/* $(ROOTDIR)/js/
 	cp -rv $(BUILDDIR)/sampleScripts/* $(ROOTDIR)/js/
-	chmod a+x $(ROOTDIR)/js/network
-	chmod a+x $(ROOTDIR)/js/dhcp
 endif      
 	touch $@
 
@@ -204,7 +204,16 @@ endif
 # ----------------------------------------------------------------------------
 
 bdScript_clean:
+	rm -rf $(BUILDDIR)/ticketing
+	rm -rf $(BUILDDIR)/myPalDemo
+	rm -rf $(BUILDDIR)/sampleScripts
 	rm -rf $(STATEDIR)/bdScript.*
 	rm -rf $(BDSCRIPT_DIR)
+	rm -f $(ROOTDIR)/bin/jsExec
+	rm -f $(ROOTDIR)/bin/network   
+	rm -f $(ROOTDIR)/bin/jsMenu
+	rm -f $(ROOTDIR)/bin/flashVar
+	rm -f $(ROOTDIR)/bin/wget
+	rm -rf $(ROOTDIR)/js
 
 # vim: syntax=make
