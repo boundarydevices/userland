@@ -109,10 +109,13 @@ PACKAGES_INSTALL		:= $(addsuffix _install,$(PACKAGES))
 CROSS_PATH           := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
 
 $(BUILDDIR):
-	mkdir -p $(BUILDDIR)
+	mkdir -p $@
 $(STATEDIR):
-	mkdir -p $(STATEDIR)
+	mkdir -p $@
+INSTALL_DIRS := $(INSTALLPATH) $(INSTALLPATH)/bin $(INSTALLPATH)/lib $(INSTALLPATH)/sbin $(INSTALLPATH)/include
 
+$(INSTALL_DIRS):
+	mkdir -p $@
 
 kconf.mak:
 	@echo -------------- How did you get this directory? We\'re missing $@
@@ -176,8 +179,8 @@ help:
 
 clean: $(BUILDDIR) $(STATEDIR) $(PACKAGES_CLEAN)
 get: $(BUILDDIR) $(STATEDIR) $(PACKAGES_GET)
-extract: get $(BUILDDIR) $(STATEDIR) $(PACKAGES_EXTRACT)
-prepare: extract $(BUILDDIR) $(STATEDIR) $(PACKAGES_PREPARE)
-compile: extract $(BUILDDIR) $(STATEDIR) $(PACKAGES_COMPILE)
-install: extract $(BUILDDIR) $(STATEDIR) $(PACKAGES_INSTALL)
+extract: get     $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_EXTRACT)
+prepare: extract $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_PREPARE)
+compile: prepare $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_COMPILE)
+install: compile $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_INSTALL)
 
