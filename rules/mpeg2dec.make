@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mpeg2dec.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: mpeg2dec.make,v 1.2 2004-10-03 02:28:23 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -99,6 +99,7 @@ MPEG2DEC_AUTOCONF = \
 	--prefix=$(CROSS_LIB_DIR) \
    --enable-shared=no \
    --enable-static=yes \
+   --disable-sdl \
    --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \
    --mandir=$(INSTALLPATH)/man \
