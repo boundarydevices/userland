@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.4  2004-06-18 04:16:27  ericn
+# Revision 1.5  2004-06-18 14:00:53  ericn
+# -remove symlink to ld-2.2.3.so
+#
+# Revision 1.4  2004/06/18 04:16:27  ericn
 # -build sub-dirs
 #
 # Revision 1.3  2004/06/09 03:55:37  ericn
@@ -97,7 +100,7 @@ root/lib/libpthread.so: $(CROSS_LIB_DIR)/lib/libpthread.so
 	cp -d $(CROSS_LIB_DIR)/lib/libpthr*.so* root/lib/
 
 root/lib/ld-linux.so.2: $(CROSS_LIB_DIR)/lib/ld-linux.so.2
-	cp -d $(CROSS_LIB_DIR)/lib/ld*.so* root/lib/
+	cp -f $< $@
 
 root/linuxrc: root/bin/busybox
 	cd root && ln -s ./bin/busybox linuxrc
