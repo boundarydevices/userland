@@ -8,3 +8,6 @@ kconf
 root
 kconf.tar.gz
 devices.txt
+cramfs.img
+jffs2.img
+.kernelconfig
