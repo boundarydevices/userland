@@ -1,6 +1,7 @@
 config LINUX_WLAN_NG
 	bool
 	prompt "Compile Linux-WLAN"
+   default y
    depends on PCMCIA_TOOLS
    help 
    

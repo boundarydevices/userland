@@ -2,10 +2,12 @@ menu	"OpenSSH             "
 
 config OPENSSH
 	bool
+   default y
 	prompt "OpenSSH"
 
 config OPENSSH_SSH
 	bool "Install ssh (client)"
+   default y
 	depends on OPENSSH
 
 config OPENSSH_SSHD
@@ -15,6 +17,7 @@ config OPENSSH_SSHD
 
 config OPENSSH_SCP
 	bool "Install scp"
+   default y
 	depends on OPENSSH
 
 config OPENSSH_SFTP_SERVER

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: busybox.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: busybox.make,v 1.2 2004-06-09 13:25:13 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -19,14 +19,14 @@ endif
 #
 # Paths and names
 #
-BUSYBOX_VERSION		= 1.00-pre7
+BUSYBOX_VERSION		= 0.60.5
 BUSYBOX			= busybox-$(BUSYBOX_VERSION)
 BUSYBOX_SUFFIX		= tar.bz2
 BUSYBOX_URL		= http://www.busybox.net/downloads/$(BUSYBOX).$(BUSYBOX_SUFFIX)
 BUSYBOX_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).$(BUSYBOX_SUFFIX)
 BUSYBOX_DIR		= $(BUILDDIR)/$(BUSYBOX)
-BUSYBOX_PATCH_URL		= http://boundarydevices.com/busybox-$(BUSYBOX_VERSION).patch
-BUSYBOX_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/busybox-$(BUSYBOX_VERSION).patch
+BUSYBOX_PATCH_URL		= http://boundarydevices.com/$(BUSYBOX).patch
+BUSYBOX_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).patch
 
 # ----------------------------------------------------------------------------
 # Get
@@ -59,8 +59,9 @@ $(STATEDIR)/busybox.extract: $(busybox_extract_deps)
 	rm -rf $(BUSYBOX_DIR)
 	cd $(BUILDDIR) && bzcat $(BUSYBOX_SOURCE) | tar -xvf -
 #	# fix: turn off debugging in init.c
-	perl -i -p -e 's/^#define DEBUG_INIT/#undef DEBUG_INIT/g' $(BUSYBOX_DIR)/init/init.c
-	cd $(BUILDDIR) && patch -p0 < $(BUSYBOX_PATCH_SOURCE)
+#	perl -i -p -e 's/^#define DEBUG_INIT/#undef DEBUG_INIT/g' $(BUSYBOX_DIR)/init/init.c
+#	cd $(BUILDDIR) && patch -p0 < $(BUSYBOX_PATCH_SOURCE)
+	cd $(BUSYBOX_DIR) && patch -p1 < $(BUSYBOX_PATCH_SOURCE)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -80,8 +81,8 @@ busybox_prepare_deps	= $(STATEDIR)/busybox.extract
 
 $(STATEDIR)/busybox.prepare: $(busybox_prepare_deps)
 	@$(call targetinfo, $@)
-	CC=arm-linux-gcc $(BUSYBOX_PATH) make -C $(BUSYBOX_DIR) oldconfig $(BUSYBOX_MAKEVARS)
-	CC=arm-linux-gcc $(BUSYBOX_PATH) make -C $(BUSYBOX_DIR) dep $(BUSYBOX_MAKEVARS)
+#	CC=arm-linux-gcc $(BUSYBOX_PATH) make -C $(BUSYBOX_DIR) oldconfig $(BUSYBOX_MAKEVARS)
+#	CC=arm-linux-gcc $(BUSYBOX_PATH) make -C $(BUSYBOX_DIR) dep $(BUSYBOX_MAKEVARS)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -94,7 +95,8 @@ busybox_compile_deps =  $(STATEDIR)/busybox.prepare
 
 $(STATEDIR)/busybox.compile: $(busybox_compile_deps)
 	@$(call targetinfo, $@)
-	$(BUSYBOX_PATH) make -C $(BUSYBOX_DIR) all $(BUSYBOX_MAKEVARS)
+	$(BUSYBOX_PATH) && $(BUSYBOX_ENV) \
+   && make -C $(BUSYBOX_DIR) all $(BUSYBOX_MAKEVARS)
 	touch $@
 
 # ----------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 config JPEG
 	bool
+   default y
 	prompt "Compile libjpeg"
    help
      LibJPEG is an open source library by the Independent JPEG Group

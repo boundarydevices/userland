@@ -3,6 +3,7 @@ menu	"ffmpeg              "
 config FFMPEG
 	bool
 	prompt "Compile ffmpeg"
+   default y
    help 
    MAD is a high-quality MPEG audio decoder. 
    It currently supports MPEG-1 and the MPEG-2 extension to lower sampling 

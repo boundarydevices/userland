@@ -1,6 +1,7 @@
 config MAD
 	bool
 	prompt "Compile mad"
+   default y
    help 
    MAD is a high-quality MPEG audio decoder. 
    It currently supports MPEG-1 and the MPEG-2 extension to lower sampling 

@@ -1,6 +1,7 @@
 config FREETYPE
 	bool
 	prompt "Compile FreeType"
+   default y
    help 
    A Free, High-Quality, and Portable Font Engine
 

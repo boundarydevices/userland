@@ -1,5 +1,6 @@
 config ZLIB
 	bool
+   default y
 	prompt "Compile zlib"
 
 endmenu

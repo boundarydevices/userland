@@ -1,6 +1,7 @@
 config JS
 	bool
 	prompt "Compile Mozilla Javascript"
+   default y
    help 
    This module builds support for the SpiderMonkey Javascript Interpreter
    from the Mozilla organization.

@@ -1,5 +1,6 @@
 config LIBUNGIF
 	bool
+   default y
 	prompt "Compile libungif"
    help
      libungif is an open source library for reading files

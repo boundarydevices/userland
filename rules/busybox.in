@@ -1,5 +1,6 @@
 config BUSYBOX
 	bool
+   default y
 	prompt "Busybox"
 	help
 	  BusyBox is the Swiss Army Knife of embedded Linux. It is a

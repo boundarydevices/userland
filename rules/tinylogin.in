@@ -1,5 +1,6 @@
 config TINYLOGIN
 	bool
+   default y
 	prompt "Compile tinylogin"
    help
      TinyLogin is a suite of tiny Unix utilities for handling logging into,

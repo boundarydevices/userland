@@ -2,6 +2,7 @@ menu	"libmpeg2            "
 
 config LIBMPEG2
 	bool
+   default y
 	prompt "Compile libmpeg2"
    help 
    
@@ -13,6 +14,7 @@ config LIBMPEG2
 config LIBMPEG2_OLD
    depends on LIBMPEG2
    bool
+   default y
    prompt "Compile older version (0.3.1)"
 
 endmenu

@@ -2,6 +2,7 @@ menu   "OpenSSL             "
 
 config OPENSSL
 	bool "OpenSSL support in various tools"
+   default y
 
 config OPENSSL_SHARED
 	bool "build shared lib"

@@ -2,15 +2,18 @@ menu	"e2fsprogs           "
 
 config E2FSPROGS
 	bool
+   default y
 	prompt "e2fsprogs"
 	
 config E2FSPROGS_MKFS
 	bool
+   default y
 	prompt "Install mke2fs"
 	depends on E2FSPROGS
 
 config E2FSPROGS_E2FSCK
 	bool
+   default y
 	prompt "Install e2fsck"
 	depends on E2FSPROGS
 

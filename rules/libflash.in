@@ -1,6 +1,7 @@
 config LIBFLASH
 	bool
 	prompt "Compile libflash (SWF player)"
+   default y
    depends on JPEG
    depends on ZLIB
    help
