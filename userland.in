@@ -72,6 +72,7 @@ choice
 	
 endchoice
 
+source "rules/e2fsprogs.in"
 source "rules/busybox.in"
 source "rules/zlib.in"
 source "rules/libusb.in"
