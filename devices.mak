@@ -110,6 +110,7 @@ else
 endif
 ifdef KERNEL_PXA_GPIO
 	@echo "#KERNEL_PXA_GPIO" >> devices.txt
+	# GPIO devices could go here
 else
 	@echo "#KERNEL_PXA_GPIO is not set" >> devices.txt
 endif
@@ -231,6 +232,25 @@ ifeq ("BD2003", $(KERNEL_BOARDTYPE))
 	@echo -e "/dev/Turnstile\t\tc\t666\t0\t0\t254\t9\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/Green\t\tc\t666\t0\t0\t254\t33\t0\t0\t-" >> devices.txt
 else
+	@echo "#KERNEL_BOARDTYPE is not BD2003" >> devices.txt
+ifeq ("BD2004", $(KERNEL_BOARDTYPE))
+ifdef CONFIG_SUITEDEMO
+		@echo -e "/dev/doorLock\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/custLED\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/customIn\t\tc\t666\t0\t0\t254\t16\t0\t0\t-" >> devices.txt
+else
+		@echo "#CONFIG_SUITEDEMO is not set" >> devices.txt
+ifdef CONFIG_TMSUITE
+			@echo -e "/dev/doorLock\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
+			@echo -e "/dev/custLED\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
+			@echo -e "/dev/customIn\t\tc\t666\t0\t0\t254\t16\t0\t0\t-" >> devices.txt
+else
+			@echo "#CONFIG_TMSUITE is not set" >> devices.txt
+endif
+endif
+else
+	@echo "#KERNEL_BOARDTYPE is not BD2004" >> devices.txt
+endif
 endif
 	@echo "---> finished building devices.txt"
         
