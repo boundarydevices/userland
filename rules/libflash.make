@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libflash.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: libflash.make,v 1.2 2004-05-31 21:04:24 ericn Exp $
 #
 # Copyright (C) 2004 by Boundary Devices
 #          
@@ -53,6 +53,7 @@ $(LIBFLASH_PATCH_SOURCE):
 libflash_extract: $(STATEDIR)/libflash.extract
 
 libflash_extract_deps = $(STATEDIR)/libflash.get
+libflash_extract_deps = $(STATEDIR)/JPEG.install
 
 INSTALLPATH_ESCAPED = $(subst /,\/, $INSTALLPATH)
 
