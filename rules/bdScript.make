@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.9 2004-06-27 14:51:27 ericn Exp $
+# $Id: bdScript.make,v 1.10 2004-09-10 13:22:23 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -156,6 +156,7 @@ bdScript_compile_deps += $(STATEDIR)/mpeg2dec.install
 bdScript_compile_deps += $(STATEDIR)/openssl.install
 bdScript_compile_deps += $(STATEDIR)/linux-wlan-ng.install
 bdScript_compile_deps += $(STATEDIR)/mad.install
+bdScript_compile_deps += $(STATEDIR)/libusb.install
 
 $(STATEDIR)/bdScript.compile: $(bdScript_compile_deps)
 	@$(call targetinfo, $@)
