@@ -1,5 +1,6 @@
+
 # -*-makefile-*-
-# $Id: libusb.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: libusb.make,v 1.2 2004-06-28 02:58:36 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -25,6 +26,8 @@ LIBUSB_SUFFIX		= tar.gz
 LIBUSB_URL		= http://easynews.dl.sourceforge.net/sourceforge/libusb/$(LIBUSB).$(LIBUSB_SUFFIX)
 LIBUSB_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(LIBUSB).$(LIBUSB_SUFFIX)
 LIBUSB_DIR		= $(BUILDDIR)/$(LIBUSB)
+LIBUSB_PATCH_URL		= http://boundarydevices.com/libusb-$(LIBUSB_VERSION).patch
+LIBUSB_PATCH_SOURCE	= $(CONFIG_ARCHIVEPATH)/libusb-$(LIBUSB_VERSION).patch
 
 # ----------------------------------------------------------------------------
 # Get
@@ -32,7 +35,7 @@ LIBUSB_DIR		= $(BUILDDIR)/$(LIBUSB)
 
 libusb_get: $(STATEDIR)/libusb.get
 
-libusb_get_deps = $(LIBUSB_SOURCE)
+libusb_get_deps = $(LIBUSB_SOURCE) $(LIBUSB_PATCH_SOURCE)
 
 $(STATEDIR)/libusb.get: $(libusb_get_deps)
 	@$(call targetinfo, $@)
@@ -41,6 +44,10 @@ $(STATEDIR)/libusb.get: $(libusb_get_deps)
 $(LIBUSB_SOURCE):
 	@$(call targetinfo, $@)
 	@cd $(CONFIG_ARCHIVEPATH) && wget $(LIBUSB_URL)
+
+$(LIBUSB_PATCH_SOURCE):
+	@$(call targetinfo, $@)
+	@cd $(CONFIG_ARCHIVEPATH) && wget $(LIBUSB_PATCH_URL)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -54,6 +61,7 @@ $(STATEDIR)/libusb.extract: $(libusb_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(LIBUSB_DIR))
 	@cd $(BUILDDIR) && gzcat $(LIBUSB_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && patch -p0 < $(LIBUSB_PATCH_SOURCE)
 	touch $@
 
 # ----------------------------------------------------------------------------
