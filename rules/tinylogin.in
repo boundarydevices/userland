@@ -1,0 +1,14 @@
+config TINYLOGIN
+	bool
+	prompt "Compile tinylogin"
+   help
+     TinyLogin is a suite of tiny Unix utilities for handling logging into,
+     being authenticated by, changing one's password for, and otherwise
+     maintaining users and groups on an embedded system. It also provides
+     shadow password support to enhance system security. TinyLogin is, as the
+     name implies, very small, and makes an excellent complement to BusyBox
+     on an embedded System. It can be used without BusyBox, of course, but I
+     envision them being used together most of the time.
+     
+     See http://tinylogin.busybox.net/ for details.
+
