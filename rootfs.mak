@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.10  2004-06-21 13:57:13  ericn
+# Revision 1.11  2004-06-24 13:54:18  ericn
+# -add /etc link (for ldconfig)
+#
+# Revision 1.10  2004/06/21 13:57:13  ericn
 # -Added path to toolchain for strip commands
 #
 # Revision 1.9  2004/06/20 19:28:59  ericn
@@ -79,7 +82,11 @@ $(DIRS):
 
 $(CROSS_LIB_LINK)/lib:
 	mkdir -p $(CROSS_LIB_LINK)
-	cd $(CROSS_LIB_LINK) && ln -s /lib
+	cd $(CROSS_LIB_LINK) && ln -sf /lib
+
+$(CROSS_LIB_LINK)/etc:
+	mkdir -p $(CROSS_LIB_LINK)
+	cd $(CROSS_LIB_LINK) && ln -sf /etc
 
 root/etc/bashrc:
 	echo "#!/bin/sh" > $@
@@ -155,6 +162,7 @@ root/etc/fstab:
 #
 root/bin/jsMenu: 
 	echo "#!/bin/sh" >$@
+	echo "rm -f /tmp/ctrlc" >>$@
 	echo "while ! [ -f /tmp/ctrlc ] ; do /bin/jsExec file:///js/mainMenu.js; done" >>$@
 	chmod a+x $@
 
@@ -206,5 +214,5 @@ root/etc/init.d/rcS: root/bin/jsMenu root/etc/init.d
 	echo "/bin/jsMenu" >>$@
 	chmod a+x $@
 
-base-root: $(DIRS) $(CROSS_LIB_LINK)/lib $(TARGETS)
+base-root: $(DIRS) $(CROSS_LIB_LINK)/etc $(CROSS_LIB_LINK)/lib $(TARGETS)
 
