@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.7 2004-06-21 13:58:01 ericn Exp $
+# $Id: bdScript.make,v 1.8 2004-06-24 13:53:23 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -183,6 +183,8 @@ ifdef CONFIG_BDSCRIPT_BIGDEMO
 	cp -rv $(BUILDDIR)/ticketing/* $(ROOTDIR)/js/
 	cp -rv $(BUILDDIR)/myPalDemo/* $(ROOTDIR)/js/
 	cp -rv $(BUILDDIR)/sampleScripts/* $(ROOTDIR)/js/
+	chmod a+x $(ROOTDIR)/js/network
+	chmod a+x $(ROOTDIR)/js/dhcp
 endif      
 	touch $@
 
