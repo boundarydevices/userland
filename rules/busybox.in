@@ -8,5 +8,3 @@ config BUSYBOX
 	  tools in one small executable.
 
 	  For more information see http://www.busybox.net
-
-endmenu
