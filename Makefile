@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.9  2004-06-19 23:31:44  ericn
+# Revision 1.10  2004-06-20 19:29:14  ericn
+# -fixed directory dependencies
+#
+# Revision 1.9  2004/06/19 23:31:44  ericn
 # -can't strip all libs (ld-linux.so chokes)
 #
 # Revision 1.8  2004/06/18 14:44:24  ericn
@@ -135,13 +138,11 @@ PACKAGES_INSTALL		   := $(addsuffix _install,$(PACKAGES))
 PACKAGES_TARGETINSTALL  := $(addsuffix _targetinstall,$(PACKAGES))
 CROSS_PATH              := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
 
-$(BUILDDIR):
-	mkdir -p $@
-$(STATEDIR):
-	mkdir -p $@
 INSTALL_DIRS := $(INSTALLPATH) $(INSTALLPATH)/bin $(INSTALLPATH)/lib $(INSTALLPATH)/sbin $(INSTALLPATH)/include
 
-$(INSTALL_DIRS):
+DIRS := $(BUILDDIR) $(STATEDIR) $(ROOTDIR) $(INSTALL_DIRS)
+
+$(DIRS):
 	mkdir -p $@
 
 kconf.mak:
@@ -223,15 +224,13 @@ help:
 # }}}
 
 clean: $(BUILDDIR) $(STATEDIR) $(PACKAGES_CLEAN)
-get: $(BUILDDIR) $(STATEDIR) $(PACKAGES_GET)
-extract: get     $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_EXTRACT)
-prepare: extract $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_PREPARE)
-compile: prepare $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_COMPILE)
-install: compile $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_INSTALL)
-targetinstall: install $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_TARGETINSTALL)
-	
-$(ROOTDIR):
-	mkdir -p $(ROOTDIR)
+get: $(DIRS) $(PACKAGES_GET)
+extract: get     $(DIRS) $(PACKAGES_EXTRACT)
+prepare: extract $(DIRS) $(PACKAGES_PREPARE)
+compile: prepare $(DIRS) $(PACKAGES_COMPILE)
+install: compile $(DIRS)  $(PACKAGES_INSTALL)
+targetinstall: install $(DIRS) $(PACKAGES_TARGETINSTALL)
+
 
 $(ROOTDIR)/etc/init.d/rcS: targetinstall
 	mkdir -p $(ROOTDIR)/etc/init.d/
@@ -239,7 +238,7 @@ $(ROOTDIR)/etc/init.d/rcS: targetinstall
 
 rootfs: $(ROOTDIR) targetinstall devices.txt $(ROOTDIR)/etc/init.d/rcS
 
-cramfs.img: $(BUILDDIR)/cramfs-1.1/mkcramfs rootfs devices
+cramfs.img: targetinstall $(BUILDDIR)/cramfs-1.1/mkcramfs rootfs devices
 #	-$(CROSSSTRIP) $(ROOTDIR)/lib/*
 	-$(CROSSSTRIP) $(ROOTDIR)/bin/*
 	cd $(ROOTDIR)/etc && /sbin/ldconfig -r ../ -v
