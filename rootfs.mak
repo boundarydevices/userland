@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.1  2004-06-06 14:58:14  ericn
+# Revision 1.2  2004-06-06 17:56:14  ericn
+# -updates
+#
+# Revision 1.1  2004/06/06 14:58:14  ericn
 # -Initial import, 1st pass
 #
 #
@@ -26,7 +29,11 @@ TARGETS := root/etc/bashrc \
            root/etc/ld.so.conf \
            root/etc/ld.so.cache \
            root/bin/jsMenu \
-           root/etc/init.d/rcS
+           root/etc/init.d/rcS \
+           root/lib/libc.so.6 \
+           root/lib/ld-linux.so.2 \
+           root/linuxrc \
+           root/proc
 
 root/etc/bashrc:
 	echo "#!/bin/sh" > $@
@@ -61,6 +68,15 @@ root/etc/resolv.conf:
 
 root/etc/ld.so.conf:
 	echo -e "" > $@
+
+root/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
+	cp -d $(CROSS_LIB_DIR)/lib/libc*.so* root/lib/
+
+root/lib/ld-linux.so.2: $(CROSS_LIB_DIR)/lib/ld-linux.so.2
+	cp -d $(CROSS_LIB_DIR)/lib/ld*.so* root/lib/
+
+root/linuxrc: root/bin/busybox
+	cd root && ln -s ./bin/busybox linuxrc
 
 root/etc/ld.so.cache: root/etc/modules.conf root/etc/ld.so.conf
 	-cd root/etc/fstab/lib && arm-linux-strip *
@@ -122,4 +138,11 @@ root/etc/init.d/rcS: root/bin/jsMenu root/etc/init.d
 	echo "/bin/jsMenu" >>$@
 	chmod a+x $@
 
+root/proc:
+	mkdir -p $@
+
+root/tmp:
+	mkdir -p $@
+
 base-root: $(TARGETS)
+
