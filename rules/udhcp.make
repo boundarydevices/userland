@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: udhcp.make,v 1.3 2004-06-24 13:52:57 ericn Exp $
+# $Id: udhcp.make,v 1.4 2004-09-10 13:25:30 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -132,12 +132,14 @@ $(STATEDIR)/udhcp.targetinstall: $(udhcp_targetinstall_deps)
 ifeq (y, $(CONFIG_UDHCP_SERVER))
 	mkdir -p $(ROOTDIR)/sbin
 	cp $(UDHCP_DIR)/udhcpd $(ROOTDIR)/sbin
-	$(CROSSSTRIP) $(ROOTDIR)/sbin/udhcpd
+	$(UDHCP_PATH) \
+   $(UDHCP_ENV) $(CROSSSTRIP) $(ROOTDIR)/sbin/udhcpd
 endif
 ifeq (y, $(CONFIG_UDHCP_CLIENT))
 	mkdir -p $(ROOTDIR)/sbin
 	cp $(UDHCP_DIR)/udhcpc $(ROOTDIR)/sbin
-	$(CROSSSTRIP) $(ROOTDIR)/sbin/udhcpc
+	$(UDHCP_PATH) \
+   $(UDHCP_ENV) $(CROSSSTRIP) $(ROOTDIR)/sbin/udhcpc
 	-mkdir -p $(ROOTDIR)/etc/pcmcia/
 	-rm -f $(ROOTDIR)/etc/pcmcia/dhcp
 	cd $(ROOTDIR)/etc/pcmcia && ln -sf ../../js/dhcp
