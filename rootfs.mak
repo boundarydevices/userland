@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.8  2004-06-20 15:18:52  ericn
+# Revision 1.9  2004-06-20 19:28:59  ericn
+# -fixed strip
+#
+# Revision 1.8  2004/06/20 15:18:52  ericn
 # -fixed ld-xyz and libdl-xyz (I'm dyslexic, I guess)
 #
 # Revision 1.7  2004/06/19 23:30:35  ericn
@@ -40,7 +43,7 @@ all: base-root
 
 include .config
 
-CROSS_ENV_STRIP = STRIP=$(CONFIG_GNU_TARGET)-strip
+CROSSSTRIP := $(CONFIG_GNU_TARGET)-strip
 
 DIRS := root/bin root/etc root/lib root/proc root/tmp 
 
@@ -116,11 +119,11 @@ root/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
 root/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
 	cp -d $(CROSS_LIB_DIR)/lib/libm.so* root/lib/
 	cp -d $(CROSS_LIB_DIR)/lib/libm-*.so* root/lib/
-	$(CROSS_ENV_STRIP) root/lib/libm-2.2.3.so
+	$(CROSSSTRIP) root/lib/libm-2.2.3.so
 
 root/lib/libpthread.so: $(CROSS_LIB_DIR)/lib/libpthread.so
 	cp -d $(CROSS_LIB_DIR)/lib/libpthr*.so* root/lib/
-	$(CROSS_ENV_STRIP) root/lib/libpthread-*.so
+	$(CROSSSTRIP) root/lib/libpthread-*.so
 
 root/lib/ld-2.2.3.so: $(CROSS_LIB_DIR)/lib/ld-2.2.3.so
 	cp -f $< $@
