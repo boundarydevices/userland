@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.6  2004-06-18 14:44:51  ericn
+# Revision 1.7  2004-06-19 23:30:35  ericn
+# -added fstab
+#
+# Revision 1.6  2004/06/18 14:44:51  ericn
 # -make libc/libdl happy
 #
 # Revision 1.5  2004/06/18 14:00:53  ericn
@@ -37,6 +40,7 @@ include .config
 DIRS := root/bin root/etc root/lib root/proc root/tmp 
 
 TARGETS := root/etc/bashrc \
+           root/etc/fstab \
            root/etc/hosts \
            root/etc/inittab \
            root/etc/modules.conf \
@@ -116,10 +120,13 @@ root/linuxrc: root/bin/busybox
 	cd root && ln -s ./bin/busybox linuxrc
 
 root/etc/ld.so.cache: root/etc/modules.conf root/etc/ld.so.conf
-	-cd root/etc/fstab/lib && arm-linux-strip *
 	mkdir -p root/lib
 	mkdir -p root/usr/lib
 	cd root/etc && /sbin/ldconfig -r ../ -v
+
+root/etc/fstab:
+	echo "none /dev/pts devpts gid=5,mode=0620 0 0" > $@
+	echo "none /proc/bus/usb usbdevfs noauto 0 0" >>$@
 
 #
 # Javascript startup menu
