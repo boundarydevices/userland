@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: linux-wlan-ng.make,v 1.3 2004-06-10 03:24:05 ericn Exp $
+# $Id: linux-wlan-ng.make,v 1.4 2004-09-26 16:08:37 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -28,6 +28,8 @@ LINUX-WLAN-NG_DIR		= $(BUILDDIR)/$(LINUX-WLAN-NG)
 
 LINUX-WLAN-NG_PATCH_URL		= http://boundarydevices.com/$(LINUX-WLAN-NG).diff
 LINUX-WLAN-NG_PATCH		= $(CONFIG_ARCHIVEPATH)/$(LINUX-WLAN-NG).diff
+LINUX-WLAN-NG_PATCH_URL2		= http://boundarydevices.com/wland.patch
+LINUX-WLAN-NG_PATCH2		= $(CONFIG_ARCHIVEPATH)/wland.patch
 
 # ----------------------------------------------------------------------------
 # Get
@@ -35,7 +37,7 @@ LINUX-WLAN-NG_PATCH		= $(CONFIG_ARCHIVEPATH)/$(LINUX-WLAN-NG).diff
 
 linux-wlan-ng_get: $(STATEDIR)/linux-wlan-ng.get
 
-linux-wlan-ng_get_deps = $(LINUX-WLAN-NG_SOURCE) $(LINUX-WLAN-NG_PATCH)
+linux-wlan-ng_get_deps = $(LINUX-WLAN-NG_SOURCE) $(LINUX-WLAN-NG_PATCH) $(LINUX-WLAN-NG_PATCH2)
 
 $(STATEDIR)/linux-wlan-ng.get: $(linux-wlan-ng_get_deps)
 	@$(call targetinfo, $@)
@@ -44,6 +46,10 @@ $(STATEDIR)/linux-wlan-ng.get: $(linux-wlan-ng_get_deps)
 $(LINUX-WLAN-NG_PATCH):
 	@$(call targetinfo, $@)
 	cd $(CONFIG_ARCHIVEPATH) && wget $(LINUX-WLAN-NG_PATCH_URL)
+
+$(LINUX-WLAN-NG_PATCH2):
+	@$(call targetinfo, $@)
+	cd $(CONFIG_ARCHIVEPATH) && wget $(LINUX-WLAN-NG_PATCH_URL2)
 
 $(LINUX-WLAN-NG_SOURCE):
 	@$(call targetinfo, $@)
@@ -63,6 +69,7 @@ $(STATEDIR)/linux-wlan-ng.extract: $(linux-wlan-ng_extract_deps)
 	@$(call clean, $(LINUX-WLAN-NG_DIR))
 	cd $(BUILDDIR) && gzcat $(LINUX-WLAN-NG_SOURCE) | tar -xvf -
 	cd $(BUILDDIR) && patch -p0 <$(LINUX-WLAN-NG_PATCH)
+	cd $(BUILDDIR) && patch -p0 <$(LINUX-WLAN-NG_PATCH2)
 	touch $@
 
 # ----------------------------------------------------------------------------
