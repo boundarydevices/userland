@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: udhcp.make,v 1.1 2004-06-09 13:45:07 ericn Exp $
+# $Id: udhcp.make,v 1.2 2004-06-22 04:11:00 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -12,7 +12,7 @@
 #
 # We provide this package
 #
-ifdef PTXCONF_UDHCP
+ifdef CONFIG_UDHCP
 PACKAGES += udhcp
 endif
 
@@ -85,7 +85,7 @@ UDHCP_ENV	+= CROSS_COMPILE=arm-linux-
 #
 UDHCP_AUTOCONF = \
 	--build=$(GNU_HOST) \
-	--host=$(PTXCONF_GNU_TARGET) \
+	--host=$(CONFIG_GNU_TARGET) \
 	--prefix=$(CROSS_LIB_DIR)
 
 $(STATEDIR)/udhcp.prepare: $(udhcp_prepare_deps)
@@ -129,8 +129,16 @@ udhcp_targetinstall_deps = $(STATEDIR)/udhcp.compile
 
 $(STATEDIR)/udhcp.targetinstall: $(udhcp_targetinstall_deps)
 	@$(call targetinfo, $@)
-	$(UDHCP_PATH) \
-   $(UDHCP_ENV) make -C $(UDHCP_DIR) install prefix=$(ROOTDIR) SBINDIR=$(ROOTDIR)/sbin
+ifeq (y, $(CONFIG_UDHCP_SERVER))
+	mkdir -p $(ROOTDIR)/sbin
+	cp $(UDHCP_DIR)/udhcpd $(ROOTDIR)/sbin
+	$(CROSSSTRIP) $(ROOTDIR)/sbin/udhcpd
+endif
+ifeq (y, $(CONFIG_UDHCP_CLIENT))
+	mkdir -p $(ROOTDIR)/sbin
+	cp $(UDHCP_DIR)/udhcpc $(ROOTDIR)/sbin
+	$(CROSSSTRIP) $(ROOTDIR)/sbin/udhcpc
+endif
 	touch $@
 
 # ----------------------------------------------------------------------------
