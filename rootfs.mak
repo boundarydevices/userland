@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.7  2004-06-19 23:30:35  ericn
+# Revision 1.8  2004-06-20 15:18:52  ericn
+# -fixed ld-xyz and libdl-xyz (I'm dyslexic, I guess)
+#
+# Revision 1.7  2004/06/19 23:30:35  ericn
 # -added fstab
 #
 # Revision 1.6  2004/06/18 14:44:51  ericn
@@ -37,6 +40,8 @@ all: base-root
 
 include .config
 
+CROSS_ENV_STRIP = STRIP=$(CONFIG_GNU_TARGET)-strip
+
 DIRS := root/bin root/etc root/lib root/proc root/tmp 
 
 TARGETS := root/etc/bashrc \
@@ -53,6 +58,8 @@ TARGETS := root/etc/bashrc \
            root/lib/libc.so.6 \
            root/lib/libm.so.6 \
            root/lib/libpthread.so \
+           root/lib/ld-2.2.3.so \
+           root/lib/libdl.so.2 \
            root/lib/ld-linux.so.2 \
            root/linuxrc \
            root/proc \
@@ -109,11 +116,19 @@ root/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
 root/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
 	cp -d $(CROSS_LIB_DIR)/lib/libm.so* root/lib/
 	cp -d $(CROSS_LIB_DIR)/lib/libm-*.so* root/lib/
+	$(CROSS_ENV_STRIP) root/lib/libm-2.2.3.so
 
 root/lib/libpthread.so: $(CROSS_LIB_DIR)/lib/libpthread.so
 	cp -d $(CROSS_LIB_DIR)/lib/libpthr*.so* root/lib/
+	$(CROSS_ENV_STRIP) root/lib/libpthread-*.so
 
-root/lib/ld-linux.so.2: $(CROSS_LIB_DIR)/lib/ld-linux.so.2
+root/lib/ld-2.2.3.so: $(CROSS_LIB_DIR)/lib/ld-2.2.3.so
+	cp -f $< $@
+
+root/lib/ld-linux.so.2: root/lib/ld-2.2.3.so
+	cd root/lib/ && ln -s ld-2.2.3.so ld-linux.so.2
+
+root/lib/libdl.so.2: $(CROSS_LIB_DIR)/lib/libdl.so.2
 	cp -f $< $@
 
 root/linuxrc: root/bin/busybox
