@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: busybox.make,v 1.2 2004-06-09 13:25:13 ericn Exp $
+# $Id: busybox.make,v 1.3 2004-06-10 03:24:05 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -124,7 +124,7 @@ $(STATEDIR)/busybox.targetinstall: $(busybox_targetinstall_deps)
 	cd $(BUSYBOX_DIR) &&					\
 		$(BUSYBOX_PATH) $(MAKE) install 		\
 		PREFIX=$(ROOTDIR) $(BUSYBOX_MAKEVARS)
-	$(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/bin/busybox
+	$(BUSYBOX_PATH) $(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/bin/busybox
 	touch $@
 
 # ----------------------------------------------------------------------------

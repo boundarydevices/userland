@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: openssh.make,v 1.2 2004-06-10 03:24:05 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -189,36 +189,36 @@ $(STATEDIR)/openssh.targetinstall: $(openssh_targetinstall_deps)
 	@$(call targetinfo, openssh.targetinstall)
 
 ifdef CONFIG_OPENSSH_SSH
-	install -m 644 -D $(OPENSSH_DIR)/ssh_config.out $(ROOTDIR)/etc/ssh/ssh_config
-	install -m 755 -D $(OPENSSH_DIR)/ssh $(ROOTDIR)/usr/bin/ssh
-	$(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/bin/ssh
+	@install -m 644 -D $(OPENSSH_DIR)/ssh_config.out $(ROOTDIR)/etc/ssh/ssh_config
+	@install -m 755 -D $(OPENSSH_DIR)/ssh $(ROOTDIR)/usr/bin/ssh
+	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/bin/ssh
 endif
 
 ifdef CONFIG_OPENSSH_SSHD
-	install -m 644 -D $(OPENSSH_DIR)/moduli.out $(ROOTDIR)/etc/ssh/moduli
-	install -m 644 -D $(OPENSSH_DIR)/sshd_config.out $(ROOTDIR)/etc/ssh/sshd_config
-	perl -p -i -e "s/#PermitRootLogin yes/PermitRootLogin yes/" \
-	$(ROOTDIR)/etc/ssh/sshd_config
-	install -m 755 -D $(OPENSSH_DIR)/sshd $(ROOTDIR)/usr/sbin/sshd
-	$(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/sbin/sshd
+	@install -m 644 -D $(OPENSSH_DIR)/moduli.out $(ROOTDIR)/etc/ssh/moduli
+	@install -m 644 -D $(OPENSSH_DIR)/sshd_config.out $(ROOTDIR)/etc/ssh/sshd_config
+	@perl -p -i -e "s/#PermitRootLogin yes/PermitRootLogin yes/" \
+	@$(ROOTDIR)/etc/ssh/sshd_config
+	@install -m 755 -D $(OPENSSH_DIR)/sshd $(ROOTDIR)/usr/sbin/sshd
+	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/sbin/sshd
 endif
 
 ifdef CONFIG_OPENSSH_SCP
-	install -m 755 -D $(OPENSSH_DIR)/scp $(ROOTDIR)/usr/bin/scp
-	$(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/bin/scp
+	@install -m 755 -D $(OPENSSH_DIR)/scp $(ROOTDIR)/usr/bin/scp
+	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/bin/scp
 endif
 
 ifdef CONFIG_OPENSSH_SFTP_SERVER
-	install -m 755 -D $(OPENSSH_DIR)/sftp-server $(ROOTDIR)/usr/sbin/sftp-server
-	$(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/sbin/sftp-server
+	@install -m 755 -D $(OPENSSH_DIR)/sftp-server $(ROOTDIR)/usr/sbin/sftp-server
+	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/sbin/sftp-server
 endif
 
 ifdef CONFIG_OPENSSH_KEYGEN
 	# FIXME: if this is the only file in this directory move it
 	# to somewhere else (patch, echo << EOF?) [RSC]
-	install -m 755 -D $(MISCDIR)/openssh-host-keygen.sh $(ROOTDIR)/sbin/openssh-host-keygen.sh
-	install -m 755 -D $(OPENSSH_DIR)/ssh-keygen $(ROOTDIR)/usr/bin/ssh-keygen
-	$(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/bin/ssh-keygen
+#	@install -m 755 -D $(MISCDIR)/openssh-host-keygen.sh $(ROOTDIR)/sbin/openssh-host-keygen.sh
+	@install -m 755 -D $(OPENSSH_DIR)/ssh-keygen $(ROOTDIR)/usr/bin/ssh-keygen
+	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/bin/ssh-keygen
 endif
 
 	touch $@

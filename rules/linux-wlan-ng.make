@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: linux-wlan-ng.make,v 1.2 2004-06-09 03:54:33 ericn Exp $
+# $Id: linux-wlan-ng.make,v 1.3 2004-06-10 03:24:05 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -157,7 +157,8 @@ linux-wlan-ng_targetinstall_deps = $(STATEDIR)/linux-wlan-ng.install
 
 $(STATEDIR)/linux-wlan-ng.targetinstall: $(linux-wlan-ng_targetinstall_deps)
 	@$(call targetinfo, $@)
-	echo 'module "prism2_cs" opts "prism2_ignorevcc=1"' >> $(ROOTDIR)/etc/pcmcia/config.opts
+	@mkdir -p $(ROOTDIR)/etc/pcmcia/
+	@echo 'module "prism2_cs" opts "prism2_ignorevcc=1"' >> $(ROOTDIR)/etc/pcmcia/config.opts
 	touch $@
 
 # ----------------------------------------------------------------------------

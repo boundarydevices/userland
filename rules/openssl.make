@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssl.make,v 1.3 2004-06-06 14:55:43 ericn Exp $
+# $Id: openssl.make,v 1.4 2004-06-10 03:24:05 ericn Exp $
 #
 # Copyright (C) 2002 by Jochen Striepe for Pengutronix e.K., Hildesheim, Germany
 #               2003 by Pengutronix e.K., Hildesheim, Germany
@@ -115,11 +115,11 @@ $(STATEDIR)/openssl.install: $(STATEDIR)/openssl.compile
 # broken Makfile, generates dir with wrong permissions...
 # chmod 755 fixed that
 #
-	mkdir -p $(INSTALLPATH)/lib/pkgconfig
-	chmod 755 $(INSTALLPATH)/lib/pkgconfig
+	@mkdir -p $(INSTALLPATH)/lib/pkgconfig
+	@chmod 755 $(INSTALLPATH)/lib/pkgconfig
 	$(OPENSSL_PATH) make -C $(OPENSSL_DIR) install $(OPENSSL_MAKEVARS) \
 		INSTALL_PREFIX=$(INSTALLPATH) INSTALLTOP=''
-	chmod 755 $(INSTALLPATH)/lib/pkgconfig
+	@chmod 755 $(INSTALLPATH)/lib/pkgconfig
 #
 # FIXME:
 # 	OPENSSL=${D}/usr/bin/openssl /usr/bin/perl tools/c_rehash ${D}/etc/ssl/certs
@@ -138,13 +138,12 @@ openssl_targetinstall_deps = \
 $(STATEDIR)/openssl.targetinstall: $(openssl_targetinstall_deps)
 	@$(call targetinfo, $@)
 ifdef CONFIG_OPENSSL_SHARED
-	mkdir -p $(ROOTDIR)/usr/lib
+	@mkdir -p $(ROOTDIR)/usr/lib
+	@cp -d -f $(OPENSSL_DIR)/libssl.so* $(ROOTDIR)/lib/
+	@$(OPENSSL_PATH) $(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libssl.so*
 
-	cp -d -f $(OPENSSL_DIR)/libssl.so* $(ROOTDIR)/lib/
-	$(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libssl.so*
-
-	cp -d -f $(OPENSSL_DIR)/libcrypto.so* $(ROOTDIR)/lib/
-	$(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libcrypto.so*
+	@cp -d -f $(OPENSSL_DIR)/libcrypto.so* $(ROOTDIR)/lib/
+	@$(OPENSSL_PATH) $(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libcrypto.so*
 endif
 	touch $@
 

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: jpeg.make,v 1.2 2004-06-06 17:55:56 ericn Exp $
+# $Id: jpeg.make,v 1.3 2004-06-10 03:24:05 ericn Exp $
 #
 # Copyright (C) 2004 by Boundary Devices
 #          
@@ -122,7 +122,7 @@ $(STATEDIR)/JPEG.targetinstall: $(STATEDIR)/JPEG.install
 	@$(call targetinfo, $@)
 	mkdir -p $(ROOTDIR)/usr/lib
 	cp -d $(JPEG_DIR)/.libs/libjpeg* $(ROOTDIR)/usr/lib/
-	$(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/usr/lib/libjpeg.so*
+	$(JPEG_PATH) $(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/usr/lib/libjpeg.so*
 	touch $@
 
 # ----------------------------------------------------------------------------
