@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.6 2004-06-20 21:52:33 ericn Exp $
+# $Id: bdScript.make,v 1.7 2004-06-21 13:58:01 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -71,7 +71,7 @@ endif
    $(BDSCRIPT_SOURCE):
 		@$(call targetinfo, $@)
 		cd $(CONFIG_ARCHIVEPATH) && wget $(BDSCRIPT_URL)
-   $(BDSCRIPT_SCRIPT_SOURCE)
+   $(BDSCRIPT_SCRIPT_SOURCE):
 		@$(call targetinfo, $@)
 		cd $(CONFIG_ARCHIVEPATH) && wget $(BDSCRIPT_SCRIPT_URL)
    
