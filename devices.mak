@@ -95,7 +95,16 @@ endif
 ifdef KERNEL_USB
 	@echo "#KERNEL_PXA_USB" >> devices.txt
 	@echo -e "/dev/usb\td\t666\t0\t0\t-\t-\t-\t-\t-" >> devices.txt
-#	@echo -e "/dev/usb/lp0\tc\t666\t0\t0\t180\t0\t0\t0\t-" >> devices.txt           mkcramfs - can't find parent
+ifdef KERNEL_USB_PRINTER
+	@echo -e "/dev/usb/lp0\tc\t666\t0\t0\t180\t0\t0\t0\t-" >> devices.txt
+else   
+	@echo "#KERNEL_USB_PRINTER is not set" >> devices.txt
+endif   
+ifdef KERNEL_USB_QC
+	@echo -e "/dev/video0\tc\t666\t0\t0\t81\t0\t0\t0\t-" >> devices.txt
+else   
+	@echo "#KERNEL_USB_QC is not set" >> devices.txt
+endif
 else
 	@echo "#KERNEL_USB is not set" >> devices.txt
 endif
