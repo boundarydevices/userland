@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.9  2004-06-20 19:28:59  ericn
+# Revision 1.10  2004-06-21 13:57:13  ericn
+# -Added path to toolchain for strip commands
+#
+# Revision 1.9  2004/06/20 19:28:59  ericn
 # -fixed strip
 #
 # Revision 1.8  2004/06/20 15:18:52  ericn
@@ -44,6 +47,7 @@ all: base-root
 include .config
 
 CROSSSTRIP := $(CONFIG_GNU_TARGET)-strip
+CROSS_PATH := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
 
 DIRS := root/bin root/etc root/lib root/proc root/tmp 
 
@@ -119,11 +123,11 @@ root/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
 root/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
 	cp -d $(CROSS_LIB_DIR)/lib/libm.so* root/lib/
 	cp -d $(CROSS_LIB_DIR)/lib/libm-*.so* root/lib/
-	$(CROSSSTRIP) root/lib/libm-2.2.3.so
+	$(CROSS_PATH) $(CROSSSTRIP) root/lib/libm-2.2.3.so
 
 root/lib/libpthread.so: $(CROSS_LIB_DIR)/lib/libpthread.so
 	cp -d $(CROSS_LIB_DIR)/lib/libpthr*.so* root/lib/
-	$(CROSSSTRIP) root/lib/libpthread-*.so
+	$(CROSS_PATH) $(CROSSSTRIP) root/lib/libpthread-*.so
 
 root/lib/ld-2.2.3.so: $(CROSS_LIB_DIR)/lib/ld-2.2.3.so
 	cp -f $< $@

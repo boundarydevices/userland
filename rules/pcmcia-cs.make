@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pcmcia-cs.make,v 1.3 2004-06-19 14:06:55 ericn Exp $
+# $Id: pcmcia-cs.make,v 1.4 2004-06-21 13:57:24 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -135,7 +135,7 @@ $(STATEDIR)/pcmcia-cs.targetinstall: $(pcmcia-cs_targetinstall_deps)
 	@$(call targetinfo, $@)
 	cp -fv $(PCMCIA-CS_DIR)/cardmgr/cardmgr $(ROOTDIR)/sbin
 	cp -fv $(PCMCIA-CS_DIR)/cardmgr/cardctl $(ROOTDIR)/sbin
-	$(CROSSSTRIP) $(ROOTDIR)/sbin/card*
+	$(PCMCIA-CS_PATH) $(CROSSSTRIP) $(ROOTDIR)/sbin/card*
 	mkdir -p $(ROOTDIR)/etc/pcmcia
 	cp -fv $(PCMCIA-CS_DIR)/etc/config.opts $(ROOTDIR)/etc/pcmcia
 	cp $(CONFIG_ARCHIVEPATH)/pcmciaConfig $(ROOTDIR)/etc/pcmcia/config
