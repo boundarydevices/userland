@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libflash.make,v 1.3 2004-06-01 02:23:01 ericn Exp $
+# $Id: libflash.make,v 1.4 2004-06-01 02:25:24 ericn Exp $
 #
 # Copyright (C) 2004 by Boundary Devices
 #          
@@ -50,7 +50,7 @@ $(LIBFLASH_PATCH_SOURCE):
 # Extract
 # ----------------------------------------------------------------------------
 
-libflash_extract: $(STATEDIR)/libflash.extract
+libflash_extract: libflash_get $(STATEDIR)/libflash.extract 
 
 libflash_extract_deps = $(STATEDIR)/libflash.get
 libflash_extract_deps = $(STATEDIR)/JPEG.install
@@ -66,7 +66,7 @@ $(STATEDIR)/libflash.extract: $(libflash_extract_deps)
 # Prepare
 # ----------------------------------------------------------------------------
 
-libflash_prepare: $(STATEDIR)/libflash.prepare
+libflash_prepare: libflash_extract $(STATEDIR)/libflash.prepare
 
 #
 # dependencies
@@ -88,7 +88,7 @@ $(STATEDIR)/libflash.prepare: $(libflash_prepare_deps)
 # Compile
 # ----------------------------------------------------------------------------
 
-libflash_compile: $(STATEDIR)/libflash.compile 
+libflash_compile: libflash_prepare $(STATEDIR)/libflash.compile 
 
 libflash_compile_deps = $(STATEDIR)/libflash.prepare 
 libflash_compile_deps += $(STATEDIR)/JPEG.prepare 
