@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.8 2004-06-24 13:53:23 ericn Exp $
+# $Id: bdScript.make,v 1.9 2004-06-27 14:51:27 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -119,15 +119,24 @@ BDSCRIPT_ENV 	=  $(CROSS_ENV)
 
 $(STATEDIR)/bdScript.prepare: $(bdScript_prepare_deps)
 	@$(call targetinfo, $@)
-	@grep -e "CONFIG_BDSCRIPT\|CONFIG_LIBMPEG2" $(TOPDIR)/.config \
-   | sed -e 's/CONFIG_//' \
-         -e 's/# //'          \
+	grep -e "CONFIG_" $(TOPDIR)/.config \
+   | sed -e 's/# //'          \
          -e 's/^/#define /'   \
          -e 's/=y/ 1/'        \
          -e 's/is not set/0/' \
+         -e 's/=\(.*\)/ \1/' \
          >$(BDSCRIPT_DIR)/config.h
-	@grep -e "CONFIG_LIBMPEG\|CONFIG_BDSCRIPT" $(TOPDIR)/.config | sed -e 's/CONFIG_//' \
+	grep -e "CONFIG_\|KERNEL_" $(TOPDIR)/.kernelconfig \
+   | sed -e 's/# //'          \
+         -e 's/^/#define /'   \
+         -e 's/=y/ 1/'        \
+         -e 's/is not set/0/' \
+         -e 's/=\(.*\)/ \1/' \
+         >>$(BDSCRIPT_DIR)/config.h
+	grep -e "CONFIG_" $(TOPDIR)/.config \
          >$(BDSCRIPT_DIR)/config.mk
+	cat $(TOPDIR)/.kernelconfig \
+        >>$(BDSCRIPT_DIR)/config.mk
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -150,6 +159,7 @@ bdScript_compile_deps += $(STATEDIR)/mad.install
 
 $(STATEDIR)/bdScript.compile: $(bdScript_compile_deps)
 	@$(call targetinfo, $@)
+	echo "install root is $(INSTALLPATH)"
 	INSTALL_ROOT=$(INSTALLPATH) TOOLCHAINROOT=$(CROSS_LIB_DIR) $(BDSCRIPT_PATH) make -C $(BDSCRIPT_DIR) all
 	touch $@
 
