@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.6  2004-06-06 17:56:27  ericn
+# Revision 1.7  2004-06-18 04:16:51  ericn
+# -add cramfs, jffs2 targets
+#
+# Revision 1.6  2004/06/06 17:56:27  ericn
 # -added cramfs, jffs2 targets
 #
 # Revision 1.5  2004/06/06 14:57:40  ericn
@@ -81,7 +84,7 @@ CROSS_ENV := \
 	ac_cv_func_setvbuf_reversed=no \
 	ac_cv_func_getrlimit=yes
 
-export TAR TOPDIR BUILDDIR ROOTDIR SRCDIR STATEDIR PACKAGES CONFIG_GNU_TARGET 
+export TAR TOPDIR BUILDDIR SRCDIR STATEDIR PACKAGES CONFIG_GNU_TARGET 
 
 -include .config 
 
@@ -220,20 +223,25 @@ prepare: extract $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_PREPARE)
 compile: prepare $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_COMPILE)
 install: compile $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_INSTALL)
 targetinstall: install $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_TARGETINSTALL)
+	
+$(ROOTDIR):
+	mkdir -p $(ROOTDIR)
 
-$(ROOTDIR)etc/init.d/rcS: targetinstall
+$(ROOTDIR)/etc/init.d/rcS: targetinstall
+	mkdir -p $(ROOTDIR)/etc/init.d/
 	make -f rootfs.mak all
 
-rootfs: $(ROOTDIR) targetinstall devices.txt $(ROOTDIR)etc/init.d/rcS
+rootfs: $(ROOTDIR) targetinstall devices.txt $(ROOTDIR)/etc/init.d/rcS
 
-cramfs.img: rootfs
-	mkcramfs -q -D devices.txt $(ROOTDIR) $@
+cramfs.img: $(BUILDDIR)/cramfs-1.1/mkcramfs rootfs devices
+	cd $(ROOTDIR)/etc && /sbin/ldconfig -r ../ -v
+	$(BUILDDIR)/cramfs-1.1/mkcramfs -q -D devices.txt $(ROOTDIR) $@
 cramfs: cramfs.img
 	echo "cramfs image built"
 
 
-jffs2.img: rootfs
-	mkfs.jffs2 -q -v -D=devices.txt --root=$(ROOTDIR) $@
+jffs2.img: rootfs devices
+	mkfs.jffs2 -l -q -v --devtable=devices.txt --root=$(ROOTDIR) -o $@
 
 jffs2: jffs2.img
 	echo "JFFS2 image built"
