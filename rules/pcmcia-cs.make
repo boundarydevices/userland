@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pcmcia-cs.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: pcmcia-cs.make,v 1.2 2004-06-09 03:54:08 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -33,6 +33,7 @@ PCMCIA-CS_DIR		= $(BUILDDIR)/$(PCMCIA-CS)
 pcmcia-cs_get: $(STATEDIR)/pcmcia-cs.get
 
 pcmcia-cs_get_deps	=  $(PCMCIA-CS_SOURCE)
+pcmcia-cs_get_deps  +=  $(CONFIG_ARCHIVEPATH)/pcmciaConfig
 
 $(STATEDIR)/pcmcia-cs.get: $(pcmcia-cs_get_deps)
 	@$(call targetinfo, $@)
@@ -41,6 +42,9 @@ $(STATEDIR)/pcmcia-cs.get: $(pcmcia-cs_get_deps)
 $(PCMCIA-CS_SOURCE):
 	@$(call targetinfo, $@)
 	cd $(CONFIG_ARCHIVEPATH) && wget $(PCMCIA-CS_URL)
+
+$(CONFIG_ARCHIVEPATH)/pcmciaConfig:
+	cd $(CONFIG_ARCHIVEPATH) && wget http://boundarydevices.com/pcmciaConfig
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -129,6 +133,13 @@ pcmcia-cs_targetinstall_deps	=  $(STATEDIR)/pcmcia-cs.compile
 
 $(STATEDIR)/pcmcia-cs.targetinstall: $(pcmcia-cs_targetinstall_deps)
 	@$(call targetinfo, $@)
+	cp -fv $(PCMCIA-CS_DIR)/cardmgr/cardmgr $(ROOTDIR)/sbin
+	cp -fv $(PCMCIA-CS_DIR)/cardmgr/cardctl $(ROOTDIR)/sbin
+	$(CROSSSTRIP) $(ROOTDIR)/sbin/card*
+	mkdir -p $(ROOTDIR)/etc/pcmcia
+	cp -fv $(PCMCIA-CS_DIR)/etc/config.opts $(ROOTDIR)/etc/pcmcia
+	cp $(CONFIG_ARCHIVEPATH)/pcmciaConfig $(ROOTDIR)/etc/pcmcia/config
+	chmod a+rw $(ROOTDIR)/etc/pcmcia/*
 	touch $@
 
 # ----------------------------------------------------------------------------
