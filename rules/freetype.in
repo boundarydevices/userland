@@ -1,0 +1,11 @@
+menu	"FreeType"
+
+config FREETYPE
+	bool
+	prompt "Compile FreeType"
+   help 
+   A Free, High-Quality, and Portable Font Engine
+
+   See http://freetype.sourceforge.net
+
+endmenu

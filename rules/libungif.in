@@ -1,0 +1,10 @@
+config LIBUNGIF
+	bool
+	prompt "Compile libungif"
+   help
+     libungif is an open source library for reading files
+     in the Graphics Interchange Format (GIF).
+     
+     
+     See http://sourceforge.net/projects/libungif for details.
+

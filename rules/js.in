@@ -1,0 +1,10 @@
+config JS
+	bool
+	prompt "Compile Mozilla Javascript"
+   help 
+   This module builds support for the SpiderMonkey Javascript Interpreter
+   from the Mozilla organization.
+
+   http://www.mozilla.org/js/spidermonkey/
+
+endmenu

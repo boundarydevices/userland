@@ -1,0 +1,10 @@
+.config .config.cmd .tmpconfig.h
+config.mk
+depend.out
+build 
+install
+state 
+kconf
+root
+kconf.tar.gz
+

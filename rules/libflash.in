@@ -1,0 +1,18 @@
+config LIBFLASH
+	bool
+	prompt "Compile libflash (SWF player)"
+   depends on JPEG
+   depends on ZLIB
+   help
+     This is a GPL'd library for reading and playing SWF (Flash)
+     movies by Oliver Debon (http://www.swift-tools.net/Flash/). 
+
+     It is currently output-only.
+
+     The Boundary Devices patches :
+     - provide a simple Frame-Buffer player example (video only)
+     - add support for audio handling by the application
+     - fix some issues with RGB 565, and
+     - perform octree conversion to 256 colors (Oliver's code requires
+       that everything be palettized)
+   

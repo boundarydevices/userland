@@ -1,0 +1,18 @@
+menu	"Boundary Devices Stuff"
+
+config BDSCRIPT
+	bool
+	prompt "Compile Boundary Devices Scripting Environment"
+   help 
+   This module provides scripting extensions based on the 
+   Mozilla the SpiderMonkey Javascript Interpreter
+
+   See http://BoundaryDevices.com/javascript.shtml for details
+
+config BDSCRIPT_CVS
+	bool
+	prompt "Retrieve from CVS"
+   help 
+   Use this to access the latest from Boundary Devies
+
+endmenu

@@ -1,0 +1,10 @@
+config LINUX_WLAN_NG
+	bool
+	prompt "Compile Linux-WLAN"
+   depends on PCMCIA_TOOLS
+   help 
+   
+   A Free, full featured Wireless LAN Driver for cards based
+   on the Prism chipset
+   
+   See http://www.linux-wlan.org

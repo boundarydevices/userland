@@ -1,0 +1,10 @@
+config LIBPNG125
+	bool
+	prompt "Compile libpng"
+   help
+     libpng is an open source library for reading files
+     in the Platform Neutral Graphics Format (PNG).
+     
+     
+     See http://sourceforge.net/projects/png-mng for details.
+

@@ -1,0 +1,5 @@
+config LIBUSB
+        bool
+        prompt "Compile libusb-0.1.8"
+
+endmenu

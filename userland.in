@@ -1,0 +1,92 @@
+mainmenu "Configuration"
+
+config ARCH
+   string
+   prompt "CPU Architecture"
+   default "arm"
+   help
+      This string is used to feed architecture stuff to configure
+      scripts (kind of a pre-configured uname -m for cross-compilation)
+
+config CROSSPREFIX
+   string
+   prompt "Cross-compiler prefix"
+   default "arm-linux"
+   help
+      This string is prepended to compiler, linker, archiver, etc.
+      so gcc => arm-linux-gcc, etc
+
+config ARCHIVEPATH
+	string
+	prompt "Archive path"
+   help
+     This path is used to store tar-balls for all of the toolchain
+     sources. 
+     It is used to prevent the need to download during each build.
+
+config KERNELPATH
+	string
+	prompt "Kernel path"
+   default '/usr/local/arm/linux-2.4.19'
+   help
+     This path defines where the kernel is installed.
+     (generally /usr/local/arm/linux-2.4.19)
+
+config TOOLCHAINPATH
+	string
+	prompt "Toolchain path"
+   default '/usr/local/arm'
+   help
+     This path defines where the cross-toolchain will be installed.
+     (generally /usr/local/arm)
+
+config INSTALLPATH
+	string
+	prompt "Userland Install path"
+   default ""
+   help
+     This path defines where userland includes and binaries will be 
+     installed.
+     (defaults to ./install)
+
+config ROOT
+	string
+	prompt "Userland root fs path"
+   default ""
+   help
+     This path defines where the root filesystem image will be built
+     and installed.
+     (defaults to ./root)
+
+choice
+   prompt "Board Type "
+      default SCANPASS
+
+      config SCANPASS
+      bool
+      prompt "BD-2003, JFFS2"
+
+      config SCANCRAM
+      bool
+      prompt "BD-2003, cramfs"
+	
+endchoice
+
+source "rules/busybox.in"
+source "rules/zlib.in"
+source "rules/libusb.in"
+source "rules/js.in"
+source "rules/freetype.in"
+source "rules/openssh.in"
+source "rules/openssl.in"
+source "rules/mad.in"
+source "rules/pcmcia-cs.in"
+source "rules/linux-wlan-ng.in"
+source "rules/jpeg.in"
+source "rules/libflash.in"
+source "rules/libungif.in"
+source "rules/libpng125.in"
+source "rules/libmpeg2.in"
+source "rules/ffmpeg.in"
+source "rules/bdScript.in"
+

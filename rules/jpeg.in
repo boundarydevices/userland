@@ -1,0 +1,10 @@
+config JPEG
+	bool
+	prompt "Compile libjpeg"
+   help
+     LibJPEG is an open source library by the Independent JPEG Group
+     for reading and writing images in the JPEG file format.
+     
+     See http://www.ijg.org/ for details.
+   comment "libflash depends on JPEG and ZLIB"
+

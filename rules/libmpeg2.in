@@ -1,0 +1,18 @@
+menu	"libmpeg2            "
+
+config LIBMPEG2
+	bool
+	prompt "Compile libmpeg2"
+   help 
+   
+   libmpeg2 is a free library for decoding mpeg-2 and mpeg-1 video streams. 
+   It is released under the terms of the GPL license.
+   
+   http://libmpeg2.sourceforge.net
+
+config LIBMPEG2_OLD
+   depends on LIBMPEG2
+   bool
+   prompt "Compile older version (0.3.1)"
+
+endmenu

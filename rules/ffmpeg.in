@@ -1,0 +1,28 @@
+menu	"ffmpeg              "
+
+config FFMPEG
+	bool
+	prompt "Compile ffmpeg"
+   help 
+   MAD is a high-quality MPEG audio decoder. 
+   It currently supports MPEG-1 and the MPEG-2 extension to lower sampling 
+   frequencies, as well as the de facto MPEG 2.5 format. All three audio 
+   layers Layer I, Layer II, and Layer III (i.e. MP3) are fully implemented.
+   
+   http://www.underbit.com/products/mad/
+
+config FFMPEG_CPU
+   string
+   prompt "CPU Architecture"
+	default "armv4l"		      if ARCH_ARM
+	default "x86"		         if ARCH_X86
+	default "powerpc"		      if OPT_PPC
+	default "sparc64"		      if ARCH_SPARC
+	default "mips"		         if MIPS_ARCH_BE
+	default "mips"		         if MIPS_ARCH_LE
+	default "alpha"		      if ARCH_ALPHA
+	default "cris"		         if ARCH_CRIS
+	default "hppa"		         if ARCH_PARISC
+	default "sh3"		         if SH_ARCH_SH3
+	default "sh4"		         if SH_ARCH_SH4
+endmenu

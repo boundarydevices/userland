@@ -1,0 +1,4 @@
+config PCMCIA_TOOLS
+	bool
+	prompt "Compile PCMCIA Tools"
+
