@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssl.make,v 1.2 2004-05-31 21:06:57 ericn Exp $
+# $Id: openssl.make,v 1.3 2004-06-06 14:55:43 ericn Exp $
 #
 # Copyright (C) 2002 by Jochen Striepe for Pengutronix e.K., Hildesheim, Germany
 #               2003 by Pengutronix e.K., Hildesheim, Germany
@@ -140,11 +140,11 @@ $(STATEDIR)/openssl.targetinstall: $(openssl_targetinstall_deps)
 ifdef CONFIG_OPENSSL_SHARED
 	mkdir -p $(ROOTDIR)/usr/lib
 
-	cp -d $(OPENSSL_DIR)/libssl.so* $(INSTALLPATH)/lib/
-	$(CROSSSTRIP) -S -R .note -R .comment $(INSTALLPATH)/lib/libssl.so*
+	cp -d -f $(OPENSSL_DIR)/libssl.so* $(ROOTDIR)/lib/
+	$(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libssl.so*
 
-	cp -d $(OPENSSL_DIR)/libcrypto.so* $(INSTALLPATH)/lib/
-	$(CROSSSTRIP) -S -R .note -R .comment $(INSTALLPATH)/lib/libcrypto.so*
+	cp -d -f $(OPENSSL_DIR)/libcrypto.so* $(ROOTDIR)/lib/
+	$(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libcrypto.so*
 endif
 	touch $@
 
