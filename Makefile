@@ -1,3 +1,16 @@
+#
+# Makefile
+#
+# This directory and makefile will produce a root filesystem for
+# input to the creation of a flash image.
+# 
+# History:
+# $Log: Makefile,v $
+# Revision 1.5  2004-06-06 14:57:40  ericn
+# -added targetinstall, 1st pass
+#
+#
+#
 .PHONY: clean dist-clean config menuconfig userlandconfig userland
 
 TOPDIR			   := $(shell pwd)
@@ -29,6 +42,7 @@ CROSS_ENV_OBJCOPY	= OBJCOPY=$(CONFIG_GNU_TARGET)-objcopy
 CROSS_ENV_OBJDUMP	= OBJDUMP=$(CONFIG_GNU_TARGET)-objdump
 CROSS_ENV_RANLIB	= RANLIB=$(CONFIG_GNU_TARGET)-ranlib
 CROSS_ENV_STRIP		= STRIP=$(CONFIG_GNU_TARGET)-strip
+CROSSSTRIP        := $(CONFIG_GNU_TARGET)-strip
 ifneq ('','$(strip $(subst ",,$(TARGET_CFLAGS)))')
 CROSS_ENV_CFLAGS	= CFLAGS='$(strip $(subst ",,$(TARGET_CFLAGS)))'
 endif
@@ -100,13 +114,14 @@ CROSS_LIB_DIR := $(subst ",,$(CONFIG_TOOLCHAINPATH)/$(CONFIG_GNU_TARGET))
 
 export ROOTDIR INSTALLPATH CONFIG_ARCH CONFIG_KERNELPATH CONFIG_TOOLCHAINPATH CROSS_LIB_DIR
 
-PACKAGES_CLEAN			:= $(addsuffix _clean,$(PACKAGES))
-PACKAGES_GET			:= $(addsuffix _get,$(PACKAGES))
-PACKAGES_EXTRACT		:= $(addsuffix _extract,$(PACKAGES))
-PACKAGES_PREPARE		:= $(addsuffix _prepare,$(PACKAGES))
-PACKAGES_COMPILE		:= $(addsuffix _compile,$(PACKAGES))
-PACKAGES_INSTALL		:= $(addsuffix _install,$(PACKAGES))
-CROSS_PATH           := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
+PACKAGES_CLEAN			   := $(addsuffix _clean,$(PACKAGES))
+PACKAGES_GET			   := $(addsuffix _get,$(PACKAGES))
+PACKAGES_EXTRACT		   := $(addsuffix _extract,$(PACKAGES))
+PACKAGES_PREPARE		   := $(addsuffix _prepare,$(PACKAGES))
+PACKAGES_COMPILE		   := $(addsuffix _compile,$(PACKAGES))
+PACKAGES_INSTALL		   := $(addsuffix _install,$(PACKAGES))
+PACKAGES_TARGETINSTALL  := $(addsuffix _targetinstall,$(PACKAGES))
+CROSS_PATH              := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
 
 $(BUILDDIR):
 	mkdir -p $@
@@ -130,13 +145,16 @@ userland.in:
 kconf/kconfig/mconf: kconf.mak
 	make -f $< all
 
-menuconfig config .config: userland.in kconf/kconfig/mconf
+.kernelconfig: $(CONFIG_KERNELPATH)/.config
+	cat $(CONFIG_KERNELPATH)/.config | sed 's/^CONFIG_/KERNEL_/' > $@
+
+menuconfig config .config: userland.in .kernelconfig kconf/kconfig/mconf 
 	./kconf/kconfig/mconf userland.in
 
 userland: .config
 	make -f userland.mak all
 
-devices.txt: .config $(CONFIG_KERNELPATH)/.config
+devices.txt: .config .kernelconfig
 	make -f devices.mak all
 
 devices:
@@ -189,4 +207,4 @@ extract: get     $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_EXTRACT)
 prepare: extract $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_PREPARE)
 compile: prepare $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_COMPILE)
 install: compile $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_INSTALL)
-
+targetinstall: install $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_TARGETINSTALL)
