@@ -215,6 +215,6 @@ ifeq ("BD2003", $(CONFIG_BOARDTYPE))
 	@echo -e "/dev/Green\t\tc\t666\t0\t0\t254\t33\t0\t0\t-" >> devices.txt
 else
 endif
-	@cat devices.txt
+	@echo "---> finished building devices.txt"
         
 
