@@ -105,6 +105,7 @@ PACKAGES_GET			:= $(addsuffix _get,$(PACKAGES))
 PACKAGES_EXTRACT		:= $(addsuffix _extract,$(PACKAGES))
 PACKAGES_PREPARE		:= $(addsuffix _prepare,$(PACKAGES))
 PACKAGES_COMPILE		:= $(addsuffix _compile,$(PACKAGES))
+PACKAGES_INSTALL		:= $(addsuffix _install,$(PACKAGES))
 CROSS_PATH           := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
 
 $(BUILDDIR):
@@ -178,4 +179,5 @@ get: $(BUILDDIR) $(STATEDIR) $(PACKAGES_GET)
 extract: get $(BUILDDIR) $(STATEDIR) $(PACKAGES_EXTRACT)
 prepare: extract $(BUILDDIR) $(STATEDIR) $(PACKAGES_PREPARE)
 compile: extract $(BUILDDIR) $(STATEDIR) $(PACKAGES_COMPILE)
+install: extract $(BUILDDIR) $(STATEDIR) $(PACKAGES_INSTALL)
 
