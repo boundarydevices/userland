@@ -17,11 +17,21 @@ config BDSCRIPT_CVS
    help 
    Use this to access the latest from Boundary Devies
 
-config BDSCRIPT_BIGDEMO
-	bool
-	prompt "Big demo scripts"
-   default y
-   help 
-   This selection includes all sample scripts
+choice
+   prompt "Application(s) "
+      default BDSCRIPT_BIGDEMO
+      
+      config BDSCRIPT_BIGDEMO
+      	bool
+      	prompt "Big demo scripts"
+         default y
+         help 
+         This selection includes all sample scripts
+      
+      config SUITEDEMO
+         bool
+         prompt "Suite Controller Demo (No Server)"
+      
+endchoice
 
 endmenu
