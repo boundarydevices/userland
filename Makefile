@@ -6,12 +6,15 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.5  2004-06-06 14:57:40  ericn
+# Revision 1.6  2004-06-06 17:56:27  ericn
+# -added cramfs, jffs2 targets
+#
+# Revision 1.5  2004/06/06 14:57:40  ericn
 # -added targetinstall, 1st pass
 #
 #
 #
-.PHONY: clean dist-clean config menuconfig userlandconfig userland
+.PHONY: clean dist-clean config menuconfig userlandconfig userland rootfs
 
 TOPDIR			   := $(shell pwd)
 BASENAME		      := $(shell basename $(TOPDIR))
@@ -145,8 +148,13 @@ userland.in:
 kconf/kconfig/mconf: kconf.mak
 	make -f $< all
 
+ifdef CONFIG_KERNELPATH
 .kernelconfig: $(CONFIG_KERNELPATH)/.config
 	cat $(CONFIG_KERNELPATH)/.config | sed 's/^CONFIG_/KERNEL_/' > $@
+else
+.kernelconfig: 
+	touch -t 197001010000 $@
+endif
 
 menuconfig config .config: userland.in .kernelconfig kconf/kconfig/mconf 
 	./kconf/kconfig/mconf userland.in
@@ -183,7 +191,11 @@ help:
 	@echo "  make extract                 Extract all needed archives"
 	@echo "  make prepare                 Prepare the configured system for compilation"
 	@echo "  make compile                 Compile the packages"
-	@echo "  make install                 Install to rootdirectory"
+	@echo "  make install                 Install to temporary installation directory"
+	@echo "  make targetinstall           Install packages to target root directory"
+	@echo "  make rootfs                  Build complete root filesystem"
+	@echo "  make cramfs                  Make cramfs image from target root"
+	@echo "  make jffs2                   Make JFFS2 image from target root"
 	@echo "  make clean                   Remove everything but local/"
 	@echo "  make rootclean               Remove root directory contents"
 	@echo "  make distclean               Clean everything"
@@ -208,3 +220,21 @@ prepare: extract $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_PREPARE)
 compile: prepare $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_COMPILE)
 install: compile $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_INSTALL)
 targetinstall: install $(INSTALL_DIRS) $(BUILDDIR) $(STATEDIR) $(PACKAGES_TARGETINSTALL)
+
+$(ROOTDIR)etc/init.d/rcS: targetinstall
+	make -f rootfs.mak all
+
+rootfs: $(ROOTDIR) targetinstall devices.txt $(ROOTDIR)etc/init.d/rcS
+
+cramfs.img: rootfs
+	mkcramfs -q -D devices.txt $(ROOTDIR) $@
+cramfs: cramfs.img
+	echo "cramfs image built"
+
+
+jffs2.img: rootfs
+	mkfs.jffs2 -q -v -D=devices.txt --root=$(ROOTDIR) $@
+
+jffs2: jffs2.img
+	echo "JFFS2 image built"
+
