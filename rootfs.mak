@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.12  2004-06-26 13:57:52  ericn
+# Revision 1.13  2004-06-28 02:58:22  ericn
+# -add USB device fs, devpts configs for fstab
+#
+# Revision 1.12  2004/06/26 13:57:52  ericn
 # -fixed CROSSSTRIP
 #
 # Revision 1.11  2004/06/24 13:54:18  ericn
@@ -51,6 +54,7 @@
 all: base-root
 
 include .config
+include .kernelconfig
 
 CROSSSTRIP := $(CONFIG_GNU_TARGET)-strip
 CROSS_PATH := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
@@ -172,8 +176,13 @@ root/etc/ld.so.cache: root/etc/modules.conf root/etc/ld.so.conf
 	cd root/etc && /sbin/ldconfig -r ../ -v
 
 root/etc/fstab:
+ifdef KERNEL_DEVPTS_FS
 	echo "none /dev/pts devpts gid=5,mode=0620 0 0" > $@
+endif   
+ifdef KERNEL_USB_DEVICEFS
 	echo "none /proc/bus/usb usbdevfs noauto 0 0" >>$@
+endif
+	touch $@
 
 #
 # Javascript startup menu
