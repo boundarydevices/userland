@@ -120,6 +120,12 @@ ifdef KERNEL_FB_PXA
 else
 	@echo "#KERNEL_FB_PXA is not set" >> devices.txt
 endif
+ifdef KERNEL_FB_LCD122X32
+	@echo "#KERNEL_FB_LCD122X32" >> devices.txt
+	@echo -e "/dev/lcd\t\tc\t156\t0\t0\t29\t0\t0\t0\t-" >> devices.txt
+else
+	@echo "#KERNEL_FB_LCD122X32 is not set" >> devices.txt
+endif
 ifdef KERNEL_CPU_32
 	@echo "#KERNEL_CPU_32" >> devices.txt
 else
