@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.11  2004-06-24 13:54:18  ericn
+# Revision 1.12  2004-06-26 13:57:52  ericn
+# -fixed CROSSSTRIP
+#
+# Revision 1.11  2004/06/24 13:54:18  ericn
 # -add /etc link (for ldconfig)
 #
 # Revision 1.10  2004/06/21 13:57:13  ericn
@@ -66,6 +69,9 @@ TARGETS := root/etc/bashrc \
            root/bin/jsMenu \
            root/etc/init.d/rcS \
            root/lib/libc.so.6 \
+           root/lib/libutil.so.1 \
+           root/lib/libnsl.so.1 \
+           root/lib/libcrypt.so.1 \
            root/lib/libm.so.6 \
            root/lib/libpthread.so \
            root/lib/ld-2.2.3.so \
@@ -127,14 +133,26 @@ root/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
 	cp -d $(CROSS_LIB_DIR)/lib/libc-*.so* root/lib/
 	cp -d $(CROSS_LIB_DIR)/lib/libc.so.6 root/lib/
 
+root/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1
+	cp $< $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
+root/lib/libnsl.so.1: $(CROSS_LIB_DIR)/lib/libnsl.so.1
+	cp $< $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
+root/lib/libcrypt.so.1: $(CROSS_LIB_DIR)/lib/libcrypt.so.1
+	cp $< $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
 root/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
 	cp -d $(CROSS_LIB_DIR)/lib/libm.so* root/lib/
 	cp -d $(CROSS_LIB_DIR)/lib/libm-*.so* root/lib/
-	$(CROSS_PATH) $(CROSSSTRIP) root/lib/libm-2.2.3.so
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) root/lib/libm-2.2.3.so
 
 root/lib/libpthread.so: $(CROSS_LIB_DIR)/lib/libpthread.so
 	cp -d $(CROSS_LIB_DIR)/lib/libpthr*.so* root/lib/
-	$(CROSS_PATH) $(CROSSSTRIP) root/lib/libpthread-*.so
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) root/lib/libpthread-*.so
 
 root/lib/ld-2.2.3.so: $(CROSS_LIB_DIR)/lib/ld-2.2.3.so
 	cp -f $< $@
