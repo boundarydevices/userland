@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libflash.make,v 1.2 2004-05-31 21:04:24 ericn Exp $
+# $Id: libflash.make,v 1.3 2004-06-01 02:23:01 ericn Exp $
 #
 # Copyright (C) 2004 by Boundary Devices
 #          
@@ -55,17 +55,11 @@ libflash_extract: $(STATEDIR)/libflash.extract
 libflash_extract_deps = $(STATEDIR)/libflash.get
 libflash_extract_deps = $(STATEDIR)/JPEG.install
 
-INSTALLPATH_ESCAPED = $(subst /,\/, $INSTALLPATH)
-
 $(STATEDIR)/libflash.extract: $(libflash_extract_deps)
 	@$(call targetinfo, $@)
 	rm -rf $(LIBFLASH_DIR)
 	@cd $(BUILDDIR) && gzcat $(LIBFLASH_SOURCE) | tar -xvf -
 	@patch -d $(BUILDDIR) -p0 < $(LIBFLASH_PATCH_SOURCE)
-	mv $(LIBFLASH_DIR)/Lib/Makefile $(LIBFLASH_DIR)/Lib/Makefile.orig
-	sed 's/..\/jpeg-6b/$(INSTALLPATH_ESCAPED)\/include/' \
-          < $(LIBFLASH_DIR)/Lib/Makefile.orig \
-          > $(LIBFLASH_DIR)/Lib/Makefile
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -102,7 +96,10 @@ libflash_compile_deps += $(STATEDIR)/zlib.prepare
 
 $(STATEDIR)/libflash.compile: $(libflash_compile_deps)
 	@$(call targetinfo, $@)
-	$(LIBFLASH_PATH) CC=$(CONFIG_GNU_TARGET)-gcc CXX=$(CONFIG_GNU_TARGET)-gcc make -C $(LIBFLASH_DIR)/Lib
+	$(LIBFLASH_PATH) CPPFLAGS="-I$(INSTALLPATH)/include" \
+   CC=$(CONFIG_GNU_TARGET)-gcc \
+   CXX=$(CONFIG_GNU_TARGET)-gcc \
+   make -C $(LIBFLASH_DIR)/Lib
 	touch $@
 
 # ----------------------------------------------------------------------------
