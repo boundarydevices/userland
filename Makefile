@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.10  2004-06-20 19:29:14  ericn
+# Revision 1.11  2004-06-26 14:21:19  ericn
+# -removed unused symbols
+#
+# Revision 1.10  2004/06/20 19:29:14  ericn
 # -fixed directory dependencies
 #
 # Revision 1.9  2004/06/19 23:31:44  ericn
@@ -31,13 +34,7 @@
 TOPDIR			   := $(shell pwd)
 BASENAME		      := $(shell basename $(TOPDIR))
 BUILDDIR		      := $(TOPDIR)/build
-XCHAIN_BUILDDIR	:= $(BUILDDIR)/xchain
-NATIVE_BUILDDIR	:= $(BUILDDIR)/native
-PATCHES_BUILDDIR	:= $(BUILDDIR)/patches
-PATCHDIR		      := $(TOPDIR)/patches
 STATEDIR		      := $(TOPDIR)/state
-BOOTDISKDIR		   := $(TOPDIR)/bootdisk
-MISCDIR			   := $(TOPDIR)/misc
 CONFIG_GNU_TARGET := arm-linux
 GNU_HOST          := $(CONFIG_GNU_TARGET)
 DEP_OUTPUT = depend.out
