@@ -1,3 +1,4 @@
+menu	"UDHCP - DHCP client and server"
 config UDHCP
 	bool
    default y
@@ -9,3 +10,18 @@ config UDHCP
      
       See http://udhcp.busybox.net for details
 
+config UDHCP_CLIENT
+	bool
+   default y
+	prompt "udhcp client"
+   help
+      Select yes to install the client
+
+config UDHCP_SERVER
+	bool
+   default n
+	prompt "udhcp server"
+   help
+      Select yes to install the server
+
+endmenu
