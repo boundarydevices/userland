@@ -114,12 +114,15 @@ ifdef KERNEL_PXA_GPIO
 else
 	@echo "#KERNEL_PXA_GPIO is not set" >> devices.txt
 endif
-ifdef KERNEL_FB_PXA
+ifdef KERNEL_FB
 	@echo "#KERNEL_FB_PXA" >> devices.txt
 	@echo -e "/dev/fb0\t\tc\t666\t0\t0\t29\t0\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/fb\t\tc\t666\t0\t0\t29\t0\t0\t0\t-" >> devices.txt
+ifeq ("NEON", $(KERNEL_BOARDTYPE))
+	@echo -e "/dev/yuv\t\tc\t666\t0\t0\t155\t0\t0\t0\t-" >> devices.txt
+endif
 else
-	@echo "#KERNEL_FB_PXA is not set" >> devices.txt
+	@echo "#KERNEL_FB is not set" >> devices.txt
 endif
 ifdef KERNEL_FB_LCD122X32
 	@echo "#KERNEL_FB_LCD122X32" >> devices.txt
