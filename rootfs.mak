@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.5  2004-06-18 14:00:53  ericn
+# Revision 1.6  2004-06-18 14:44:51  ericn
+# -make libc/libdl happy
+#
+# Revision 1.5  2004/06/18 14:00:53  ericn
 # -remove symlink to ld-2.2.3.so
 #
 # Revision 1.4  2004/06/18 04:16:27  ericn
@@ -49,10 +52,16 @@ TARGETS := root/etc/bashrc \
            root/lib/ld-linux.so.2 \
            root/linuxrc \
            root/proc \
-           root/tmp
+           root/tmp 
+
+CROSS_LIB_LINK = $(subst //,/,root/$(CROSS_LIB_DIR))
 
 $(DIRS):
 	mkdir -p $@
+
+$(CROSS_LIB_LINK)/lib:
+	mkdir -p $(CROSS_LIB_LINK)
+	cd $(CROSS_LIB_LINK) && ln -s /lib
 
 root/etc/bashrc:
 	echo "#!/bin/sh" > $@
@@ -90,7 +99,8 @@ root/etc/ld.so.conf:
 	echo -e "" > $@
 
 root/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
-	cp -d $(CROSS_LIB_DIR)/lib/libc*.so* root/lib/
+	cp -d $(CROSS_LIB_DIR)/lib/libc-*.so* root/lib/
+	cp -d $(CROSS_LIB_DIR)/lib/libc.so.6 root/lib/
 
 root/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
 	cp -d $(CROSS_LIB_DIR)/lib/libm.so* root/lib/
@@ -114,7 +124,7 @@ root/etc/ld.so.cache: root/etc/modules.conf root/etc/ld.so.conf
 #
 # Javascript startup menu
 #
-root/bin/jsMenu: $(DIRS)
+root/bin/jsMenu: 
 	echo "#!/bin/sh" >$@
 	echo "while ! [ -f /tmp/ctrlc ] ; do /bin/jsExec file:///js/mainMenu.js; done" >>$@
 	chmod a+x $@
@@ -167,11 +177,5 @@ root/etc/init.d/rcS: root/bin/jsMenu root/etc/init.d
 	echo "/bin/jsMenu" >>$@
 	chmod a+x $@
 
-root/proc:
-	mkdir -p $@
-
-root/tmp:
-	mkdir -p $@
-
-base-root: $(TARGETS)
+base-root: $(DIRS) $(CROSS_LIB_LINK)/lib $(TARGETS)
 
