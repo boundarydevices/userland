@@ -1,0 +1,79 @@
+#
+# Automatically generated make config: don't edit
+#
+CONFIG_ARCH="arm"
+CONFIG_CROSSPREFIX="arm-linux"
+CONFIG_ARCHIVEPATH="/armArchives"
+CONFIG_KERNELPATH="/usr/local/arm/linux-2.4.19"
+CONFIG_TOOLCHAINPATH="/usr/local/arm"
+CONFIG_INSTALLPATH=""
+CONFIG_ROOT=""
+# CONFIG_SCANPASS is not set
+# CONFIG_SCANCRAM is not set
+# CONFIG_BD2004JF is not set
+CONFIG_BD2004CRAM=y
+CONFIG_TINYLOGIN=y
+
+#
+# e2fsprogs           
+#
+CONFIG_E2FSPROGS=y
+CONFIG_E2FSPROGS_MKFS=y
+CONFIG_E2FSPROGS_E2FSCK=y
+CONFIG_BUSYBOX=y
+
+#
+# UDHCP - DHCP client and server
+#
+CONFIG_UDHCP=y
+CONFIG_UDHCP_CLIENT=y
+# CONFIG_UDHCP_SERVER is not set
+CONFIG_ZLIB=y
+# CONFIG_LIBUSB is not set
+CONFIG_JS=y
+CONFIG_FREETYPE=y
+
+#
+# OpenSSH             
+#
+CONFIG_OPENSSH=y
+CONFIG_OPENSSH_SSH=y
+CONFIG_OPENSSH_SSHD=y
+CONFIG_OPENSSH_SCP=y
+# CONFIG_OPENSSH_SFTP_SERVER is not set
+CONFIG_OPENSSH_KEYGEN=y
+
+#
+# OpenSSL             
+#
+CONFIG_OPENSSL=y
+CONFIG_OPENSSL_SHARED=y
+# CONFIG_MAD is not set
+CONFIG_PCMCIA_TOOLS=y
+CONFIG_LINUX_WLAN_NG=y
+CONFIG_JPEG=y
+
+#
+# libflash depends on JPEG and ZLIB
+#
+# CONFIG_LIBFLASH is not set
+CONFIG_LIBUNGIF=y
+CONFIG_LIBPNG125=y
+
+#
+# libmpeg2            
+#
+# CONFIG_LIBMPEG2 is not set
+
+#
+# ffmpeg              
+#
+# CONFIG_FFMPEG is not set
+CONFIG_FFMPEG_CPU="armv4l"
+
+#
+# Boundary Devices Stuff
+#
+CONFIG_BDSCRIPT=y
+CONFIG_BDSCRIPT_CVS=y
+# CONFIG_BDSCRIPT_BIGDEMO is not set
