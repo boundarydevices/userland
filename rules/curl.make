@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: curl.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: curl.make,v 1.2 2004-05-31 23:53:07 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -66,7 +66,9 @@ curl_prepare: $(STATEDIR)/curl.prepare
 # dependencies
 #
 curl_prepare_deps = \
-	$(STATEDIR)/curl.extract 
+   $(STATEDIR)/curl.extract \
+   $(STATEDIR)/openssl.install \
+   $(STATEDIR)/zlib.install
 
 CURL_PATH	=  PATH=$(CROSS_PATH)
 CURL_ENV 	=  $(CROSS_ENV)
@@ -84,7 +86,10 @@ CURL_AUTOCONF = \
    --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \
    --mandir=$(INSTALLPATH)/man \
-   --infodir=$(INSTALLPATH)/info
+   --infodir=$(INSTALLPATH)/info \
+    CFLAGS="-I$(CROSS_LIB_DIR)/include -I$(INSTALLPATH)/include -g -O2" \
+    CPPFLAGS="-I$(CROSS_LIB_DIR)/include -I$(INSTALLPATH)/include -g -O2" \
+    LDFLAGS=-L$(INSTALLPATH)/lib
 
 $(STATEDIR)/curl.prepare: $(curl_prepare_deps)
 	@$(call targetinfo, $@)
