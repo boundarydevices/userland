@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.5 2004-06-20 15:19:22 ericn Exp $
+# $Id: bdScript.make,v 1.6 2004-06-20 21:52:33 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -27,10 +27,14 @@ else
    BDSCRIPT		= bdScript-$(BDSCRIPT_VERSION)
 endif
 
-BDSCRIPT_SUFFIX		= tar.bz2
+BDSCRIPT_SUFFIX	= tar.bz2
 BDSCRIPT_URL		= http://boundarydevices.com/$(BDSCRIPT).$(BDSCRIPT_SUFFIX)
-BDSCRIPT_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(BDSCRIPT).$(BDSCRIPT_SUFFIX)
+BDSCRIPT_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(BDSCRIPT).$(BDSCRIPT_SUFFIX)
 BDSCRIPT_DIR		= $(BUILDDIR)/$(BDSCRIPT)
+
+BDSCRIPT_SCRIPT_URL     = http://boundarydevices.com/jsFiles.tar.gz
+BDSCRIPT_SCRIPT_SOURCE	= $(CONFIG_ARCHIVEPATH)/jsFiles.tar.gz
+BDSCRIPT_SCRIPT_DIR		= $(BUILDDIR)/jsFiles
 
 # ----------------------------------------------------------------------------
 # Get
@@ -42,12 +46,23 @@ ifdef CONFIG_BDSCRIPT_CVS
    $(STATEDIR)/bdScript.get:
 		@$(call targetinfo, $@)
 		cd $(BUILDDIR) && cvs checkout bdScript
+ifdef CONFIG_BDSCRIPT_BIGDEMO
+		cd $(BUILDDIR) && cvs checkout ticketing
+		cd $(BUILDDIR) && cvs checkout myPalDemo
+		cd $(BUILDDIR) && cvs checkout sampleScripts
+else
+		echo "Not building demos"
+endif      
 		touch $@
 
 else
    bdScript_get: $(STATEDIR)/bdScript.get
 
-   bdScript_get_deps = $(BDSCRIPT_SOURCE)
+   bdScript_get_deps = $(BDSCRIPT_SOURCE) 
+
+ifdef CONFIG_BDSCRIPT_BIGDEMO   
+   bdScript_get_deps += $(BDSCRIPT_SCRIPT_SOURCE)
+endif
 
    $(STATEDIR)/bdScript.get: $(bdScript_get_deps)
 		@$(call targetinfo, $@)
@@ -56,6 +71,10 @@ else
    $(BDSCRIPT_SOURCE):
 		@$(call targetinfo, $@)
 		cd $(CONFIG_ARCHIVEPATH) && wget $(BDSCRIPT_URL)
+   $(BDSCRIPT_SCRIPT_SOURCE)
+		@$(call targetinfo, $@)
+		cd $(CONFIG_ARCHIVEPATH) && wget $(BDSCRIPT_SCRIPT_URL)
+   
 endif
 
 # ----------------------------------------------------------------------------
@@ -159,6 +178,12 @@ $(STATEDIR)/bdScript.targetinstall: $(bdScript_targetinstall_deps)
 	cp $(BDSCRIPT_DIR)/jsExec $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/flashVar $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/wget $(ROOTDIR)/bin && chmod a+x $(ROOTDIR)/bin/wget
+ifdef CONFIG_BDSCRIPT_BIGDEMO
+	mkdir -p $(ROOTDIR)/js
+	cp -rv $(BUILDDIR)/ticketing/* $(ROOTDIR)/js/
+	cp -rv $(BUILDDIR)/myPalDemo/* $(ROOTDIR)/js/
+	cp -rv $(BUILDDIR)/sampleScripts/* $(ROOTDIR)/js/
+endif      
 	touch $@
 
 # ----------------------------------------------------------------------------
