@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: udhcp.make,v 1.2 2004-06-22 04:11:00 ericn Exp $
+# $Id: udhcp.make,v 1.3 2004-06-24 13:52:57 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -138,6 +138,9 @@ ifeq (y, $(CONFIG_UDHCP_CLIENT))
 	mkdir -p $(ROOTDIR)/sbin
 	cp $(UDHCP_DIR)/udhcpc $(ROOTDIR)/sbin
 	$(CROSSSTRIP) $(ROOTDIR)/sbin/udhcpc
+	-mkdir -p $(ROOTDIR)/etc/pcmcia/
+	-rm -f $(ROOTDIR)/etc/pcmcia/dhcp
+	cd $(ROOTDIR)/etc/pcmcia && ln -sf ../../js/dhcp
 endif
 	touch $@
 
