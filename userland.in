@@ -70,6 +70,14 @@ choice
       bool
       prompt "BD-2003, cramfs"
 	
+      config BD2004JF
+      bool
+      prompt "BD-2004, JFFS2"
+
+      config BD2004CRAM
+      bool
+      prompt "BD-2004, cramfs"
+	
 endchoice
 
 source "rules/tinylogin.in"
