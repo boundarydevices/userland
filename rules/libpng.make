@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libpng.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: libpng.make,v 1.2 2004-06-20 15:19:41 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #                       Pengutronix <info@pengutronix.de>, Germany
@@ -122,6 +122,7 @@ $(STATEDIR)/libpng125.targetinstall: $(libpng125_targetinstall_deps)
 	@$(call targetinfo, $@)
 	install -d $(ROOTDIR)/lib
 	install $(LIBPNG125_DIR)/libpng12.so.0.1.2.5 $(ROOTDIR)/lib
+	$(CROSS_ENV_STRIP) $(ROOTDIR)/lib/libpng12.so.0.1.2.5
 	ln -sf libpng12.so.0.1.2.5 $(ROOTDIR)/lib/libpng12.so.0
 	ln -sf libpng12.so.0.1.2.5 $(ROOTDIR)/lib/libpng12.so
 	touch $@
