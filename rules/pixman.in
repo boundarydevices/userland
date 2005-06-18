@@ -1,4 +1,4 @@
-config pixman
+config PIXMAN
 	bool
    default n
 	prompt "Compile libpixman (graphics surface lib)"
