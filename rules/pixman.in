@@ -1,0 +1,5 @@
+config pixman
+	bool
+   default n
+	prompt "Compile libpixman (graphics surface lib)"
+
