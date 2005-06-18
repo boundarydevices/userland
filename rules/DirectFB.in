@@ -1,0 +1,4 @@
+config DIRECTFB
+	bool
+   default n
+	prompt "Compile Direct-FB"
