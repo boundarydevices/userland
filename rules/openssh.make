@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.2 2004-06-10 03:24:05 ericn Exp $
+# $Id: openssh.make,v 1.3 2005-06-18 16:36:51 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -43,7 +43,7 @@ openssh_get_deps = $(OPENSSH_SOURCE) $(OPENSSH_PATCH_SOURCE)
 
 $(STATEDIR)/openssh.get: $(openssh_get_deps)
 	@$(call targetinfo, openssh.get)
-	touch $@
+	@touch $@
 
 $(OPENSSH_SOURCE):
 	@$(call targetinfo, $(OPENSSH_SOURCE))
@@ -197,9 +197,12 @@ endif
 ifdef CONFIG_OPENSSH_SSHD
 	@install -m 644 -D $(OPENSSH_DIR)/moduli.out $(ROOTDIR)/etc/ssh/moduli
 	@install -m 644 -D $(OPENSSH_DIR)/sshd_config.out $(ROOTDIR)/etc/ssh/sshd_config
-	@perl -p -i -e "s/#PermitRootLogin yes/PermitRootLogin yes/" \
-	@$(ROOTDIR)/etc/ssh/sshd_config
+	@perl -p -i -e "s/#PermitRootLogin yes/PermitRootLogin yes/" $(OPENSSH_DIR)/sshd_config.out 
+	@install -m 644 -D $(OPENSSH_DIR)/sshd_config.out $(ROOTDIR)/etc/ssh/sshd_config
 	@install -m 755 -D $(OPENSSH_DIR)/sshd $(ROOTDIR)/usr/sbin/sshd
+	@ssh-keygen -q -t rsa1 -f $(ROOTDIR)/etc/ssh/ssh_host_key -N ''
+	@ssh-keygen -q -t rsa -f $(ROOTDIR)/etc/ssh/ssh_host_rsa_key -N ''
+	@ssh-keygen -q -t dsa -f $(ROOTDIR)/etc/ssh/ssh_host_dsa_key -N ''
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/sbin/sshd
 endif
 
@@ -214,11 +217,9 @@ ifdef CONFIG_OPENSSH_SFTP_SERVER
 endif
 
 ifdef CONFIG_OPENSSH_KEYGEN
-	# FIXME: if this is the only file in this directory move it
-	# to somewhere else (patch, echo << EOF?) [RSC]
 #	@install -m 755 -D $(MISCDIR)/openssh-host-keygen.sh $(ROOTDIR)/sbin/openssh-host-keygen.sh
-	@install -m 755 -D $(OPENSSH_DIR)/ssh-keygen $(ROOTDIR)/usr/bin/ssh-keygen
-	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/bin/ssh-keygen
+	@install -m 755 -D $(OPENSSH_DIR)/ssh-keygen $(ROOTDIR)/bin/ssh-keygen
+	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/bin/ssh-keygen
 endif
 
 	touch $@
