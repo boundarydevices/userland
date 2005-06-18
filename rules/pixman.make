@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pixman.make,v 1.1 2005-06-18 16:51:20 ericn Exp $
+# $Id: pixman.make,v 1.2 2005-06-18 16:54:56 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -12,7 +12,7 @@
 # We provide this package
 #
 ifeq (y, $(CONFIG_PIXMAN))
-PACKAGES += zlib
+PACKAGES += pixman
 endif
 
 #
