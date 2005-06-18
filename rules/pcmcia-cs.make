@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pcmcia-cs.make,v 1.5 2004-06-24 13:52:41 ericn Exp $
+# $Id: pcmcia-cs.make,v 1.6 2005-06-18 20:55:12 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -92,6 +92,9 @@ $(STATEDIR)/pcmcia-cs.prepare: $(pcmcia-cs_prepare_deps)
       --current \
       --nocardbus \
       --srctree 
+	sed 's/.*modules clients wireless.*//' <$(PCMCIA-CS_DIR)/Makefile > $(PCMCIA-CS_DIR)/Makefile.patched
+	mv $(PCMCIA-CS_DIR)/Makefile $(PCMCIA-CS_DIR)/Makefile.orig
+	mv $(PCMCIA-CS_DIR)/Makefile.patched $(PCMCIA-CS_DIR)/Makefile
 	sed 's/, arm/, xarmnosa1100/g' <$(PCMCIA-CS_DIR)/modules/Makefile \
 	   > $(PCMCIA-CS_DIR)/modules/Makefile.patched
 	mv $(PCMCIA-CS_DIR)/modules/Makefile $(PCMCIA-CS_DIR)/modules/Makefile.orig
