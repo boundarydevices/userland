@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gdb.make,v 1.1 2005-06-18 16:37:56 ericn Exp $
+# $Id: gdb.make,v 1.2 2005-06-18 17:03:09 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -108,13 +108,6 @@ gdb_targetinstall: $(STATEDIR)/gdb.targetinstall
 
 $(STATEDIR)/gdb.targetinstall: $(STATEDIR)/gdb.install
 	@$(call targetinfo, $@)
-	@mkdir -p $(ROOTDIR)/usr/lib
-ifdef CONFIG_gdb_SHARED
-	@cp -d $(gdb_DIR)/libz.so* $(ROOTDIR)/usr/lib/
-	@$(gdb_PATH) $(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/usr/lib/libz.so*
-endif
-	@cp -d $(gdb_DIR)/libz.a $(ROOTDIR)/usr/lib/
-	@$(gdb_PATH) $(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/usr/lib/libz.a
 	touch $@
 
 # ----------------------------------------------------------------------------

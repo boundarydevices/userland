@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB.make,v 1.1 2005-06-18 16:24:03 ericn Exp $
+# $Id: DirectFB.make,v 1.2 2005-06-18 17:03:09 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -120,13 +120,6 @@ directfb_targetinstall: $(STATEDIR)/directfb.targetinstall
 
 $(STATEDIR)/directfb.targetinstall: $(STATEDIR)/directfb.install
 	@$(call targetinfo, $@)
-	@mkdir -p $(ROOTDIR)/usr/lib
-ifdef CONFIG_DIRECTFB_SHARED
-	@cp -d $(DIRECTFB_DIR)/libz.so* $(ROOTDIR)/usr/lib/
-	@$(DIRECTFB_PATH) $(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/usr/lib/libz.so*
-endif
-	@cp -d $(DIRECTFB_DIR)/libz.a $(ROOTDIR)/usr/lib/
-	@$(DIRECTFB_PATH) $(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/usr/lib/libz.a
 	touch $@
 
 # ----------------------------------------------------------------------------
