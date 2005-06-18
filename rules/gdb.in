@@ -1,0 +1,4 @@
+config GDB
+	bool
+   default N
+	prompt "Compile gdb"

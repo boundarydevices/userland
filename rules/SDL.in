@@ -1,0 +1,4 @@
+config SDL
+	bool
+   default n
+	prompt "Compile SDL"
