@@ -1,0 +1,5 @@
+config CAIRO
+	bool
+   default n
+	prompt "Compile Cairo (vector graphics lib)"
+
