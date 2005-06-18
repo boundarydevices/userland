@@ -1,5 +1,6 @@
 config CAIRO
 	bool
    default n
+   depends on PIXMAN   
 	prompt "Compile Cairo (vector graphics lib)"
 
