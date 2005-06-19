@@ -1,0 +1,4 @@
+config GLIB
+	bool
+   default n
+	prompt "Compile glib (GNU library)"

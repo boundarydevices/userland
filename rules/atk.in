@@ -1,0 +1,4 @@
+config ATK
+	bool
+   default n
+	prompt "Compile ATK (Accessibility Toolkit)"

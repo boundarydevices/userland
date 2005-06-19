@@ -1,0 +1,4 @@
+config PANGO
+	bool
+   default n
+	prompt "Compile Pango (Text flow toolkit)"
