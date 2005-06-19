@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: cairo.make,v 1.3 2005-06-19 00:35:55 ericn Exp $
+# $Id: cairo.make,v 1.4 2005-06-19 16:43:16 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ cairo_prepare_deps = \
 
 CAIRO_PATH	=  PATH=$(CROSS_PATH)
 CAIRO_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(CROSS_LIB_DIR)
+	--prefix=$(INSTALLPATH)
 
 ifdef CONFIG_CAIRO_SHARED
    CAIRO_AUTOCONF 	+=  --enable-shared=yes
@@ -74,7 +74,7 @@ CAIRO_AUTOCONF += --without-x
 CAIRO_AUTOCONF += --enable-pdf=no
 CAIRO_AUTOCONF += --with-png=$(INSTALLPATH)
 
-$(STATEDIR)/cairo.prepare: $(cairo_prepare_deps)
+$(STATEDIR)/cairo.prepare: $(cairo_prepare_deps) $(STATEDIR)/pixman.install $(STATEDIR)/fontconfig.install
 	@$(call targetinfo, $@)
 	cd $(CAIRO_DIR) && \
 		$(CAIRO_PATH) \

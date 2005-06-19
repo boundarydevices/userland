@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: fontconfig.make,v 1.1 2005-06-19 00:36:27 ericn Exp $
+# $Id: fontconfig.make,v 1.2 2005-06-19 16:42:55 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -62,7 +62,7 @@ fontconfig_prepare_deps = \
 
 FONTCONFIG_PATH	=  PATH=$(CROSS_PATH)
 FONTCONFIG_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(CROSS_LIB_DIR)
+	--prefix=$(INSTALLPATH)
 
 ifdef CONFIG_FONTCONFIG_SHARED
    FONTCONFIG_AUTOCONF 	+=  --enable-shared=yes

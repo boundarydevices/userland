@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: expat.make,v 1.1 2005-06-19 00:36:27 ericn Exp $
+# $Id: expat.make,v 1.2 2005-06-19 16:43:03 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -60,7 +60,7 @@ expat_prepare_deps = \
 
 EXPAT_PATH	=  PATH=$(CROSS_PATH)
 EXPAT_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(CROSS_LIB_DIR)
+	--prefix=$(INSTALLPATH)
 
 ifdef CONFIG_EXPAT_SHARED
    EXPAT_AUTOCONF 	+=  --enable-shared=yes
@@ -100,7 +100,7 @@ $(STATEDIR)/expat.install: $(STATEDIR)/expat.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
 	cd $(EXPAT_DIR) && $(EXPAT_PATH) make install
-	echo "prefix=$(CROSS_LIB_DIR)" > $(expat_pc)
+	echo "prefix=$(INSTALLPATH)" > $(expat_pc)
 	echo "exec_prefix=$(INSTALLPATH)" >> $(expat_pc)
 	echo "lib_dir=$(INSTALLPATH)/lib" >> $(expat_pc)
 	echo "includedir=$(INSTALLPATH)/include" >> $(expat_pc)
