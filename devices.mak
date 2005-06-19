@@ -85,7 +85,7 @@ endif
 ifdef KERNEL_PCMCIA_PXA
 	@echo "#KERNEL_PCMCIA_PXA" >> devices.txt
 else
-	@echo "KERNEL_PCMCIA_PXA is not set" >> devices.txt
+	@echo "#KERNEL_PCMCIA_PXA is not set" >> devices.txt
 endif
 ifdef KERNEL_PXA_RTC
 	@echo "#KERNEL_PXA_RTC" >> devices.txt
@@ -170,6 +170,7 @@ endif
 ifdef KERNEL_MMC_PXA
 	@echo "#KERNEL_MMC_PXA" >> devices.txt
 	@echo -e "/dev/mmc\t\tb\t666\t0\t0\t241\t0\t0\t0\t-" >> devices.txt
+	@echo -e "/dev/mmcblk0\t\tb\t666\t0\t0\t241\t1\t0\t1\t-" >> devices.txt
 else
 	@echo "#KERNEL_MMC_PXA is not set" >> devices.txt
 endif
@@ -237,6 +238,15 @@ ifeq ("BD2003", $(KERNEL_BOARDTYPE))
 else
 	@echo "#KERNEL_BOARDTYPE is not BD2003" >> devices.txt
 ifeq ("BD2004", $(KERNEL_BOARDTYPE))
+	   @echo "#KERNEL_BOARDTYPE is BD2004" >> devices.txt
+		@echo -e "/dev/gp16in\t\tc\t666\t0\t0\t254\t16\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/gp17in\t\tc\t666\t0\t0\t254\t17\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/gp2out\t\tc\t666\t0\t0\t254\t2\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/gp9out\t\tc\t666\t0\t0\t254\t9\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/gp32out\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/gp44out\t\tc\t666\t0\t0\t254\t44\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/gp45out\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/gp47out\t\tc\t666\t0\t0\t254\t47\t0\t0\t-" >> devices.txt
 ifdef CONFIG_SUITEDEMO
 		@echo -e "/dev/doorLock\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
 		@echo -e "/dev/custLED\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
@@ -250,9 +260,20 @@ ifdef CONFIG_TMSUITE
 else
 			@echo "#CONFIG_TMSUITE is not set" >> devices.txt
 endif
+ifdef CONFIG_TMTURNSTILE
+			@echo -e "/dev/turnstile\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
+			@echo -e "/dev/turnstile2\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
+			@echo -e "/dev/feedback\t\tc\t666\t0\t0\t254\t16\t0\t0\t-" >> devices.txt
+	   	@echo -e "/dev/feedback2\t\tc\t666\t0\t0\t254\t17\t0\t0\t-" >> devices.txt
+else
+			@echo "#CONFIG_TMSUITE is not set" >> devices.txt
+endif
 endif
 else
 	@echo "#KERNEL_BOARDTYPE is not BD2004" >> devices.txt
+endif
+ifeq ("NEON", $(KERNEL_BOARDTYPE))
+	@echo "#KERNEL_BOARDTYPE is NEON" >> devices.txt
 endif
 endif
 	@echo "---> finished building devices.txt"

@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.13  2004-06-28 02:58:22  ericn
+# Revision 1.14  2005-06-19 17:29:32  ericn
+# -added packets
+#
+# Revision 1.13  2004/06/28 02:58:22  ericn
 # -add USB device fs, devpts configs for fstab
 #
 # Revision 1.12  2004/06/26 13:57:52  ericn
@@ -59,7 +62,7 @@ include .kernelconfig
 CROSSSTRIP := $(CONFIG_GNU_TARGET)-strip
 CROSS_PATH := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
 
-DIRS := root/bin root/etc root/lib root/proc root/tmp 
+DIRS := root/bin root/etc root/lib root/proc root/tmp
 
 TARGETS := root/etc/bashrc \
            root/etc/fstab \
@@ -83,7 +86,8 @@ TARGETS := root/etc/bashrc \
            root/lib/ld-linux.so.2 \
            root/linuxrc \
            root/proc \
-           root/tmp 
+           root/tmp \
+           root/var
 
 CROSS_LIB_LINK = $(subst //,/,root/$(CROSS_LIB_DIR))
 
@@ -182,6 +186,9 @@ endif
 ifdef KERNEL_USB_DEVICEFS
 	echo "none /proc/bus/usb usbdevfs noauto 0 0" >>$@
 endif
+ifdef KERNEL_MMC
+	echo "none /tmp/mmc vfat gid=5,mode=0620 0 0" > $@
+endif   
 	touch $@
 
 #
@@ -215,6 +222,7 @@ root/etc/init.d/rcS: root/bin/jsMenu root/etc/init.d
 	echo "mount -n -t ext2 -o rw,suid,dev,exec,async,nocheck /dev/ram1 /tmp" >>$@
 	echo "chmod 1777 /tmp" >>$@
 	echo "mkdir /tmp/curl" >>$@
+	echo "mkdir /tmp/mmc" >>$@
 	echo "mkdir /tmp/var" >>$@
 	echo "mkdir /tmp/var/empty" >>$@
 	echo "mkdir /tmp/var/lib" >>$@
@@ -228,7 +236,11 @@ root/etc/init.d/rcS: root/bin/jsMenu root/etc/init.d
 	echo "echo \"\"" >>$@
 	echo "echo \"==== : starting cardmgr ====\"" >>$@
 	echo "echo \"\"" >>$@
-	echo "cardmgr \$$V -q -o -c /etc/pcmcia -m /lib/modules/2.4.19-rmk7-pxa2 -s /tmp/stab -p /tmp/pid || fail" >>$@
+ifdef KERNEL_PCMCIA_PXA
+	echo "cardmgr \$$V -q -o -c /etc/pcmcia -m /lib/modules/2.4.19-rmk7-pxa2 -s /tmp/stab -p /tmp/pid || fail" >> $@
+else
+	@echo "#KERNEL_PCMCIA_PXA is not set" >> $@
+endif
 	echo "echo \"\"" >>$@
 	echo "" >>$@
 	echo "network start all" >>$@
@@ -240,6 +252,9 @@ root/etc/init.d/rcS: root/bin/jsMenu root/etc/init.d
 	echo "fi" >>$@
 	echo "/bin/jsMenu" >>$@
 	chmod a+x $@
+
+root/var:
+	ln -s -f /tmp/var $@
 
 base-root: $(DIRS) $(CROSS_LIB_LINK)/etc $(CROSS_LIB_LINK)/lib $(TARGETS)
 

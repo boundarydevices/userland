@@ -78,6 +78,14 @@ choice
       bool
       prompt "BD-2004, cramfs"
 	
+      config NEONJF
+      bool
+      prompt "Neon, JFFS2"
+
+      config NEONCRAM
+      bool
+      prompt "Neon, cramfs"
+	
 endchoice
 
 source "rules/tinylogin.in"
@@ -96,8 +104,21 @@ source "rules/linux-wlan-ng.in"
 source "rules/jpeg.in"
 source "rules/libflash.in"
 source "rules/libungif.in"
-source "rules/libpng125.in"
+source "rules/libpng.in"
 source "rules/libmpeg2.in"
 source "rules/ffmpeg.in"
 source "rules/bdScript.in"
+source "rules/gdb.in"
+source "rules/DirectFB.in"
+source "rules/SDL.in"
+source "rules/pixman.in"
+source "rules/expat.in"
+source "rules/fontconfig.in"
+source "rules/cairo.in"
+source "rules/glib.in"
+source "rules/atk.in"
+source "rules/pango.in"
+source "rules/gtkfb.in"
+
+
 
