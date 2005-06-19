@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: freetype.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: freetype.make,v 1.2 2005-06-19 00:33:48 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -19,7 +19,7 @@ endif
 #
 # Paths and names
 #
-FREETYPE_VERSION	= 2.1.3
+FREETYPE_VERSION	= 2.1.10
 FREETYPE		= freetype-$(FREETYPE_VERSION)
 FREETYPE_SUFFIX		= tar.gz
 FREETYPE_URL		= http://umn.dl.sourceforge.net/sourceforge/freetype/$(FREETYPE).$(FREETYPE_SUFFIX)
