@@ -1,0 +1,5 @@
+config EXPAT
+	bool
+   default n
+	prompt "Compile expat (XML parsing library)"
+

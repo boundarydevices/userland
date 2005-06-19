@@ -1,0 +1,7 @@
+config FONTCONFIG
+	bool
+   default n
+   depends on EXPAT
+   depends on FREETYPE
+	prompt "Compile fontconfig (font finder)"
+
