@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pixman.make,v 1.3 2005-06-18 17:03:09 ericn Exp $
+# $Id: pixman.make,v 1.4 2005-06-19 00:33:33 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -98,6 +98,7 @@ $(STATEDIR)/pixman.install: $(STATEDIR)/pixman.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
 	cd $(PIXMAN_DIR) && $(PIXMAN_PATH) make install
+	cp -rv $(PIXMAN_DIR)/libpixman.pc $(INSTALLPATH)/lib/pkgconfig/
 	touch $@
 
 # ----------------------------------------------------------------------------
