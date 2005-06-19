@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libpng.make,v 1.5 2005-06-19 00:35:15 ericn Exp $
+# $Id: libpng.make,v 1.6 2005-06-19 17:27:09 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #                       Pengutronix <info@pengutronix.de>, Germany
@@ -114,26 +114,12 @@ $(STATEDIR)/libpng.install: $(STATEDIR)/libpng.compile
 	cd $(INSTALLPATH)/lib && rm -f libpng12.a && ln -s libpng.a libpng12.a
 	@mkdir -p $(INSTALLPATH)/lib/pkgconfig
 	@chmod 755 $(INSTALLPATH)/lib/pkgconfig
-	echo -e "prefix=$(INSTALLPATH)"\
-           "\nexec_prefix=$(INSTALLPATH)" \
-           "\nlibdir=$(INSTALLPATH)/lib" \
-           "\nincludedir=$(INSTALLPATH)/include" \
-           "\nName: libpng12" \
-           "\nDescription: Loads and saves PNG files" \
-           "\nVersion: 1.2.8" \
-           "\nLibs: -L$(INSTALLPATH)/lib -lpng -lz -lm" \
-           "\nCflags: -I$(INSTALLPATH)/include" \
-        > $(libpng_pc)
-	echo -e "prefix=$(INSTALLPATH)"\
-           "\nexec_prefix=$(INSTALLPATH)" \
-           "\nlibdir=$(INSTALLPATH)/lib" \
-           "\nincludedir=$(INSTALLPATH)/include" \
-           "\nName: libpng12" \
-           "\nDescription: Loads and saves PNG files" \
-           "\nVersion: 1.2.8" \
-           "\nLibs: -L$(INSTALLPATH)/lib -lpng -lz -lm" \
-           "\nCflags: -I$(INSTALLPATH)/include" \
-        > $(libpng2_pc)
+	$(call makepkgconfig, libpng, "libpng12", "1.2.8", \
+      "-L$(INSTALLPATH)/lib -lpng -lz -lm", "-I$(INSTALLPATH)/include", \
+      $(libpng_pc) )
+	$(call makepkgconfig, libpng, "libpng12", "1.2.8", \
+      "-L$(INSTALLPATH)/lib -lpng -lz -lm", "-I$(INSTALLPATH)/include", \
+      $(libpng2_pc) )
 	touch $@
 
 # ----------------------------------------------------------------------------
