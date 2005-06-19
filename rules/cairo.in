@@ -2,5 +2,6 @@ config CAIRO
 	bool
    default n
    depends on PIXMAN   
+   depends on FONTCONFIG
 	prompt "Compile Cairo (vector graphics lib)"
 

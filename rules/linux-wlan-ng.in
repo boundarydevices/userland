@@ -3,6 +3,7 @@ config LINUX_WLAN_NG
 	prompt "Compile Linux-WLAN"
    default y
    depends on PCMCIA_TOOLS
+   depends on CONFIG_PCMCIA
    help 
    
    A Free, full featured Wireless LAN Driver for cards based
