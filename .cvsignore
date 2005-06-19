@@ -11,3 +11,4 @@ devices.txt
 cramfs.img
 jffs2.img
 .kernelconfig
+arm-linux-pkg-config
