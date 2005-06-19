@@ -1,0 +1,4 @@
+config GTKFB
+	bool
+   default n
+	prompt "Compile GTK+FB (Gimp Toolkit-Frame Buffer)"
