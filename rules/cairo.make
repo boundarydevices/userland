@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: cairo.make,v 1.2 2005-06-18 17:03:09 ericn Exp $
+# $Id: cairo.make,v 1.3 2005-06-19 00:35:55 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -56,7 +56,8 @@ $(STATEDIR)/cairo.extract: $(STATEDIR)/cairo.get
 cairo_prepare: $(STATEDIR)/cairo.prepare
 
 cairo_prepare_deps = \
-	$(STATEDIR)/cairo.extract
+	$(STATEDIR)/cairo.extract \
+   $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config
 
 CAIRO_PATH	=  PATH=$(CROSS_PATH)
 CAIRO_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
@@ -70,12 +71,17 @@ else
 endif
 
 CAIRO_AUTOCONF += --without-x
+CAIRO_AUTOCONF += --enable-pdf=no
+CAIRO_AUTOCONF += --with-png=$(INSTALLPATH)
 
 $(STATEDIR)/cairo.prepare: $(cairo_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(CAIRO_DIR) && \
 		$(CAIRO_PATH) \
       $(CROSS_ENV) \
+      PKG_CONFIG_PATH=$(INSTALLPATH)/lib/pkgconfig/ \
+      PATH=$(INSTALLPATH)/bin:$(PATH) \
+      PKG_CONFIG=$(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config \
       ./configure $(CAIRO_AUTOCONF)
 	touch $@
 
