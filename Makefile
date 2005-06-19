@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.11  2004-06-26 14:21:19  ericn
+# Revision 1.12  2005-06-19 00:32:21  ericn
+# -create ./arm-linux-pkg-config
+#
+# Revision 1.11  2004/06/26 14:21:19  ericn
 # -removed unused symbols
 #
 # Revision 1.10  2004/06/20 19:29:14  ericn
@@ -123,6 +126,10 @@ CONFIG_ARCH :=$(subst ",,$(CONFIG_ARCH))
 CONFIG_TOOLCHAINPATH := $(subst ",,$(CONFIG_TOOLCHAINPATH))
 CROSS_LIB_DIR := $(subst ",,$(CONFIG_TOOLCHAINPATH)/$(CONFIG_GNU_TARGET))
 
+$(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config:
+	mkdir -p $(INSTALLPATH)/lib/pkgconfig
+	echo -e "#!/bin/sh\nPKG_CONFIG_PATH=$(INSTALLPATH)/lib/pkgconfig pkg-config \044@\n" >$@
+	chmod 755 $@
 
 export ROOTDIR INSTALLPATH CONFIG_ARCH CONFIG_KERNELPATH CONFIG_TOOLCHAINPATH CROSS_LIB_DIR
 
@@ -237,7 +244,7 @@ rootfs: $(ROOTDIR) targetinstall devices.txt $(ROOTDIR)/etc/init.d/rcS
 
 cramfs.img: targetinstall $(BUILDDIR)/cramfs-1.1/mkcramfs rootfs devices
 #	-$(CROSSSTRIP) $(ROOTDIR)/lib/*
-	-$(CROSSSTRIP) $(ROOTDIR)/bin/*
+#	-$(CROSSSTRIP) $(ROOTDIR)/bin/*
 	cd $(ROOTDIR)/etc && /sbin/ldconfig -r ../ -v
 	$(BUILDDIR)/cramfs-1.1/mkcramfs -q -D devices.txt $(ROOTDIR) $@
 cramfs: cramfs.img
