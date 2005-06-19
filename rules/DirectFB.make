@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB.make,v 1.2 2005-06-18 17:03:09 ericn Exp $
+# $Id: DirectFB.make,v 1.3 2005-06-19 18:49:39 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -97,7 +97,7 @@ directfb_compile: $(STATEDIR)/directfb.compile
 
 $(STATEDIR)/directfb.compile: $(STATEDIR)/directfb.prepare 
 	@$(call targetinfo, $@)
-	cd $(DIRECTFB_DIR) && $(DIRECTFB_PATH) make
+	cd $(DIRECTFB_DIR) && $(DIRECTFB_PATH) $(CROSS_ENV) make
 	touch $@
 
 # ----------------------------------------------------------------------------
