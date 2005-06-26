@@ -114,6 +114,18 @@ ifdef KERNEL_PXA_GPIO
 else
 	@echo "#KERNEL_PXA_GPIO is not set" >> devices.txt
 endif
+ifdef KERNEL_BLK_DEV_LOOP
+	@echo "#KERNEL_BLK_DEV_LOOP" >> devices.txt
+   # make loopback devices
+   ifdef KERNEL_DEVFS_FS
+		@echo "#KERNEL_DEVFS_FS" >> devices.txt
+   else
+		@echo "#KERNEL_DEVFS_FS is not set" >> devices.txt
+		@echo -e "/dev/loop\tb\t666\t0\t0\t7\t0\t0\t1\t8" >> devices.txt
+   endif
+else
+	@echo "#KERNEL_BLK_DEV_LOOP is not set" >> devices.txt
+endif
 ifdef KERNEL_FB
 	@echo "#KERNEL_FB_PXA" >> devices.txt
 	@echo -e "/dev/fb0\t\tc\t666\t0\t0\t29\t0\t0\t0\t-" >> devices.txt
