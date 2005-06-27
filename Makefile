@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.12  2005-06-19 00:32:21  ericn
+# Revision 1.13  2005-06-27 03:56:55  ericn
+# -added mmcinitrd target
+#
+# Revision 1.12  2005/06/19 00:32:21  ericn
 # -create ./arm-linux-pkg-config
 #
 # Revision 1.11  2004/06/26 14:21:19  ericn
@@ -258,4 +261,10 @@ jffs2.img: rootfs devices
 
 jffs2: jffs2.img
 	echo "JFFS2 image built"
+
+-include mmcinitrd.mak
+
+mmcinitrd: $(STATEDIR)/mmcinitrd.built
+	@genext2fs mmcinitrd.img -d mmc.initrd -U -D devices.txt -b 8192 && gzip -f -v9 mmcinitrd.img -c >$@
+	@rm -f mmcinitrd.img
 
