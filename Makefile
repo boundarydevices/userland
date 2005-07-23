@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.13  2005-06-27 03:56:55  ericn
+# Revision 1.14  2005-07-23 17:09:06  ericn
+# -add u-boot initrd
+#
+# Revision 1.13  2005/06/27 03:56:55  ericn
 # -added mmcinitrd target
 #
 # Revision 1.12  2005/06/19 00:32:21  ericn
@@ -41,7 +44,7 @@ TOPDIR			   := $(shell pwd)
 BASENAME		      := $(shell basename $(TOPDIR))
 BUILDDIR		      := $(TOPDIR)/build
 STATEDIR		      := $(TOPDIR)/state
-CONFIG_GNU_TARGET := arm-linux
+CONFIG_GNU_TARGET ?= arm-linux
 GNU_HOST          := $(CONFIG_GNU_TARGET)
 DEP_OUTPUT = depend.out
 WGET := wget
@@ -267,4 +270,8 @@ jffs2: jffs2.img
 mmcinitrd: $(STATEDIR)/mmcinitrd.built
 	@genext2fs mmcinitrd.img -d mmc.initrd -U -D devices.txt -b 8192 && gzip -f -v9 mmcinitrd.img -c >$@
 	@rm -f mmcinitrd.img
+
+mmcinitrd.u-boot: mmcinitrd
+	mkimage -A arm -O linux -T ramdisk -n "Initial Ram Disk" -d mmcinitrd mmcinitrd.u-boot
+
 
