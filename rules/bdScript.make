@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.15 2005-06-27 03:57:18 ericn Exp $
+# $Id: bdScript.make,v 1.16 2005-07-23 17:10:29 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -169,7 +169,8 @@ bdScript_compile_deps += $(STATEDIR)/libusb.install
 $(STATEDIR)/bdScript.compile: $(bdScript_compile_deps)
 	@$(call targetinfo, $@)
 	echo "install root is $(INSTALLPATH)"
-	INSTALL_ROOT=$(INSTALLPATH) TOOLCHAINROOT=$(CROSS_LIB_DIR) $(BDSCRIPT_PATH) make -C $(BDSCRIPT_DIR) all
+	$(CROSS_ENV) \
+   INSTALL_ROOT=$(INSTALLPATH) TOOLCHAINROOT=$(CROSS_LIB_DIR) $(BDSCRIPT_PATH) make -C $(BDSCRIPT_DIR) all
 	touch $@
 
 # ----------------------------------------------------------------------------
