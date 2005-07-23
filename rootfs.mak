@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.14  2005-06-19 17:29:32  ericn
+# Revision 1.15  2005-07-23 16:31:41  ericn
+# -add dns/nss libs
+#
+# Revision 1.14  2005/06/19 17:29:32  ericn
 # -added packets
 #
 # Revision 1.13  2004/06/28 02:58:22  ericn
@@ -78,6 +81,8 @@ TARGETS := root/etc/bashrc \
            root/lib/libc.so.6 \
            root/lib/libutil.so.1 \
            root/lib/libnsl.so.1 \
+           root/lib/libnss_dns.so.2 \
+           root/lib/libnss_files.so.2 \
            root/lib/libcrypt.so.1 \
            root/lib/libm.so.6 \
            root/lib/libpthread.so \
@@ -146,6 +151,14 @@ root/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
 
 root/lib/libnsl.so.1: $(CROSS_LIB_DIR)/lib/libnsl.so.1
+	cp $< $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
+root/lib/libnss_dns.so.2: $(CROSS_LIB_DIR)/lib/libnss_dns.so.2
+	cp $< $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
+root/lib/libnss_files.so.2: $(CROSS_LIB_DIR)/lib/libnss_files.so.2
 	cp $< $@
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
 
