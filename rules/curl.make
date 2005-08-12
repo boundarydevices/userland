@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: curl.make,v 1.2 2004-05-31 23:53:07 ericn Exp $
+# $Id: curl.make,v 1.3 2005-08-12 03:58:49 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -79,7 +79,7 @@ CURL_ENV 	=  $(CROSS_ENV)
 #
 CURL_AUTOCONF = \
 	--host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(CROSS_LIB_DIR) \
+	--prefix=$(INSTALLPATH) \
    --with-random \
    --enable-shared=no \
    --enable-static=yes \
