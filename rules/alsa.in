@@ -1,0 +1,4 @@
+config ALSA
+	bool
+   default y
+	prompt "Compile ALSA library"
