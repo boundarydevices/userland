@@ -16,15 +16,20 @@ include .config
 include .kernelconfig
 CROSS_LIB_LINK = $(subst //,/,$(MMCDIR)/$(CROSS_LIB_DIR))
 
-$(STATEDIR)/mmcinitrd.built: targetinstall rootfs devices
-	@echo "CROSS_LIB_LINK == $(CROSS_LIB_LINK)"
+STARTSCRIPTCONTENT =
+
+$(MMCDIR):
 	@echo "Building RAMDISK in $(MMCDIR)"
 	@rm -rf $(MMCDIR)
 	@mkdir -p $(MMCDIR)
 	@mkdir -p $(MMCDIR)/bin
-	@cp ~/zd1211.cvs/src/modules-2.6.11.11/zd1211_mod.ko $(MMCDIR)
+ifdef MODULES   
+	make -C ~/cvs/linux-2.6.11.11 INSTALL_MOD_PATH=$(MMCDIR) modules_install
+	cp ~/zd1211.cvs/src/modules-2.6.11.11/zd1211_mod.ko $(MMCDIR)   
+endif   
 	@cd $(MMCDIR) && ln -s bin sbin
 	@cp $(ROOTDIR)/bin/busybox $(MMCDIR)/bin
+	@echo "Hello\n"
 	@cd $(MMCDIR) && ln -s bin/busybox linuxrc
 	@find root/bin/ -type l -exec cp -rd {} mmc.initrd/bin/ \;
 	@find root/sbin/ -type l -exec cp -rd {} mmc.initrd/sbin/ \;
@@ -32,16 +37,14 @@ $(STATEDIR)/mmcinitrd.built: targetinstall rootfs devices
 	@cp $(ROOTDIR)/etc/fstab $(MMCDIR)/etc
 	@cp $(ROOTDIR)/etc/inittab $(MMCDIR)/etc
 	@mkdir -p $(MMCDIR)/etc/init.d
-	@echo "#!/bin/sh" > $(STARTSCRIPT)
-	@echo "mount -t proc /proc /proc" >> $(STARTSCRIPT)
-	@echo "mkdir /tmp/mmc" >> $(STARTSCRIPT)
-	@echo "mount -t vfat /dev/mmcblk0 /tmp/mmc" >> $(STARTSCRIPT)
-	@echo "/tmp/mmc/linux_init" >> $(STARTSCRIPT)
-	@chmod a+x $(STARTSCRIPT)
+	@cp $(ROOTDIR)/sbin/mke2fs $(MMCDIR)/bin
 	@mkdir -p $(MMCDIR)/lib
 	@cp -rvd $(ROOTDIR)/lib/ld-* $(MMCDIR)/lib
 	@cp -rvd $(ROOTDIR)/lib/libc-* $(MMCDIR)/lib
 	@cp -rvd $(ROOTDIR)/lib/libc.* $(MMCDIR)/lib
+	@cp -rvd build/bdScript/serialTest $(MMCDIR)/bin
+	@rm -f $(MMCDIR)/bin/wget
+	@cp -rv build/bdScript/wget $(MMCDIR)/bin
 	@mkdir -p $(MMCDIR)/proc
 	@mkdir -p $(MMCDIR)/tmp
 	@mkdir -p $(MMCDIR)/usr
@@ -53,4 +56,10 @@ $(STATEDIR)/mmcinitrd.built: targetinstall rootfs devices
 	@cd $(CROSS_LIB_LINK) && ln -sf /bin
 	cd $(MMCDIR)/etc && /sbin/ldconfig -r ../ -v
 	@touch $@
+
+$(STARTSCRIPT): mmc.rcs
+	cp -fv $? $@
+	chmod a+x $@
+
+$(STATEDIR)/mmcinitrd.built: $(MMCDIR) targetinstall $(STARTSCRIPT) rootfs devices
 
