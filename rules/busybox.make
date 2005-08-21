@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: busybox.make,v 1.3 2004-06-10 03:24:05 ericn Exp $
+# $Id: busybox.make,v 1.4 2005-08-21 18:32:06 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -19,14 +19,14 @@ endif
 #
 # Paths and names
 #
-BUSYBOX_VERSION		= 0.60.5
+BUSYBOX_VERSION		= 1.00
 BUSYBOX			= busybox-$(BUSYBOX_VERSION)
 BUSYBOX_SUFFIX		= tar.bz2
 BUSYBOX_URL		= http://www.busybox.net/downloads/$(BUSYBOX).$(BUSYBOX_SUFFIX)
 BUSYBOX_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).$(BUSYBOX_SUFFIX)
 BUSYBOX_DIR		= $(BUILDDIR)/$(BUSYBOX)
-BUSYBOX_PATCH_URL		= http://boundarydevices.com/$(BUSYBOX).patch
-BUSYBOX_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).patch
+#BUSYBOX_PATCH_URL		= http://boundarydevices.com/$(BUSYBOX).patch
+#BUSYBOX_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).patch
 
 # ----------------------------------------------------------------------------
 # Get
@@ -35,7 +35,7 @@ BUSYBOX_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).patch
 busybox_get: $(STATEDIR)/busybox.get
 
 busybox_get_deps	 =  $(BUSYBOX_SOURCE)
-busybox_get_deps  +=  $(BUSYBOX_PATCH_SOURCE)
+#busybox_get_deps  +=  $(BUSYBOX_PATCH_SOURCE)
 
 $(STATEDIR)/busybox.get: $(busybox_get_deps)
 	touch $@
@@ -44,9 +44,9 @@ $(BUSYBOX_SOURCE):
 	@$(call targetinfo, $@)
 	@cd $(CONFIG_ARCHIVEPATH) && wget $(BUSYBOX_URL)
 
-$(BUSYBOX_PATCH_SOURCE):
-	@$(call targetinfo, $@)
-	@cd $(CONFIG_ARCHIVEPATH) && wget $(BUSYBOX_PATCH_URL)
+#$(BUSYBOX_PATCH_SOURCE):
+#	@$(call targetinfo, $@)
+#	@cd $(CONFIG_ARCHIVEPATH) && wget $(BUSYBOX_PATCH_URL)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -61,7 +61,7 @@ $(STATEDIR)/busybox.extract: $(busybox_extract_deps)
 #	# fix: turn off debugging in init.c
 #	perl -i -p -e 's/^#define DEBUG_INIT/#undef DEBUG_INIT/g' $(BUSYBOX_DIR)/init/init.c
 #	cd $(BUILDDIR) && patch -p0 < $(BUSYBOX_PATCH_SOURCE)
-	cd $(BUSYBOX_DIR) && patch -p1 < $(BUSYBOX_PATCH_SOURCE)
+#	cd $(BUSYBOX_DIR) && patch -p1 < $(BUSYBOX_PATCH_SOURCE)
 	touch $@
 
 # ----------------------------------------------------------------------------
