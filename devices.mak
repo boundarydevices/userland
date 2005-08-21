@@ -108,6 +108,10 @@ endif
 else
 	@echo "#KERNEL_USB is not set" >> devices.txt
 endif
+ifdef KERNEL_USB_G_SERIAL
+	@echo -e "# Gadget serial" >> devices.txt
+	@echo -e "/dev/ttygserial\tc\t666\t0\t0\t127\t0\t0\t1\t1" >> devices.txt
+endif
 ifdef KERNEL_PXA_GPIO
 	@echo "#KERNEL_PXA_GPIO" >> devices.txt
 	# GPIO devices could go here
@@ -128,8 +132,14 @@ else
 endif
 ifdef KERNEL_FB
 	@echo "#KERNEL_FB_PXA" >> devices.txt
+
+ifdef KERNEL_DEVFS_FS
 	@echo -e "/dev/fb0\t\tc\t666\t0\t0\t29\t0\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/fb\t\tc\t666\t0\t0\t29\t0\t0\t0\t-" >> devices.txt
+else
+	@echo -e "/dev/fb\t\tc\t666\t0\t0\t29\t0\t0\t0\t-" >> devices.txt
+endif   
+
 ifeq ("NEON", $(KERNEL_BOARDTYPE))
 	@echo -e "/dev/yuv\t\tc\t666\t0\t0\t155\t0\t0\t0\t-" >> devices.txt
 endif
