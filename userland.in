@@ -119,6 +119,7 @@ source "rules/glib.in"
 source "rules/atk.in"
 source "rules/pango.in"
 source "rules/gtkfb.in"
+source "rules/alsa.in"
 
 
 
