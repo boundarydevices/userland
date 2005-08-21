@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.15  2005-07-23 16:31:41  ericn
+# Revision 1.16  2005-08-21 18:31:14  ericn
+# -mount /tmp/mmc, kernel 2.6 devs
+#
+# Revision 1.15  2005/07/23 16:31:41  ericn
 # -add dns/nss libs
 #
 # Revision 1.14  2005/06/19 17:29:32  ericn
@@ -64,8 +67,9 @@ include .kernelconfig
 
 CROSSSTRIP := $(CONFIG_GNU_TARGET)-strip
 CROSS_PATH := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
+ROOTTARGET := $(shell pwd)/root
 
-DIRS := root/bin root/etc root/lib root/proc root/tmp
+DIRS := root/bin root/etc root/lib root/proc root/sysfs root/tmp root/tmp/mmc
 
 TARGETS := root/etc/bashrc \
            root/etc/fstab \
@@ -79,25 +83,35 @@ TARGETS := root/etc/bashrc \
            root/bin/jsMenu \
            root/etc/init.d/rcS \
            root/lib/libc.so.6 \
+           root/lib/libgcc_s.so.1 \
+           root/lib/libstdc++.so \
+           root/lib/libstdc++.so.6 \
+           root/lib/libstdc++.so.6.0.3 \
            root/lib/libutil.so.1 \
            root/lib/libnsl.so.1 \
            root/lib/libnss_dns.so.2 \
            root/lib/libnss_files.so.2 \
            root/lib/libcrypt.so.1 \
            root/lib/libm.so.6 \
-           root/lib/libpthread.so \
-           root/lib/ld-2.2.3.so \
+           root/lib/libpthread.so.0 \
+           root/lib/ld-2.3.5.so \
            root/lib/libdl.so.2 \
            root/lib/ld-linux.so.2 \
+           root/lib/modules \
            root/linuxrc \
            root/proc \
+           root/sysfs \
            root/tmp \
+           root/tmp/mmc \
            root/var
 
 CROSS_LIB_LINK = $(subst //,/,root/$(CROSS_LIB_DIR))
 
 $(DIRS):
 	mkdir -p $@
+
+root/lib/modules:
+	make -C ~/cvs/linux-2.6.11.11 INSTALL_MOD_PATH=$(ROOTTARGET) modules_install
 
 $(CROSS_LIB_LINK)/lib:
 	mkdir -p $(CROSS_LIB_LINK)
@@ -146,6 +160,12 @@ root/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
 	cp -d $(CROSS_LIB_DIR)/lib/libc-*.so* root/lib/
 	cp -d $(CROSS_LIB_DIR)/lib/libc.so.6 root/lib/
 
+root/lib/libgcc_s.so.1 \
+root/lib/libstdc++.so \
+root/lib/libstdc++.so.6 \
+root/lib/libstdc++.so.6.0.3:
+	cp -d $(CROSS_LIB_DIR)/lib/$(shell basename $@) $@ && chmod a+rw $@
+
 root/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1
 	cp $< $@
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
@@ -171,15 +191,16 @@ root/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
 	cp -d $(CROSS_LIB_DIR)/lib/libm-*.so* root/lib/
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) root/lib/libm-2.2.3.so
 
-root/lib/libpthread.so: $(CROSS_LIB_DIR)/lib/libpthread.so
-	cp -d $(CROSS_LIB_DIR)/lib/libpthr*.so* root/lib/
+root/lib/libpthread.so.0: $(CROSS_LIB_DIR)/lib/libpthread.so.0
+	cp -d $(CROSS_LIB_DIR)/lib/libpthread-0.10.so root/lib/ && sudo chmod a+rw root/lib/libpthread-0.10.so
+	cp -d $(CROSS_LIB_DIR)/lib/libpthread.so.0 root/lib/ && sudo chmod a+rw root/lib/libpthread.so.0
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) root/lib/libpthread-*.so
 
-root/lib/ld-2.2.3.so: $(CROSS_LIB_DIR)/lib/ld-2.2.3.so
-	cp -f $< $@
+#root/lib/ld-2.3.5.so: $(CROSS_LIB_DIR)/lib/ld-2.3.5.so
+#	cp -f $< $@
 
-root/lib/ld-linux.so.2: root/lib/ld-2.2.3.so
-	cd root/lib/ && ln -s ld-2.2.3.so ld-linux.so.2
+root/lib/ld-linux.so.2: root/lib/ld-2.3.5.so
+	cd root/lib/ && ln -s ld-2.3.5.so ld-linux.so.2
 
 root/lib/libdl.so.2: $(CROSS_LIB_DIR)/lib/libdl.so.2
 	cp -f $< $@
@@ -221,8 +242,16 @@ root/etc/init.d:
 
 root/etc/init.d/rcS: root/bin/jsMenu root/etc/init.d
 	echo "#!/bin/sh" >$@
-	echo "  mount -t proc /proc /proc" >>$@
-	echo "  echo -e -n '\033[?25l' >/dev/tty0" >>$@
+ifdef KERNEL_PROC_FS   
+	echo "mount -t proc /proc /proc" >>$@
+endif   
+ifdef KERNEL_SYSFS   
+	echo "mount -t sysfs /sysfs /sysfs" >>$@
+endif   
+ifdef KERNEL_DEVFS_FS
+	echo "ln -sfn /dev/fb/0 /dev/fb0" >>$@
+endif
+	echo "echo -e -n '\033[?25l' >/dev/tty0" >>$@
 	echo "fail()" >>$@
 	echo "{" >>$@
 	echo "  exec /bin/sh < /dev/console" >>$@
@@ -246,16 +275,15 @@ root/etc/init.d/rcS: root/bin/jsMenu root/etc/init.d
 	echo "mkdir /tmp/var/log" >>$@
 	echo "mkdir /tmp/var/run" >>$@
 	echo "chmod 600 /tmp/var/empty" >>$@
+ifdef KERNEL_PCMCIA_PXA
 	echo "echo \"\"" >>$@
 	echo "echo \"==== : starting cardmgr ====\"" >>$@
 	echo "echo \"\"" >>$@
-ifdef KERNEL_PCMCIA_PXA
 	echo "cardmgr \$$V -q -o -c /etc/pcmcia -m /lib/modules/2.4.19-rmk7-pxa2 -s /tmp/stab -p /tmp/pid || fail" >> $@
-else
-	@echo "#KERNEL_PCMCIA_PXA is not set" >> $@
 endif
 	echo "echo \"\"" >>$@
 	echo "" >>$@
+	echo "mount -t vfat  /dev/mmc/blk0/part1 /tmp/mmc" >>$@
 	echo "network start all" >>$@
 	echo "ifconfig lo 127.0.0.1 netmask 255.0.0.0" >>$@
 	echo "mount /dev/pts" >>$@
