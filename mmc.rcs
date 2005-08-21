@@ -1,0 +1,27 @@
+#!/bin/sh
+mknod /dev/ram1 b 1 1
+/sbin/mke2fs -i 1024 /dev/ram1 8192
+mkdir /newrd
+mount -t ext2 -o loop dev/ram1 /newrd
+mkdir /newrd/proc
+mount -t proc none /newrd/proc/ 
+mkdir /newrd/dev
+mount -t devfs none /newrd/dev/ 
+mkdir /newrd/mmc
+mkdir /newrd/cramfs
+
+ln -sf initrd/bin /newrd/bin
+ln -sf initrd/lib /newrd/lib
+mount -t vfat  /newrd/dev/mmc/blk0/part1 /newrd/mmc
+mount -o loop -t cramfs /newrd/mmc/cramfs.img /newrd/cramfs
+ln -sf /cramfs/bin /newrd/bin
+ln -sf /cramfs/lib /newrd/lib
+ln -sf /cramfs/usr /newrd/usr
+ln -sf /cramfs/var /newrd/var
+mkdir -p /newrd/tmp/var
+mkdir -p /newrd/tmp/curl
+mkdir /newrd/sysfs
+mount -t sysfs none /newrd/sysfs
+mkdir /newrd/initrd
+pivot_root /newrd /newrd/initrd
+
