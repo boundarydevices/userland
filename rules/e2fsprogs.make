@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: e2fsprogs.make,v 1.2 2004-06-10 03:24:05 ericn Exp $
+# $Id: e2fsprogs.make,v 1.3 2005-08-21 16:52:46 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -19,10 +19,10 @@ endif
 #
 # Paths and names 
 #
-E2FSPROGS_VERSION		= 1.34
+E2FSPROGS_VERSION		= 1.38
 E2FSPROGS			= e2fsprogs-$(E2FSPROGS_VERSION)
 E2FSPROGS_SUFFIX		= tar.gz
-E2FSPROGS_URL			= http://cesnet.dl.sourceforge.net/sourceforge/e2fsprogs/$(E2FSPROGS).$(E2FSPROGS_SUFFIX)
+E2FSPROGS_URL			= http://easynews.dl.sourceforge.net/sourceforge/e2fsprogs/$(E2FSPROGS).$(E2FSPROGS_SUFFIX)
 E2FSPROGS_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(E2FSPROGS).$(E2FSPROGS_SUFFIX)
 E2FSPROGS_DIR			= $(BUILDDIR)/$(E2FSPROGS)
 E2FSPROGS_BUILD_DIR		= $(BUILDDIR)/$(E2FSPROGS)-build
@@ -64,9 +64,9 @@ e2fsprogs_prepare: $(STATEDIR)/e2fsprogs.prepare
 
 E2FSPROGS_AUTOCONF	=  --prefix=/usr
 E2FSPROGS_AUTOCONF	+= --enable-fsck
-E2FSPROGS_AUTOCONF	+= --build=$(GNU_HOST)
 E2FSPROGS_AUTOCONF	+= --host=$(CONFIG_GNU_TARGET)
 E2FSPROGS_AUTOCONF	+= --with-cc=$(CONFIG_GNU_TARGET)-gcc
+E2FSPROGS_AUTOCONF	+= --with-ccopts=-msoft-float
 E2FSPROGS_AUTOCONF	+= --with-linker=$(CONFIG_GNU_TARGET)-ld
 E2FSPROGS_PATH		=  PATH=$(CROSS_PATH)
 E2FSPROGS_ENV		=  $(CROSS_ENV) 
