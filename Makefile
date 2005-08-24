@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.14  2005-07-23 17:09:06  ericn
+# Revision 1.15  2005-08-24 03:29:01  ericn
+# -parse Busybox config file
+#
+# Revision 1.14  2005/07/23 17:09:06  ericn
 # -add u-boot initrd
 #
 # Revision 1.13  2005/06/27 03:56:55  ericn
@@ -176,6 +179,14 @@ else
 	touch -t 197001010000 $@
 endif
 
+ifdef CONFIG_BUSYBOX
+.bbconfig: $(BUSYBOX_DIR)/.config
+	cat $(BUSYBOX_DIR)/.config | sed 's/^CONFIG_/BUSYBOX_/' > $@
+else
+.bbconfig: 
+	touch -t 197001010000 $@
+endif
+
 menuconfig config .config: userland.in .kernelconfig kconf/kconfig/mconf 
 	./kconf/kconfig/mconf userland.in
 
@@ -246,7 +257,7 @@ $(ROOTDIR)/etc/init.d/rcS: targetinstall
 	mkdir -p $(ROOTDIR)/etc/init.d/
 	make -f rootfs.mak all
 
-rootfs: $(ROOTDIR) targetinstall devices.txt $(ROOTDIR)/etc/init.d/rcS
+rootfs: $(ROOTDIR) targetinstall devices.txt $(ROOTDIR)/etc/init.d/rcS .bbconfig
 
 cramfs.img: targetinstall $(BUILDDIR)/cramfs-1.1/mkcramfs rootfs devices
 #	-$(CROSSSTRIP) $(ROOTDIR)/lib/*
