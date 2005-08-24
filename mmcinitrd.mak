@@ -16,8 +16,6 @@ include .config
 include .kernelconfig
 CROSS_LIB_LINK = $(subst //,/,$(MMCDIR)/$(CROSS_LIB_DIR))
 
-STARTSCRIPTCONTENT =
-
 $(MMCDIR):
 	@echo "Building RAMDISK in $(MMCDIR)"
 	@rm -rf $(MMCDIR)
@@ -62,4 +60,4 @@ $(STARTSCRIPT): mmc.rcs
 	chmod a+x $@
 
 $(STATEDIR)/mmcinitrd.built: $(MMCDIR) targetinstall $(STARTSCRIPT) rootfs devices
-
+	touch $@
