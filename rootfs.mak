@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.16  2005-08-21 18:31:14  ericn
+# Revision 1.17  2005-08-24 03:29:50  ericn
+# -include parsed Busybox config file, install udhcpc samples
+#
+# Revision 1.16  2005/08/21 18:31:14  ericn
 # -mount /tmp/mmc, kernel 2.6 devs
 #
 # Revision 1.15  2005/07/23 16:31:41  ericn
@@ -64,6 +67,8 @@ all: base-root
 
 include .config
 include .kernelconfig
+include .bbconfig
+include rules/busybox.make
 
 CROSSSTRIP := $(CONFIG_GNU_TARGET)-strip
 CROSS_PATH := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
@@ -104,6 +109,9 @@ TARGETS := root/etc/bashrc \
            root/tmp \
            root/tmp/mmc \
            root/var
+ifdef BUSYBOX_UDHCPC
+TARGETS += root/usr/share/udhcpc/default.script
+endif
 
 CROSS_LIB_LINK = $(subst //,/,root/$(CROSS_LIB_DIR))
 
@@ -224,6 +232,16 @@ ifdef KERNEL_MMC
 	echo "none /tmp/mmc vfat gid=5,mode=0620 0 0" > $@
 endif   
 	touch $@
+
+ifdef BUSYBOX_UDHCPC
+root/usr/share/udhcpc/default.script: $(BUSYBOX_DIR)/examples/udhcp/sample.script
+	mkdir -p root/usr/share/udhcpc
+	cp -fv $? $@ && chmod a+x $@
+	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.bound root/usr/share/udhcpc/
+	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.deconfig root/usr/share/udhcpc/
+	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.renew root/usr/share/udhcpc/
+	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.nak root/usr/share/udhcpc/
+endif
 
 #
 # Javascript startup menu
