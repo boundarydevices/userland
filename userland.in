@@ -120,6 +120,8 @@ source "rules/atk.in"
 source "rules/pango.in"
 source "rules/gtkfb.in"
 source "rules/alsa.in"
+source "rules/ncurses.in"
+source "rules/alsa-utils.in"
 
 
 
