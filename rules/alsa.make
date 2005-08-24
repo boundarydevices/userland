@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: alsa.make,v 1.1 2005-08-19 19:36:26 ericn Exp $
+# $Id: alsa.make,v 1.2 2005-08-24 03:23:18 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -63,7 +63,7 @@ ALSA_PATH = PATH=$(CROSS_PATH)
 ALSA_AUTOCONF = \
 	--host=$(CONFIG_GNU_TARGET) \
 	--prefix=$(INSTALLPATH) \
-   --enable-shared=no \
+   --enable-shared=yes \
    --enable-static=yes \
    --disable-sdl \
    --exec-prefix=$(INSTALLPATH) \
