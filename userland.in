@@ -122,6 +122,7 @@ source "rules/gtkfb.in"
 source "rules/alsa.in"
 source "rules/ncurses.in"
 source "rules/alsa-utils.in"
+source "rules/libevent.in"
 
 
 
