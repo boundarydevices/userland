@@ -1,0 +1,4 @@
+config LIBEVENT
+	bool
+   default y
+	prompt "Compile libevent"
