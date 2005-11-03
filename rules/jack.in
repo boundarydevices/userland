@@ -1,0 +1,4 @@
+config LIBJACK
+	bool
+   default n
+	prompt "Compile libjack"

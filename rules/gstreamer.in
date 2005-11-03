@@ -1,0 +1,4 @@
+config GSTREAMER
+	bool
+   default n
+	prompt "Compile gstreamer (Multimedia library)"
