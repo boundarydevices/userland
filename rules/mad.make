@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.3 2005-11-03 02:29:35 ericn Exp $
+# $Id: mad.make,v 1.4 2005-11-06 18:29:15 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -14,6 +14,10 @@
 #
 ifdef CONFIG_MAD
 PACKAGES += mad
+endif
+
+ifdef CONFIG_MADPLAY
+PACKAGES += madplay
 endif
 
 #
@@ -46,7 +50,7 @@ MADPLAY_DIR	= $(BUILDDIR)/$(MADPLAY)
 
 mad_get: $(STATEDIR)/mad.get
 
-mad_get_deps = $(MAD_SOURCE) $(ID3_SOURCE) $(MADPLAY_SOURCE)
+mad_get_deps = $(MAD_SOURCE) $(ID3_SOURCE)
 
 $(STATEDIR)/mad.get: $(mad_get_deps)
 	@$(call targetinfo, $@)
@@ -59,10 +63,6 @@ $(MAD_SOURCE):
 $(ID3_SOURCE):
 	@$(call targetinfo, $@)
 	cd $(CONFIG_ARCHIVEPATH) && wget $(ID3_URL)
-
-$(MADPLAY_SOURCE):
-	@$(call targetinfo, $@)
-	cd $(CONFIG_ARCHIVEPATH) && wget $(MADPLAY_URL)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -78,8 +78,6 @@ $(STATEDIR)/mad.extract: $(mad_extract_deps)
 	cd $(BUILDDIR) && gzcat $(MAD_SOURCE) | tar -xvf -
 	@$(call clean, $(ID3_DIR))
 	cd $(BUILDDIR) && gzcat $(ID3_SOURCE) | tar -xvf -
-	@$(call clean, $(MADPLAY_DIR))
-	cd $(BUILDDIR) && gzcat $(MADPLAY_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -92,6 +90,7 @@ mad_prepare: $(STATEDIR)/mad.prepare
 # dependencies
 #
 mad_prepare_deps = \
+   $(STATEDIR)/zlib.install \
 	$(STATEDIR)/mad.extract 
 
 MAD_PATH	=  PATH=$(CROSS_PATH)
@@ -123,11 +122,6 @@ $(STATEDIR)/mad.prepare: $(mad_prepare_deps)
 	cd $(ID3_DIR) && \
 		$(MAD_PATH) $(MAD_ENV) \
 		./configure $(MAD_AUTOCONF)
-	@$(call clean, $(MADPLAY_DIR)/config.cache)
-	cd $(MADPLAY_DIR) && \
-		$(MAD_PATH) $(MAD_ENV) \
-		./configure $(MAD_AUTOCONF) \
-                CPPFLAGS="-I$(INSTALLPATH)/include/mad"
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -142,7 +136,6 @@ $(STATEDIR)/mad.compile: $(mad_compile_deps)
 	@$(call targetinfo, $@)
 	$(MAD_PATH) make -C $(MAD_DIR) install
 	$(MAD_PATH) make -C $(ID3_DIR) install
-	$(MAD_PATH) && LDFLAGS=-lz make -C $(MADPLAY_DIR)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -156,7 +149,6 @@ $(STATEDIR)/mad.install: $(STATEDIR)/mad.compile
 	@mkdir -p $(INSTALLPATH)/include/mad
 	$(MAD_PATH) make -C $(MAD_DIR) install
 	$(MAD_PATH) make -C $(ID3_DIR) install
-	$(MAD_PATH) && LDFLAGS=-lz make -C $(MADPLAY_DIR) install
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -177,5 +169,50 @@ $(STATEDIR)/mad.targetinstall: $(mad_targetinstall_deps)
 mad_clean:
 	rm -rf $(STATEDIR)/mad.*
 	rm -rf $(MAD_DIR)
+
+
+# ----------------------------------------------------------------------------
+# madplay stuff (Not yet fully implemented)
+# ----------------------------------------------------------------------------
+
+
+madplay_get: $(STATEDIR)/mad.get
+	@$(call targetinfo, $@)
+	cd $(CONFIG_ARCHIVEPATH) && wget $(MADPLAY_URL)
+	touch $@
+
+madplay_extract: $(STATEDIR)/mad.extract
+
+$(STATEDIR)/madplay.extract:
+	@$(call targetinfo, $@)
+	@$(call clean, $(MADPLAY_DIR))
+	cd $(BUILDDIR) && gzcat $(MADPLAY_SOURCE) | tar -xvf -
+	touch $@
+
+madplay_prepare: $(STATEDIR)/mad.install $(STATEDIR)/madplay.prepare
+	@$(call targetinfo, $@)
+
+$(STATEDIR)/madplay.prepare:
+	@$(call clean, $(MADPLAY_DIR)/config.cache)
+	cd $(MADPLAY_DIR) && \
+		$(MAD_PATH) $(MAD_ENV) \
+		./configure $(MAD_AUTOCONF) \
+                CCFLAGS="-I$(INSTALLPATH)/include" \
+                CPPFLAGS="-I$(INSTALLPATH)/include"
+	touch $@
+
+madplay_compile: $(STATEDIR)/madplay.compile
+	@$(call targetinfo, $@)
+
+$(STATEDIR)/madplay.compile: madplay_prepare
+	$(MAD_PATH) && LDFLAGS=-lz make -C $(MADPLAY_DIR)
+	touch $@
+
+madplay_install: $(STATEDIR)/madplay.install
+
+$(STATEDIR)/madplay.install: $(STATEDIR)/madplay.compile
+	@$(call targetinfo, $@)
+	$(MAD_PATH) && LDFLAGS=-lz make -C $(MADPLAY_DIR) install
+	touch $@
 
 # vim: syntax=make
