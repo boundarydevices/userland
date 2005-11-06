@@ -1,5 +1,5 @@
 config ALSA_UTILS
 	bool
    depends on ALSA
-   default y
+   default n
 	prompt "Compile ALSA utilities"
