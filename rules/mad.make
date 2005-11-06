@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.5 2005-11-06 18:42:38 ericn Exp $
+# $Id: mad.make,v 1.6 2005-11-06 21:33:44 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -216,6 +216,14 @@ madplay_install: $(STATEDIR)/madplay.install
 $(STATEDIR)/madplay.install: $(STATEDIR)/madplay.compile
 	@$(call targetinfo, $@)
 	$(MAD_PATH) && LDFLAGS=-lz make -C $(MADPLAY_DIR) install
+	touch $@
+
+madplay_targetinstall: $(STATEDIR)/madplay.targetinstall
+	@$(call targetinfo, $@)
+
+$(STATEDIR)/madplay.targetinstall: $(STATEDIR)/madplay.install
+	cp $(INSTALLPATH)/bin/madplay $(ROOTDIR)/bin
+	$(CROSSSTRIP) $(ROOTDIR)/bin/madplay
 	touch $@
 
 # vim: syntax=make
