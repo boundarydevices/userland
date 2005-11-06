@@ -1,3 +1,4 @@
+menu	"MAD - MPEG audio decoder"
 config MAD
 	bool
 	prompt "Compile mad"
@@ -10,3 +11,13 @@ config MAD
    
    http://www.underbit.com/products/mad/
 
+config MADPLAY
+   bool
+   prompt "Compile madplay command-line player"
+   default y
+   depends on MAD
+   help
+   madplay is both a sample application for libmad as well as
+   a convenient and small MP3 player
+
+endmenu
