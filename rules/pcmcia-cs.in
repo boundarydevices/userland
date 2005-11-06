@@ -1,5 +1,5 @@
 config PCMCIA_TOOLS
 	bool
-   default y
+   default n
 	prompt "Compile PCMCIA Tools"
 
