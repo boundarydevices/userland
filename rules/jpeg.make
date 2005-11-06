@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: jpeg.make,v 1.5 2005-06-19 17:27:39 ericn Exp $
+# $Id: jpeg.make,v 1.6 2005-11-06 17:52:34 ericn Exp $
 #
 # Copyright (C) 2004 by Boundary Devices
 #          
@@ -110,6 +110,7 @@ $(STATEDIR)/JPEG.install: $(STATEDIR)/JPEG.compile
 	@$(call targetinfo, $@)
 	cd $(JPEG_DIR) && $(JPEG_PATH) make install-lib
 	cd $(JPEG_DIR) && cp -f -v jpeglib.h jerror.h jconfig.h jmorecfg.h $(INSTALLPATH)/include
+	mkdir -p $(INSTALLPATH)/lib/pkgconfig/
 	$(call makepkgconfig, jpeg, "libJPEG", "6B", \
       "-L$(INSTALLPATH)/lib -ljpeg", "-I$(INSTALLPATH)/include", \
       $(INSTALLPATH)/lib/pkgconfig/jpeg.pc )
