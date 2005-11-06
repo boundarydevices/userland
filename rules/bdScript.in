@@ -55,6 +55,14 @@ config JSGPIO
    help 
    Select yes to include GPIO Javascript interface
 
+config JSMONITORWLAN
+	bool
+	prompt "Include Linux-WLAN monitor"
+   default n
+   help 
+   Select yes to include Linux-WLAN monitor for Intersil cards
+
+
 endmenu
 
 
