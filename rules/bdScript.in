@@ -34,4 +34,27 @@ choice
       
 endchoice
 
+config JSBARCODE
+	bool
+	prompt "Include barcode scanner"
+   default n
+   help 
+   Select yes to include barcodeReader() object.
+
+config JSSTARUSB
+	bool
+	prompt "Include Star USB printer"
+   default n
+   help 
+   Select yes to include Star Micronics printer support
+
+config JSGPIO
+	bool
+	prompt "Include GPIO interface"
+   default n
+   help 
+   Select yes to include GPIO Javascript interface
+
 endmenu
+
+
