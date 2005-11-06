@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.4 2005-11-06 18:29:15 ericn Exp $
+# $Id: mad.make,v 1.5 2005-11-06 18:42:38 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -175,15 +175,18 @@ mad_clean:
 # madplay stuff (Not yet fully implemented)
 # ----------------------------------------------------------------------------
 
+madplay_get_deps: $(MADPLAY_SOURCE)
 
-madplay_get: $(STATEDIR)/mad.get
+madplay_get: $(madplay_get_deps)
 	@$(call targetinfo, $@)
+
+$(MADPLAY_SOURCE):
 	cd $(CONFIG_ARCHIVEPATH) && wget $(MADPLAY_URL)
 	touch $@
 
 madplay_extract: $(STATEDIR)/mad.extract
 
-$(STATEDIR)/madplay.extract:
+$(STATEDIR)/madplay.extract: $(MADPLAY_SOURCE)
 	@$(call targetinfo, $@)
 	@$(call clean, $(MADPLAY_DIR))
 	cd $(BUILDDIR) && gzcat $(MADPLAY_SOURCE) | tar -xvf -
