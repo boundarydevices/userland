@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: busybox.make,v 1.4 2005-08-21 18:32:06 ericn Exp $
+# $Id: busybox.make,v 1.5 2005-11-07 01:00:55 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -25,8 +25,8 @@ BUSYBOX_SUFFIX		= tar.bz2
 BUSYBOX_URL		= http://www.busybox.net/downloads/$(BUSYBOX).$(BUSYBOX_SUFFIX)
 BUSYBOX_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).$(BUSYBOX_SUFFIX)
 BUSYBOX_DIR		= $(BUILDDIR)/$(BUSYBOX)
-#BUSYBOX_PATCH_URL		= http://boundarydevices.com/$(BUSYBOX).patch
-#BUSYBOX_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).patch
+BUSYBOX_CONFIG_URL = http://boundarydevices.com/$(BUSYBOX).config
+BUSYBOX_CONFIG = $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).config
 
 # ----------------------------------------------------------------------------
 # Get
@@ -35,7 +35,7 @@ BUSYBOX_DIR		= $(BUILDDIR)/$(BUSYBOX)
 busybox_get: $(STATEDIR)/busybox.get
 
 busybox_get_deps	 =  $(BUSYBOX_SOURCE)
-#busybox_get_deps  +=  $(BUSYBOX_PATCH_SOURCE)
+busybox_get_deps  +=  $(BUSYBOX_CONFIG)
 
 $(STATEDIR)/busybox.get: $(busybox_get_deps)
 	touch $@
@@ -44,9 +44,9 @@ $(BUSYBOX_SOURCE):
 	@$(call targetinfo, $@)
 	@cd $(CONFIG_ARCHIVEPATH) && wget $(BUSYBOX_URL)
 
-#$(BUSYBOX_PATCH_SOURCE):
-#	@$(call targetinfo, $@)
-#	@cd $(CONFIG_ARCHIVEPATH) && wget $(BUSYBOX_PATCH_URL)
+$(BUSYBOX_CONFIG):
+	@$(call targetinfo, $@)
+	@cd $(CONFIG_ARCHIVEPATH) && wget $(BUSYBOX_CONFIG_URL)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -58,10 +58,7 @@ $(STATEDIR)/busybox.extract: $(busybox_extract_deps)
 	@$(call targetinfo, $@)
 	rm -rf $(BUSYBOX_DIR)
 	cd $(BUILDDIR) && bzcat $(BUSYBOX_SOURCE) | tar -xvf -
-#	# fix: turn off debugging in init.c
-#	perl -i -p -e 's/^#define DEBUG_INIT/#undef DEBUG_INIT/g' $(BUSYBOX_DIR)/init/init.c
-#	cd $(BUILDDIR) && patch -p0 < $(BUSYBOX_PATCH_SOURCE)
-#	cd $(BUSYBOX_DIR) && patch -p1 < $(BUSYBOX_PATCH_SOURCE)
+	cp -vf $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/.config
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -81,8 +78,6 @@ busybox_prepare_deps	= $(STATEDIR)/busybox.extract
 
 $(STATEDIR)/busybox.prepare: $(busybox_prepare_deps)
 	@$(call targetinfo, $@)
-#	CC=arm-linux-gcc $(BUSYBOX_PATH) make -C $(BUSYBOX_DIR) oldconfig $(BUSYBOX_MAKEVARS)
-#	CC=arm-linux-gcc $(BUSYBOX_PATH) make -C $(BUSYBOX_DIR) dep $(BUSYBOX_MAKEVARS)
 	touch $@
 
 # ----------------------------------------------------------------------------
