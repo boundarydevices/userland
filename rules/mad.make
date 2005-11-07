@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.6 2005-11-06 21:33:44 ericn Exp $
+# $Id: mad.make,v 1.7 2005-11-07 01:00:37 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -185,9 +185,9 @@ $(MADPLAY_SOURCE):
 	touch $@
 
 madplay_extract: $(STATEDIR)/mad.extract
+	@$(call targetinfo, $@)
 
 $(STATEDIR)/madplay.extract: $(MADPLAY_SOURCE)
-	@$(call targetinfo, $@)
 	@$(call clean, $(MADPLAY_DIR))
 	cd $(BUILDDIR) && gzcat $(MADPLAY_SOURCE) | tar -xvf -
 	touch $@
@@ -207,7 +207,7 @@ $(STATEDIR)/madplay.prepare:
 madplay_compile: $(STATEDIR)/madplay.compile
 	@$(call targetinfo, $@)
 
-$(STATEDIR)/madplay.compile: madplay_prepare
+$(STATEDIR)/madplay.compile: $(STATEDIR)/madplay.prepare
 	$(MAD_PATH) && LDFLAGS=-lz make -C $(MADPLAY_DIR)
 	touch $@
 
