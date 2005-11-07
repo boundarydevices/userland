@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.16 2005-07-23 17:10:29 ericn Exp $
+# $Id: bdScript.make,v 1.17 2005-11-07 15:38:54 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -32,10 +32,6 @@ BDSCRIPT_URL		= http://boundarydevices.com/$(BDSCRIPT).$(BDSCRIPT_SUFFIX)
 BDSCRIPT_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(BDSCRIPT).$(BDSCRIPT_SUFFIX)
 BDSCRIPT_DIR		= $(BUILDDIR)/$(BDSCRIPT)
 
-BDSCRIPT_SCRIPT_URL     = http://boundarydevices.com/jsFiles.tar.gz
-BDSCRIPT_SCRIPT_SOURCE	= $(CONFIG_ARCHIVEPATH)/jsFiles.tar.gz
-BDSCRIPT_SCRIPT_DIR		= $(BUILDDIR)/jsFiles
-
 # ----------------------------------------------------------------------------
 # Get
 # ----------------------------------------------------------------------------
@@ -46,27 +42,11 @@ ifdef CONFIG_BDSCRIPT_CVS
    $(STATEDIR)/bdScript.get:
 		@$(call targetinfo, $@)
 		cd $(BUILDDIR) && cvs checkout bdScript
-		cd $(BUILDDIR) && cvs checkout sampleScripts
-ifdef CONFIG_BDSCRIPT_BIGDEMO
-		cd $(BUILDDIR) && cvs checkout ticketing
-		cd $(BUILDDIR) && cvs checkout myPalDemo
-else
-ifdef CONFIG_SUITEDEMO
-		cd $(BUILDDIR) && cvs checkout suiteDemo
-else
-		echo "No application selected"
-endif      
-endif      
 		touch $@
 
 else
    bdScript_get: $(STATEDIR)/bdScript.get
-
    bdScript_get_deps = $(BDSCRIPT_SOURCE) 
-
-ifdef CONFIG_BDSCRIPT_BIGDEMO   
-   bdScript_get_deps += $(BDSCRIPT_SCRIPT_SOURCE)
-endif
 
    $(STATEDIR)/bdScript.get: $(bdScript_get_deps)
 		@$(call targetinfo, $@)
@@ -75,10 +55,6 @@ endif
    $(BDSCRIPT_SOURCE):
 		@$(call targetinfo, $@)
 		cd $(CONFIG_ARCHIVEPATH) && wget $(BDSCRIPT_URL)
-   $(BDSCRIPT_SCRIPT_SOURCE):
-		@$(call targetinfo, $@)
-		cd $(CONFIG_ARCHIVEPATH) && wget $(BDSCRIPT_SCRIPT_URL)
-   
 endif
 
 # ----------------------------------------------------------------------------
@@ -198,25 +174,6 @@ $(STATEDIR)/bdScript.targetinstall: $(bdScript_targetinstall_deps)
 	cp $(BDSCRIPT_DIR)/jsExec $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/flashVar $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/wget $(ROOTDIR)/bin && chmod a+x $(ROOTDIR)/bin/wget
-	mkdir -p $(ROOTDIR)/js
-	mkdir -p $(ROOTDIR)/js/images
-	mkdir -p $(ROOTDIR)/js/fonts
-	cp $(BUILDDIR)/sampleScripts/network $(ROOTDIR)/js/ && chmod a+x $(ROOTDIR)/js/network
-	cd $(ROOTDIR)/bin && ln -sf ../js/network
-	cp $(BUILDDIR)/sampleScripts/wlan.js $(ROOTDIR)/js/
-	cp $(BUILDDIR)/sampleScripts/network.js $(ROOTDIR)/js/
-	cp $(BUILDDIR)/sampleScripts/dump.js $(ROOTDIR)/js/
-	cp $(BUILDDIR)/sampleScripts/dhcp $(ROOTDIR)/js/ && chmod a+x $(ROOTDIR)/js/dhcp
-ifdef CONFIG_BDSCRIPT_BIGDEMO
-	cp -rv $(BUILDDIR)/ticketing/* $(ROOTDIR)/js/
-	cp -rv $(BUILDDIR)/myPalDemo/* $(ROOTDIR)/js/
-	cp -rv $(BUILDDIR)/sampleScripts/* $(ROOTDIR)/js/
-else
-ifdef CONFIG_SUITEDEMO
-	cp -rv $(BUILDDIR)/suiteDemo/* $(ROOTDIR)/js/
-else
-endif      
-endif      
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -224,10 +181,6 @@ endif
 # ----------------------------------------------------------------------------
 
 bdScript_clean:
-	rm -rf $(BUILDDIR)/ticketing
-	rm -rf $(BUILDDIR)/myPalDemo
-	rm -rf $(BUILDDIR)/sampleScripts
-	rm -rf $(BUILDDIR)/suiteDemo
 	rm -rf $(STATEDIR)/bdScript.*
 	rm -rf $(BDSCRIPT_DIR)
 	rm -f $(ROOTDIR)/bin/jsExec
