@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.17  2005-08-24 03:29:50  ericn
+# Revision 1.18  2005-11-07 01:02:24  ericn
+# -install ld-2.3.5.so
+#
+# Revision 1.17  2005/08/24 03:29:50  ericn
 # -include parsed Busybox config file, install udhcpc samples
 #
 # Revision 1.16  2005/08/21 18:31:14  ericn
@@ -204,8 +207,8 @@ root/lib/libpthread.so.0: $(CROSS_LIB_DIR)/lib/libpthread.so.0
 	cp -d $(CROSS_LIB_DIR)/lib/libpthread.so.0 root/lib/ && sudo chmod a+rw root/lib/libpthread.so.0
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) root/lib/libpthread-*.so
 
-#root/lib/ld-2.3.5.so: $(CROSS_LIB_DIR)/lib/ld-2.3.5.so
-#	cp -f $< $@
+root/lib/ld-2.3.5.so: $(CROSS_LIB_DIR)/lib/ld-2.3.5.so
+	cp -f $< $@
 
 root/lib/ld-linux.so.2: root/lib/ld-2.3.5.so
 	cd root/lib/ && ln -s ld-2.3.5.so ld-linux.so.2
