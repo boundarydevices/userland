@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.17 2005-11-07 15:38:54 ericn Exp $
+# $Id: bdScript.make,v 1.18 2005-11-07 15:39:33 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -173,7 +173,6 @@ $(STATEDIR)/bdScript.targetinstall: $(bdScript_targetinstall_deps)
 	mkdir -p $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/jsExec $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/flashVar $(ROOTDIR)/bin
-	cp $(BDSCRIPT_DIR)/wget $(ROOTDIR)/bin && chmod a+x $(ROOTDIR)/bin/wget
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -187,7 +186,6 @@ bdScript_clean:
 	rm -f $(ROOTDIR)/bin/network   
 	rm -f $(ROOTDIR)/bin/jsMenu
 	rm -f $(ROOTDIR)/bin/flashVar
-	rm -f $(ROOTDIR)/bin/wget
 	rm -rf $(ROOTDIR)/js
 
 # vim: syntax=make
