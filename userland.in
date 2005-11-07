@@ -27,10 +27,10 @@ config ARCHIVEPATH
 config KERNELPATH
 	string
 	prompt "Kernel path"
-   default '/usr/local/arm/linux-2.4.19'
+   default '/usr/local/arm/linux-2.6.11.11'
    help
      This path defines where the kernel is installed.
-     (generally /usr/local/arm/linux-2.4.19)
+     (generally /usr/local/arm/linux-2.6.11.11)
 
 config TOOLCHAINPATH
 	string
