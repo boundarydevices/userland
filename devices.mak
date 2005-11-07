@@ -140,11 +140,11 @@ else
 	@echo -e "/dev/fb\t\tc\t666\t0\t0\t29\t0\t0\t0\t-" >> devices.txt
 endif   
 
-ifeq ("NEON", $(KERNEL_BOARDTYPE))
+ifeq (y, $(KERNEL_FB_SM501YUV))
 	@echo -e "/dev/yuv\t\tc\t666\t0\t0\t155\t0\t0\t0\t-" >> devices.txt
 endif
 else
-	@echo "#KERNEL_FB is not set" >> devices.txt
+	@echo "#KERNEL_FB_SM501YUV is not set" >> devices.txt
 endif
 ifdef KERNEL_FB_LCD122X32
 	@echo "#KERNEL_FB_LCD122X32" >> devices.txt
