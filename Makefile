@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.15  2005-08-24 03:29:01  ericn
+# Revision 1.16  2005-11-07 13:08:43  ericn
+# -fix dependency order for .bbconfig
+#
+# Revision 1.15  2005/08/24 03:29:01  ericn
 # -parse Busybox config file
 #
 # Revision 1.14  2005/07/23 17:09:06  ericn
@@ -180,7 +183,7 @@ else
 endif
 
 ifdef CONFIG_BUSYBOX
-.bbconfig: $(BUSYBOX_DIR)/.config
+.bbconfig: $(STATEDIR)/busybox.extract
 	cat $(BUSYBOX_DIR)/.config | sed 's/^CONFIG_/BUSYBOX_/' > $@
 else
 .bbconfig: 
@@ -257,7 +260,7 @@ $(ROOTDIR)/etc/init.d/rcS: targetinstall
 	mkdir -p $(ROOTDIR)/etc/init.d/
 	make -f rootfs.mak all
 
-rootfs: $(ROOTDIR) targetinstall devices.txt $(ROOTDIR)/etc/init.d/rcS .bbconfig
+rootfs: $(ROOTDIR) .bbconfig targetinstall devices.txt $(ROOTDIR)/etc/init.d/rcS 
 
 cramfs.img: targetinstall $(BUILDDIR)/cramfs-1.1/mkcramfs rootfs devices
 #	-$(CROSSSTRIP) $(ROOTDIR)/lib/*
