@@ -13,7 +13,7 @@ config BDSCRIPT
 config BDSCRIPT_CVS
 	bool
 	prompt "Retrieve from CVS"
-   default y
+   default n
    help 
    Use this to access the latest from Boundary Devices
 
