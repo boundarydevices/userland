@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.7 2005-11-07 01:00:37 ericn Exp $
+# $Id: mad.make,v 1.8 2005-11-08 03:20:39 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -195,7 +195,7 @@ $(STATEDIR)/madplay.extract: $(MADPLAY_SOURCE)
 madplay_prepare: $(STATEDIR)/mad.install $(STATEDIR)/madplay.prepare
 	@$(call targetinfo, $@)
 
-$(STATEDIR)/madplay.prepare:
+$(STATEDIR)/madplay.prepare: $(STATEDIR)/madplay.extract
 	@$(call clean, $(MADPLAY_DIR)/config.cache)
 	cd $(MADPLAY_DIR) && \
 		$(MAD_PATH) $(MAD_ENV) \
