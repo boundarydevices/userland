@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.3 2005-06-18 16:36:51 ericn Exp $
+# $Id: openssh.make,v 1.4 2005-11-08 20:26:56 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -31,7 +31,7 @@ OPENSSH_URL 		= ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$(OPENSSH).ta
 OPENSSH_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(OPENSSH).tar.gz
 OPENSSH_DIR 		= $(BUILDDIR)/$(OPENSSH)
 OPENSSH_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/openssh-3.7.1p2.patch
-OPENSSH_PATCH_URL    = http://www.pengutronix.de/software/ptxdist/patches-cvs/openssh-3.7.1p2/generic/generic-configure-ac.patch
+OPENSSH_PATCH_URL    = http://boundarydevices.com/openssh-3.7.1p2.patch
 
 # ----------------------------------------------------------------------------
 # Get
