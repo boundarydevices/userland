@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.19 2005-11-07 15:42:51 ericn Exp $
+# $Id: bdScript.make,v 1.20 2005-11-08 02:18:15 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -30,7 +30,7 @@ endif
 BDSCRIPT_SUFFIX	= tar.bz2
 BDSCRIPT_URL		= http://boundarydevices.com/$(BDSCRIPT).$(BDSCRIPT_SUFFIX)
 BDSCRIPT_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(BDSCRIPT).$(BDSCRIPT_SUFFIX)
-BDSCRIPT_DIR		= $(BUILDDIR)/$(BDSCRIPT)
+BDSCRIPT_DIR		= $(BUILDDIR)/bdScript
 
 # ----------------------------------------------------------------------------
 # Get
@@ -73,7 +73,7 @@ else
    $(STATEDIR)/bdScript.extract: $(bdScript_extract_deps)
 		@$(call targetinfo, $@)
 		@$(call clean, $(BDSCRIPT_DIR))
-		@cd $(BUILDDIR) && gzcat $(BDSCRIPT_SOURCE) | tar -xvf -
+		@cd $(BUILDDIR) && bzcat $(BDSCRIPT_SOURCE) | tar -xvf -
 		touch $@
 endif
 
