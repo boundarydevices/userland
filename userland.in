@@ -19,9 +19,10 @@ config CROSSPREFIX
 config ARCHIVEPATH
 	string
 	prompt "Archive path"
+   default '/armArchives'
    help
      This path is used to store tar-balls for all of the toolchain
-     sources. 
+     and library sources. 
      It is used to prevent the need to download during each build.
 
 config KERNELPATH
