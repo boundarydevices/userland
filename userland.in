@@ -35,7 +35,7 @@ config KERNELPATH
 config TOOLCHAINPATH
 	string
 	prompt "Toolchain path"
-   default '/usr/local/arm'
+   default '/opt/crosstool/gcc-3.4.3-glibc-2.3.5/arm-linux/'
    help
      This path defines where the cross-toolchain will be installed.
      (generally /usr/local/arm)
@@ -60,7 +60,7 @@ config ROOT
 
 choice
    prompt "Board Type "
-      default SCANCRAM
+      default NEONCRAM
 
       config SCANPASS
       bool
