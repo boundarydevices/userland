@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.9 2005-11-09 02:01:34 ericn Exp $
+# $Id: mad.make,v 1.10 2005-11-09 02:17:52 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -185,17 +185,17 @@ $(MADPLAY_SOURCE):
 	touch $@
 
 madplay_extract: $(STATEDIR)/mad.extract
-	@$(call targetinfo, $@)
 
 $(STATEDIR)/madplay.extract: $(MADPLAY_SOURCE)
+	@$(call targetinfo, $@)
 	@$(call clean, $(MADPLAY_DIR))
 	cd $(BUILDDIR) && gzcat $(MADPLAY_SOURCE) | tar -xvf -
 	touch $@
 
 madplay_prepare: $(STATEDIR)/mad.install $(STATEDIR)/madplay.prepare
-	@$(call targetinfo, $@)
 
 $(STATEDIR)/madplay.prepare: $(STATEDIR)/madplay.extract
+	@$(call targetinfo, $@)
 	@$(call clean, $(MADPLAY_DIR)/config.cache)
 	cd $(MADPLAY_DIR) && \
 		$(MAD_PATH) $(MAD_ENV) \
@@ -205,9 +205,9 @@ $(STATEDIR)/madplay.prepare: $(STATEDIR)/madplay.extract
 	touch $@
 
 madplay_compile: $(STATEDIR)/madplay.compile
-	@$(call targetinfo, $@)
 
 $(STATEDIR)/madplay.compile: $(STATEDIR)/madplay.prepare
+	@$(call targetinfo, $@)
 	$(MAD_PATH) && LDFLAGS=-lz make -C $(MADPLAY_DIR)
 	touch $@
 
@@ -219,9 +219,9 @@ $(STATEDIR)/madplay.install: $(STATEDIR)/madplay.compile
 	touch $@
 
 madplay_targetinstall: $(STATEDIR)/madplay.targetinstall
-	@$(call targetinfo, $@)
 
 $(STATEDIR)/madplay.targetinstall: $(STATEDIR)/madplay.install
+	@$(call targetinfo, $@)
 	cp $(INSTALLPATH)/bin/madplay $(ROOTDIR)/bin
 	$(CROSSSTRIP) $(ROOTDIR)/bin/madplay
 	touch $@
