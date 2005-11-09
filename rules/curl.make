@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: curl.make,v 1.3 2005-08-12 03:58:49 ericn Exp $
+# $Id: curl.make,v 1.4 2005-11-09 02:07:09 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -19,7 +19,7 @@ endif
 #
 # Paths and names
 #
-CURL_VERSION	= 7.10.8
+CURL_VERSION	= 7.15.0
 CURL		= curl-$(CURL_VERSION)
 CURL_SUFFIX		= tar.bz2
 CURL_URL		= http://curl.haxx.se/download/$(CURL).$(CURL_SUFFIX)
