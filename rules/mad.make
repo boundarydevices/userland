@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.8 2005-11-08 03:20:39 ericn Exp $
+# $Id: mad.make,v 1.9 2005-11-09 02:01:34 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -178,9 +178,9 @@ mad_clean:
 madplay_get_deps: $(MADPLAY_SOURCE)
 
 madplay_get: $(madplay_get_deps)
-	@$(call targetinfo, $@)
 
 $(MADPLAY_SOURCE):
+	@$(call targetinfo, $@)
 	cd $(CONFIG_ARCHIVEPATH) && wget $(MADPLAY_URL)
 	touch $@
 
