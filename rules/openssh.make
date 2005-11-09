@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.4 2005-11-08 20:26:56 ericn Exp $
+# $Id: openssh.make,v 1.5 2005-11-09 02:42:58 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -26,12 +26,13 @@ endif
 #
 # Paths and names 
 #
-OPENSSH			= openssh-3.7.1p2
+OPENSSH_VER    = 3.9p1
+OPENSSH			= openssh-$(OPENSSH_VER)
 OPENSSH_URL 		= ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$(OPENSSH).tar.gz
 OPENSSH_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(OPENSSH).tar.gz
 OPENSSH_DIR 		= $(BUILDDIR)/$(OPENSSH)
-OPENSSH_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/openssh-3.7.1p2.patch
-OPENSSH_PATCH_URL    = http://boundarydevices.com/openssh-3.7.1p2.patch
+OPENSSH_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/openssh-$(OPENSSH_VER).patch
+OPENSSH_PATCH_URL    = http://www.pengutronix.de/software/ptxdist/patches-0.7.5/$(OPENSSH)/generic/generic-configure-ac.patch
 
 # ----------------------------------------------------------------------------
 # Get
@@ -110,9 +111,9 @@ OPENSSH_PATH	= PATH=$(CROSS_PATH)
 # powerpc-linux-ld: warning: cannot find entry symbol _start;
 # defaulting to 10001ba8
 # ./libssh.a(packet.o): In function `set_newkeys':
-# /home/frogger/projects/ptxdist/ptxdist-ppc/build/openssh-3.7.1p2/packet.c:643:
+# /home/frogger/projects/ptxdist/ptxdist-ppc/build/openssh-$(OPENSSH_VER)/packet.c:643:
 # undefined reference to `__ashldi3'
-# /home/frogger/projects/ptxdist/ptxdist-ppc/build/openssh-3.7.1p2/packet.c:643:
+# /home/frogger/projects/ptxdist/ptxdist-ppc/build/openssh-$(OPENSSH_VER)/packet.c:643:
 # relocation truncated to fit: R_PPC_REL24 __ashldi3
 # make[1]: *** [ssh] Error 1
 #
