@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: js.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: js.make,v 1.2 2005-11-09 02:01:10 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -22,7 +22,7 @@ endif
 JS_VERSION	= 1.5.rc6
 JS		= js-$(JS_VERSION)
 JS_SUFFIX		= tar.gz
-JS_URL		= http://ftp.mozilla.org/pub/mozilla.org/js/js-1.5-rc6.tar.gz
+JS_URL		= http://ftp.mozilla.org/pub/mozilla.org/js/older-packages/js-1.5-rc6.tar.gz
 JS_SOURCE		= $(CONFIG_ARCHIVEPATH)/js-1.5-rc6.tar.gz
 JS_DIR		= $(BUILDDIR)/js
 JS_AUTOCFG_PATCH = $(CONFIG_ARCHIVEPATH)/js-1.5-rc6-autocfg.patch
