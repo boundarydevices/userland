@@ -25,6 +25,8 @@ ifdef MODULES
 	make -C ~/cvs/linux-2.6.11.11 INSTALL_MOD_PATH=$(MMCDIR) modules_install
 	cp ~/zd1211.cvs/src/modules-2.6.11.11/zd1211_mod.ko $(MMCDIR)   
 endif   
+	echo "CROSS_LIB_DIR == " $(CROSS_LIB_DIR)
+	echo "ROOTDIR == " $(ROOTDIR)
 	@cd $(MMCDIR) && ln -s bin sbin
 	@cp $(ROOTDIR)/bin/busybox $(MMCDIR)/bin
 	@echo "Hello\n"
@@ -37,12 +39,9 @@ endif
 	@mkdir -p $(MMCDIR)/etc/init.d
 	@cp $(ROOTDIR)/sbin/mke2fs $(MMCDIR)/bin
 	@mkdir -p $(MMCDIR)/lib
-	@cp -rvd $(ROOTDIR)/lib/ld-* $(MMCDIR)/lib
-	@cp -rvd $(ROOTDIR)/lib/libc-* $(MMCDIR)/lib
-	@cp -rvd $(ROOTDIR)/lib/libc.* $(MMCDIR)/lib
-	@cp -rvd build/bdScript/serialTest $(MMCDIR)/bin
-	@rm -f $(MMCDIR)/bin/wget
-	@cp -rv build/bdScript/wget $(MMCDIR)/bin
+	@cp -rvd $(CROSS_LIB_DIR)/lib/ld-* $(MMCDIR)/lib
+	@cp -rvd $(CROSS_LIB_DIR)/lib/libc-* $(MMCDIR)/lib
+	@cp -rvd $(CROSS_LIB_DIR)/lib/libc.* $(MMCDIR)/lib
 	@mkdir -p $(MMCDIR)/proc
 	@mkdir -p $(MMCDIR)/tmp
 	@mkdir -p $(MMCDIR)/usr
