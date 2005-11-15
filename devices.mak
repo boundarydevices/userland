@@ -92,32 +92,38 @@ ifdef KERNEL_PXA_RTC
 else
 	@echo "#KERNEL_PXA_RTC is not set" >> devices.txt
 endif
+
+
 ifdef KERNEL_USB
 	@echo "#KERNEL_PXA_USB" >> devices.txt
 	@echo -e "/dev/usb\td\t666\t0\t0\t-\t-\t-\t-\t-" >> devices.txt
 ifdef KERNEL_USB_PRINTER
-	@echo -e "/dev/usb/lp0\tc\t666\t0\t0\t180\t0\t0\t0\t-" >> devices.txt
+		@echo -e "/dev/usb/lp0\tc\t666\t0\t0\t180\t0\t0\t0\t-" >> devices.txt
 else   
-	@echo "#KERNEL_USB_PRINTER is not set" >> devices.txt
+	   @echo "#KERNEL_USB_PRINTER is not set" >> devices.txt
 endif   
 ifdef KERNEL_USB_QC
-	@echo -e "/dev/video0\tc\t666\t0\t0\t81\t0\t0\t0\t-" >> devices.txt
+	   @echo -e "/dev/video0\tc\t666\t0\t0\t81\t0\t0\t0\t-" >> devices.txt
 else   
-	@echo "#KERNEL_USB_QC is not set" >> devices.txt
+	   @echo "#KERNEL_USB_QC is not set" >> devices.txt
 endif
 else
 	@echo "#KERNEL_USB is not set" >> devices.txt
 endif
+
+
 ifdef KERNEL_USB_G_SERIAL
 	@echo -e "# Gadget serial" >> devices.txt
 	@echo -e "/dev/ttygserial\tc\t666\t0\t0\t127\t0\t0\t1\t1" >> devices.txt
 endif
+
 ifdef KERNEL_PXA_GPIO
 	@echo "#KERNEL_PXA_GPIO" >> devices.txt
 	# GPIO devices could go here
 else
 	@echo "#KERNEL_PXA_GPIO is not set" >> devices.txt
 endif
+
 ifdef KERNEL_BLK_DEV_LOOP
 	@echo "#KERNEL_BLK_DEV_LOOP" >> devices.txt
    # make loopback devices
@@ -130,8 +136,10 @@ ifdef KERNEL_BLK_DEV_LOOP
 else
 	@echo "#KERNEL_BLK_DEV_LOOP is not set" >> devices.txt
 endif
+
 ifdef KERNEL_FB
 	@echo "#KERNEL_FB_PXA" >> devices.txt
+endif
 
 ifdef KERNEL_DEVFS_FS
 	@echo -e "/dev/fb0\t\tc\t666\t0\t0\t29\t0\t0\t0\t-" >> devices.txt
@@ -142,7 +150,6 @@ endif
 
 ifeq (y, $(KERNEL_FB_SM501YUV))
 	@echo -e "/dev/yuv\t\tc\t666\t0\t0\t155\t0\t0\t0\t-" >> devices.txt
-endif
 else
 	@echo "#KERNEL_FB_SM501YUV is not set" >> devices.txt
 endif
@@ -182,12 +189,11 @@ ifdef KERNEL_ARCH_SCANPASS
 else
 	@echo "#KERNEL_ARCH_SCANPASS is not set" >> devices.txt
 endif
-ifdef KERNEL_MCP_UCB1400_TS
-	@echo "#KERNEL_MCP_UCB1400_TS" >> devices.txt
-	@echo -e "/dev/touchscreen\t\td\t777\t0\t0\t-\t-\t-\t-\t-" >> devices.txt
-	@echo -e "/dev/touchscreen/ucb1x00\tc\t666\t0\t0\t10\t14\t0\t0\t-" >> devices.txt
+ifeq (y, $(KERNEL_UCB1400_TS))
+	@echo "#KERNEL_UCB1400_TS" >> devices.txt
+	@echo -e "/dev/touchscreen\t\tc\t666\t0\t0\t10\t14\t0\t0\t-" >> devices.txt
 else
-	@echo "#KERNEL_MCP_UCB1400_TS is not set" >> devices.txt
+	@echo "#KERNEL_UCB1400_TS is not set" >> devices.txt
 endif
 ifdef KERNEL_MMC_PXA
 	@echo "#KERNEL_MMC_PXA" >> devices.txt
@@ -270,17 +276,17 @@ ifeq ("BD2004", $(KERNEL_BOARDTYPE))
 		@echo -e "/dev/gp45out\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
 		@echo -e "/dev/gp47out\t\tc\t666\t0\t0\t254\t47\t0\t0\t-" >> devices.txt
 ifdef CONFIG_SUITEDEMO
-		@echo -e "/dev/doorLock\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
-		@echo -e "/dev/custLED\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
-		@echo -e "/dev/customIn\t\tc\t666\t0\t0\t254\t16\t0\t0\t-" >> devices.txt
+   		@echo -e "/dev/doorLock\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
+   		@echo -e "/dev/custLED\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
+   		@echo -e "/dev/customIn\t\tc\t666\t0\t0\t254\t16\t0\t0\t-" >> devices.txt
 else
-		@echo "#CONFIG_SUITEDEMO is not set" >> devices.txt
+   		@echo "#CONFIG_SUITEDEMO is not set" >> devices.txt
 ifdef CONFIG_TMSUITE
-			@echo -e "/dev/doorLock\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
-			@echo -e "/dev/custLED\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
-			@echo -e "/dev/customIn\t\tc\t666\t0\t0\t254\t16\t0\t0\t-" >> devices.txt
+   			@echo -e "/dev/doorLock\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
+   			@echo -e "/dev/custLED\t\tc\t666\t0\t0\t254\t45\t0\t0\t-" >> devices.txt
+   			@echo -e "/dev/customIn\t\tc\t666\t0\t0\t254\t16\t0\t0\t-" >> devices.txt
 else
-			@echo "#CONFIG_TMSUITE is not set" >> devices.txt
+   			@echo "#CONFIG_TMSUITE is not set" >> devices.txt
 endif
 ifdef CONFIG_TMTURNSTILE
 			@echo -e "/dev/turnstile\t\tc\t666\t0\t0\t254\t32\t0\t0\t-" >> devices.txt
