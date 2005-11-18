@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mpeg2dec.make,v 1.2 2004-10-03 02:28:23 ericn Exp $
+# $Id: mpeg2dec.make,v 1.3 2005-11-18 15:36:04 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -32,8 +32,8 @@ MPEG2DEC_URL		   = $(MPEG2DEC_URLDIR)/$(MPEG2DEC).$(MPEG2DEC_SUFFIX)
 MPEG2DEC_SOURCE	   = $(CONFIG_ARCHIVEPATH)/$(MPEG2DEC).$(MPEG2DEC_SUFFIX)
 MPEG2DEC_DIR		   = $(BUILDDIR)/$(MPEG2DEC)
 ifdef CONFIG_LIBMPEG2_OLD
-   MPEG2DEC_PATCH       = mpeg2dec-$(MPEG2DEC_VERSION).patch
-   MPEG2DEC_PATCH_SRC   = $(CONFIG_ARCHIVEPATH)/mpeg2dec-$(MPEG2DEC_VERSION).patch
+   MPEG2DEC_PATCH       = mpeg2dec-$(MPEG2DEC_VERSION)-2005-11-18.patch
+   MPEG2DEC_PATCH_SRC   = $(CONFIG_ARCHIVEPATH)/$(MPEG2DEC_PATCH)
    MPEG2DEC_PATCH_URL   = http://boundarydevices.com/$(MPEG2DEC_PATCH)
 endif
 
@@ -73,6 +73,9 @@ $(STATEDIR)/mpeg2dec.extract: $(mpeg2dec_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(MPEG2DEC_DIR))
 	@cd $(BUILDDIR) && gzcat $(MPEG2DEC_SOURCE) | tar -xvf -
+ifdef CONFIG_LIBMPEG2_OLD
+	cd $(BUILDDIR) && patch -p0 <$(MPEG2DEC_PATCH_SRC)
+endif
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -108,15 +111,12 @@ MPEG2DEC_AUTOCONF = \
 $(STATEDIR)/mpeg2dec.prepare: $(mpeg2dec_prepare_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(MPEG2DEC_DIR)/config.cache)
-ifdef CONFIG_LIBMPEG2_OLD
-	cd $(BUILDDIR) && patch -p0 <$(MPEG2DEC_PATCH_SRC)
-endif
-	cd $(MPEG2DEC_DIR) && aclocal && autoconf && automake --add-missing
 	cd $(MPEG2DEC_DIR) && \
 		$(MPEG2DEC_PATH) $(MPEG2DEC_ENV) \
 		./configure $(MPEG2DEC_AUTOCONF)
 	touch $@
 
+#	cd $(MPEG2DEC_DIR) && aclocal && autoconf && automake --add-missing
 # ----------------------------------------------------------------------------
 # Compile
 # ----------------------------------------------------------------------------
@@ -127,7 +127,8 @@ mpeg2dec_compile_deps = $(STATEDIR)/mpeg2dec.prepare
 
 $(STATEDIR)/mpeg2dec.compile: $(mpeg2dec_compile_deps)
 	@$(call targetinfo, $@)
-	$(MPEG2DEC_PATH) make -C $(MPEG2DEC_DIR)
+	$(MPEG2DEC_PATH) make -C $(MPEG2DEC_DIR)/libmpeg2
+	$(MPEG2DEC_PATH) make -C $(MPEG2DEC_DIR)/libvo
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -138,7 +139,8 @@ mpeg2dec_install: $(STATEDIR)/mpeg2dec.install
 
 $(STATEDIR)/mpeg2dec.install: $(STATEDIR)/mpeg2dec.compile
 	@$(call targetinfo, $@)
-	$(MPEG2DEC_PATH) make -C $(MPEG2DEC_DIR) install
+	$(MPEG2DEC_PATH) make -C $(MPEG2DEC_DIR)/libmpeg2 install
+	$(MPEG2DEC_PATH) make -C $(MPEG2DEC_DIR)/libvo install
 	@mkdir -p $(INSTALLPATH)/include/mpeg2dec
 	@cp -f -R $(MPEG2DEC_DIR)/include/*.h $(INSTALLPATH)/include/mpeg2dec
 	@cp -f -R $(MPEG2DEC_DIR)/libvo/*.a $(INSTALLPATH)/lib
