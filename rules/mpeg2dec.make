@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mpeg2dec.make,v 1.3 2005-11-18 15:36:04 ericn Exp $
+# $Id: mpeg2dec.make,v 1.4 2005-11-19 14:41:45 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -110,13 +110,15 @@ MPEG2DEC_AUTOCONF = \
 
 $(STATEDIR)/mpeg2dec.prepare: $(mpeg2dec_prepare_deps)
 	@$(call targetinfo, $@)
+	cd $(MPEG2DEC_DIR) && ./bootstrap
 	@$(call clean, $(MPEG2DEC_DIR)/config.cache)
 	cd $(MPEG2DEC_DIR) && \
 		$(MPEG2DEC_PATH) $(MPEG2DEC_ENV) \
 		./configure $(MPEG2DEC_AUTOCONF)
 	touch $@
 
-#	cd $(MPEG2DEC_DIR) && aclocal && autoconf && automake --add-missing
+#
+#	cd $(MPEG2DEC_DIR) && ./bootstrap
 # ----------------------------------------------------------------------------
 # Compile
 # ----------------------------------------------------------------------------
