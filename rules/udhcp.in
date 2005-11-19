@@ -1,7 +1,7 @@
 menu	"UDHCP - DHCP client and server"
 config UDHCP
 	bool
-   default y
+   default n
 	prompt "Compile udhcp"
    help
       The udhcp server/client package is a small DHCP client and server
@@ -12,7 +12,7 @@ config UDHCP
 
 config UDHCP_CLIENT
 	bool
-   default y
+   default n
 	prompt "udhcp client"
    help
       Select yes to install the client
