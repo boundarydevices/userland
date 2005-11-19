@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.16  2005-11-07 13:08:43  ericn
+# Revision 1.17  2005-11-19 13:17:12  ericn
+# -keep flat, unzipped initrd
+#
+# Revision 1.16  2005/11/07 13:08:43  ericn
 # -fix dependency order for .bbconfig
 #
 # Revision 1.15  2005/08/24 03:29:01  ericn
@@ -281,11 +284,11 @@ jffs2: jffs2.img
 
 -include mmcinitrd.mak
 
-mmcinitrd: $(STATEDIR)/mmcinitrd.built
-	@genext2fs mmcinitrd.img -d mmc.initrd -U -D devices.txt -b 8192 && gzip -f -v9 mmcinitrd.img -c >$@
-	@rm -f mmcinitrd.img
+mmcinitrd.gz: $(STATEDIR)/mmcinitrd.built
+	genext2fs mmcinitrd.img -d mmc.initrd -U -D devices.txt -b 8192
+	gzip -f -v9 mmcinitrd.img -c >$@
 
-mmcinitrd.u-boot: mmcinitrd
-	mkimage -A arm -O linux -T ramdisk -n "Initial Ram Disk" -d mmcinitrd mmcinitrd.u-boot
+mmcinitrd.u-boot: mmcinitrd.gz
+	mkimage -A arm -O linux -T ramdisk -n "Initial Ram Disk" -d mmcinitrd.gz mmcinitrd.u-boot
 
 
