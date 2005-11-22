@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tinylogin.make,v 1.2 2004-06-09 13:45:07 ericn Exp $
+# $Id: tinylogin.make,v 1.3 2005-11-22 02:10:25 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -12,7 +12,7 @@
 #
 # We provide this package
 #
-ifdef PTXCONF_TINYLOGIN
+ifdef CONFIG_TINYLOGIN
 PACKAGES += tinylogin
 endif
 
