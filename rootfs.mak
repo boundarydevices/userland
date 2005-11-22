@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.18  2005-11-07 01:02:24  ericn
+# Revision 1.19  2005-11-22 02:19:24  ericn
+# -don't need root privilege to copy libpthread
+#
+# Revision 1.18  2005/11/07 01:02:24  ericn
 # -install ld-2.3.5.so
 #
 # Revision 1.17  2005/08/24 03:29:50  ericn
@@ -203,8 +206,8 @@ root/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) root/lib/libm-2.2.3.so
 
 root/lib/libpthread.so.0: $(CROSS_LIB_DIR)/lib/libpthread.so.0
-	cp -d $(CROSS_LIB_DIR)/lib/libpthread-0.10.so root/lib/ && sudo chmod a+rw root/lib/libpthread-0.10.so
-	cp -d $(CROSS_LIB_DIR)/lib/libpthread.so.0 root/lib/ && sudo chmod a+rw root/lib/libpthread.so.0
+	cp -d $(CROSS_LIB_DIR)/lib/libpthread-0.10.so root/lib/ && chmod a+rw root/lib/libpthread-0.10.so
+	cp -d $(CROSS_LIB_DIR)/lib/libpthread.so.0 root/lib/ && chmod a+rw root/lib/libpthread.so.0
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) root/lib/libpthread-*.so
 
 root/lib/ld-2.3.5.so: $(CROSS_LIB_DIR)/lib/ld-2.3.5.so
