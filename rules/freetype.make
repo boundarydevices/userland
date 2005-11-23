@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: freetype.make,v 1.2 2005-06-19 00:33:48 ericn Exp $
+# $Id: freetype.make,v 1.3 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -53,7 +53,7 @@ freetype_extract_deps = $(STATEDIR)/freetype.get
 $(STATEDIR)/freetype.extract: $(freetype_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(FREETYPE_DIR))
-	@cd $(BUILDDIR) && gzcat $(FREETYPE_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(FREETYPE_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

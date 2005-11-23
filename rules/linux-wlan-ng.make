@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: linux-wlan-ng.make,v 1.4 2004-09-26 16:08:37 ericn Exp $
+# $Id: linux-wlan-ng.make,v 1.5 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -67,7 +67,7 @@ linux-wlan-ng_extract_deps = $(STATEDIR)/pcmcia-cs.prepare
 $(STATEDIR)/linux-wlan-ng.extract: $(linux-wlan-ng_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(LINUX-WLAN-NG_DIR))
-	cd $(BUILDDIR) && gzcat $(LINUX-WLAN-NG_SOURCE) | tar -xvf -
+	cd $(BUILDDIR) && zcat $(LINUX-WLAN-NG_SOURCE) | tar -xvf -
 	cd $(BUILDDIR) && patch -p0 <$(LINUX-WLAN-NG_PATCH)
 	cd $(BUILDDIR) && patch -p0 <$(LINUX-WLAN-NG_PATCH2)
 	touch $@

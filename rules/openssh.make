@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.5 2005-11-09 02:42:58 ericn Exp $
+# $Id: openssh.make,v 1.6 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -72,7 +72,7 @@ openssh_extract_deps = \
 $(STATEDIR)/openssh.extract: $(openssh_extract_deps)
 	@$(call targetinfo, openssh.extract)
 	@$(call clean, $(OPENSSH_DIR))
-	cd $(BUILDDIR) && gzcat $(OPENSSH_SOURCE) | tar -xvf -
+	cd $(BUILDDIR) && zcat $(OPENSSH_SOURCE) | tar -xvf -
 	@$(call patchin, $(OPENSSH))
 
 	OPENSSL_VERSION_NUMBER="`sed -n -e 's/.*OPENSSL_VERSION_NUMBER.*0x[0]*\([0-9a-f]*\)L/\1/p' \

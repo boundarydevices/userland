@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tinylogin.make,v 1.3 2005-11-22 02:10:25 ericn Exp $
+# $Id: tinylogin.make,v 1.4 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -53,7 +53,7 @@ tinylogin_extract_deps = $(STATEDIR)/tinylogin.get
 $(STATEDIR)/tinylogin.extract: $(tinylogin_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(TINYLOGIN_DIR))
-	@cd $(BUILDDIR) && gzcat $(TINYLOGIN_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(TINYLOGIN_SOURCE) | tar -xvf -
 	sed 's/USE_SYSTEM_PWD_GRP = true/USE_SYSTEM_PWD_GRP = false/' <$(TINYLOGIN_DIR)/Makefile >$(TINYLOGIN_DIR)/Makefile.patched
 	mv $(TINYLOGIN_DIR)/Makefile $(TINYLOGIN_DIR)/Makefile.orig
 	mv $(TINYLOGIN_DIR)/Makefile.patched $(TINYLOGIN_DIR)/Makefile

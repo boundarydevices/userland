@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gstreamer.make,v 1.1 2005-11-03 02:30:00 ericn Exp $
+# $Id: gstreamer.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ gstreamer_extract: $(STATEDIR)/gstreamer.extract
 $(STATEDIR)/gstreamer.extract: $(STATEDIR)/gstreamer.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(GSTREAMER_DIR))
-	@cd $(BUILDDIR) && gzcat $(GSTREAMER_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(GSTREAMER_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

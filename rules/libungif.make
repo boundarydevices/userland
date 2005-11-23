@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libungif.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: libungif.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -53,7 +53,7 @@ libungif_extract_deps = $(STATEDIR)/libungif.get
 $(STATEDIR)/libungif.extract: $(libungif_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(LIBUNGIF_DIR))
-	@cd $(BUILDDIR) && gzcat $(LIBUNGIF_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(LIBUNGIF_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

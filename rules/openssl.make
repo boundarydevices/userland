@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssl.make,v 1.5 2005-11-06 21:33:30 ericn Exp $
+# $Id: openssl.make,v 1.6 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Jochen Striepe for Pengutronix e.K., Hildesheim, Germany
 #               2003 by Pengutronix e.K., Hildesheim, Germany
@@ -50,7 +50,7 @@ openssl_extract: $(STATEDIR)/openssl.extract
 $(STATEDIR)/openssl.extract: $(STATEDIR)/openssl.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(OPENSSL_DIR))
-	cd $(BUILDDIR) && gzcat $(OPENSSL_SOURCE) | tar -xvf -
+	cd $(BUILDDIR) && zcat $(OPENSSL_SOURCE) | tar -xvf -
 	perl -p -i -e 's/-m486//' $(OPENSSL_DIR)/Configure
 	touch $@
 

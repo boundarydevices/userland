@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: js.make,v 1.2 2005-11-09 02:01:10 ericn Exp $
+# $Id: js.make,v 1.3 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -59,7 +59,7 @@ js_extract_deps = $(STATEDIR)/js.get
 $(STATEDIR)/js.extract: $(js_extract_deps)
 	@$(call targetinfo, $@)
 	rm -rf $(JS_DIR)
-	@cd $(BUILDDIR) && gzcat $(JS_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(JS_SOURCE) | tar -xvf -
 	@patch -d $(BUILDDIR) -p0 < $(JS_AUTOCFG_PATCH)
 	touch $@
 

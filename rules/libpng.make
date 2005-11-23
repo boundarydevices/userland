@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libpng.make,v 1.6 2005-06-19 17:27:09 ericn Exp $
+# $Id: libpng.make,v 1.7 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #                       Pengutronix <info@pengutronix.de>, Germany
@@ -54,7 +54,7 @@ libpng_extract_deps	=  $(STATEDIR)/libpng.get
 $(STATEDIR)/libpng.extract: $(libpng_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(LIBPNG_DIR))
-	@cd $(BUILDDIR) && gzcat $(LIBPNG_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(LIBPNG_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

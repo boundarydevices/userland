@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: zlib.make,v 1.4 2005-11-09 02:00:58 ericn Exp $
+# $Id: zlib.make,v 1.5 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ zlib_extract: $(STATEDIR)/zlib.extract
 $(STATEDIR)/zlib.extract: $(STATEDIR)/zlib.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(ZLIB_DIR))
-	@cd $(BUILDDIR) && gzcat $(ZLIB_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(ZLIB_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

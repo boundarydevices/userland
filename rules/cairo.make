@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: cairo.make,v 1.4 2005-06-19 16:43:16 ericn Exp $
+# $Id: cairo.make,v 1.5 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ cairo_extract: $(STATEDIR)/cairo.extract
 $(STATEDIR)/cairo.extract: $(STATEDIR)/cairo.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(CAIRO_DIR))
-	@cd $(BUILDDIR) && gzcat $(CAIRO_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(CAIRO_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glib.make,v 1.1 2005-06-19 16:50:24 ericn Exp $
+# $Id: glib.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ glib_extract: $(STATEDIR)/glib.extract
 $(STATEDIR)/glib.extract: $(STATEDIR)/glib.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(GLIB_DIR))
-	@cd $(BUILDDIR) && gzcat $(GLIB_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(GLIB_SOURCE) | tar -xvf -
 	sed 's/#include "glib.h"/#include "bits\/posix1_lim.h"\n#include "glib.h"/' \
 	< $(GLIB_DIR)/glib/giounix.c \
 	> $(GLIB_DIR)/glib/giounix.c.patched

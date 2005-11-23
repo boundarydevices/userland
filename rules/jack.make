@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: jack.make,v 1.1 2005-11-03 02:30:00 ericn Exp $
+# $Id: jack.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ jack_extract: $(STATEDIR)/jack.extract
 $(STATEDIR)/jack.extract: $(STATEDIR)/jack.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(JACK_DIR))
-	@cd $(BUILDDIR) && gzcat $(JACK_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(JACK_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

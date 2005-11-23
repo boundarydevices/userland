@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: ncurses.make,v 1.1 2005-08-25 14:42:31 ericn Exp $
+# $Id: ncurses.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -48,7 +48,7 @@ ncurses_extract: $(STATEDIR)/ncurses.extract
 $(STATEDIR)/ncurses.extract: $(STATEDIR)/ncurses.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(NCURSES_DIR))
-	@cd $(BUILDDIR) && gzcat $(NCURSES_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(NCURSES_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

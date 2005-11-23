@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB.make,v 1.3 2005-06-19 18:49:39 ericn Exp $
+# $Id: DirectFB.make,v 1.4 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ directfb_extract: $(STATEDIR)/directfb.extract
 $(STATEDIR)/directfb.extract: $(STATEDIR)/directfb.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(DIRECTFB_DIR))
-	@cd $(BUILDDIR) && gzcat $(DIRECTFB_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(DIRECTFB_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

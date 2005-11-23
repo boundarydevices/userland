@@ -1,6 +1,6 @@
 
 # -*-makefile-*-
-# $Id: libusb.make,v 1.2 2004-06-28 02:58:36 ericn Exp $
+# $Id: libusb.make,v 1.3 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -60,7 +60,7 @@ libusb_extract_deps = $(STATEDIR)/libusb.get
 $(STATEDIR)/libusb.extract: $(libusb_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(LIBUSB_DIR))
-	@cd $(BUILDDIR) && gzcat $(LIBUSB_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(LIBUSB_SOURCE) | tar -xvf -
 	@cd $(BUILDDIR) && patch -p0 < $(LIBUSB_PATCH_SOURCE)
 	touch $@
 

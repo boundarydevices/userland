@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libevent.make,v 1.1 2005-08-25 14:42:31 ericn Exp $
+# $Id: libevent.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ libevent_extract: $(STATEDIR)/libevent.extract
 $(STATEDIR)/libevent.extract: $(STATEDIR)/libevent.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(LIBEVENT_DIR))
-	@cd $(BUILDDIR) && gzcat $(LIBEVENT_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(LIBEVENT_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: curl.make,v 1.5 2005-11-09 03:24:06 ericn Exp $
+# $Id: curl.make,v 1.6 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -53,7 +53,7 @@ curl_extract_deps = $(STATEDIR)/curl.get
 $(STATEDIR)/curl.extract: $(curl_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(CURL_DIR))
-	@cd $(BUILDDIR) && gzcat $(CURL_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(CURL_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

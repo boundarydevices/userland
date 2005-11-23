@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libflash.make,v 1.4 2004-06-01 02:25:24 ericn Exp $
+# $Id: libflash.make,v 1.5 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2004 by Boundary Devices
 #          
@@ -58,7 +58,7 @@ libflash_extract_deps = $(STATEDIR)/JPEG.install
 $(STATEDIR)/libflash.extract: $(libflash_extract_deps)
 	@$(call targetinfo, $@)
 	rm -rf $(LIBFLASH_DIR)
-	@cd $(BUILDDIR) && gzcat $(LIBFLASH_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(LIBFLASH_SOURCE) | tar -xvf -
 	@patch -d $(BUILDDIR) -p0 < $(LIBFLASH_PATCH_SOURCE)
 	touch $@
 

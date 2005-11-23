@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pixman.make,v 1.5 2005-06-19 16:42:51 ericn Exp $
+# $Id: pixman.make,v 1.6 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ pixman_extract: $(STATEDIR)/pixman.extract
 $(STATEDIR)/pixman.extract: $(STATEDIR)/pixman.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(PIXMAN_DIR))
-	@cd $(BUILDDIR) && gzcat $(PIXMAN_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(PIXMAN_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

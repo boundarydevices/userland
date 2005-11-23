@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libio.make,v 1.1 2005-08-25 14:42:31 ericn Exp $
+# $Id: libio.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -51,7 +51,7 @@ $(LIBIO_PATCH):
 $(STATEDIR)/libio.extract: $(STATEDIR)/libio.get $(LIBIO_PATCH)
 	@$(call targetinfo, $@)
 	@$(call clean, $(LIBIO_DIR))
-	@cd $(BUILDDIR) && gzcat $(LIBIO_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(LIBIO_SOURCE) | tar -xvf -
 	@cd $(BUILDDIR) && patch -p0 < $(LIBIO_PATCH)
 	touch $@
 

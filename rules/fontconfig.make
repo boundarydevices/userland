@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: fontconfig.make,v 1.2 2005-06-19 16:42:55 ericn Exp $
+# $Id: fontconfig.make,v 1.3 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ fontconfig_extract: $(STATEDIR)/fontconfig.extract
 $(STATEDIR)/fontconfig.extract: $(STATEDIR)/fontconfig.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(FONTCONFIG_DIR))
-	@cd $(BUILDDIR) && gzcat $(FONTCONFIG_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(FONTCONFIG_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

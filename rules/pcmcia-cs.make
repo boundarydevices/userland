@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pcmcia-cs.make,v 1.6 2005-06-18 20:55:12 ericn Exp $
+# $Id: pcmcia-cs.make,v 1.7 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -57,7 +57,7 @@ pcmcia-cs_extract_deps	=  $(STATEDIR)/pcmcia-cs.get
 $(STATEDIR)/pcmcia-cs.extract: $(pcmcia-cs_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(PCMCIA-CS_DIR))
-	cd $(BUILDDIR) && gzcat $(PCMCIA-CS_SOURCE) | tar -xvf -
+	cd $(BUILDDIR) && zcat $(PCMCIA-CS_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

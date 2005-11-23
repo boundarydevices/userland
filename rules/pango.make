@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pango.make,v 1.1 2005-06-19 16:50:24 ericn Exp $
+# $Id: pango.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ pango_extract: $(STATEDIR)/pango.extract
 $(STATEDIR)/pango.extract: $(STATEDIR)/pango.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(PANGO_DIR))
-	@cd $(BUILDDIR) && gzcat $(PANGO_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(PANGO_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mpeg2dec.make,v 1.4 2005-11-19 14:41:45 ericn Exp $
+# $Id: mpeg2dec.make,v 1.5 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -72,7 +72,7 @@ mpeg2dec_extract_deps = $(STATEDIR)/mpeg2dec.get
 $(STATEDIR)/mpeg2dec.extract: $(mpeg2dec_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(MPEG2DEC_DIR))
-	@cd $(BUILDDIR) && gzcat $(MPEG2DEC_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(MPEG2DEC_SOURCE) | tar -xvf -
 ifdef CONFIG_LIBMPEG2_OLD
 	cd $(BUILDDIR) && patch -p0 <$(MPEG2DEC_PATCH_SRC)
 endif

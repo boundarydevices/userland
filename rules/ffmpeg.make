@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: ffmpeg.make,v 1.1 2004-05-31 19:45:32 ericn Exp $
+# $Id: ffmpeg.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -53,7 +53,7 @@ ffmpeg_extract_deps = $(STATEDIR)/ffmpeg.get
 $(STATEDIR)/ffmpeg.extract: $(ffmpeg_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(FFMPEG_DIR))
-	@cd $(BUILDDIR) && gzcat $(FFMPEG_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(FFMPEG_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: SDL.make,v 1.3 2005-06-19 16:43:12 ericn Exp $
+# $Id: SDL.make,v 1.4 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ sdl_extract: $(STATEDIR)/sdl.extract
 $(STATEDIR)/sdl.extract: $(STATEDIR)/sdl.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(SDL_DIR))
-	@cd $(BUILDDIR) && gzcat $(SDL_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(SDL_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

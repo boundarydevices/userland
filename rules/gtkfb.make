@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gtkfb.make,v 1.1 2005-06-19 17:27:58 ericn Exp $
+# $Id: gtkfb.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -46,7 +46,7 @@ gtkfb_extract: $(STATEDIR)/gtkfb.extract
 $(STATEDIR)/gtkfb.extract: $(STATEDIR)/gtkfb.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(GTKFB_DIR))
-	@cd $(BUILDDIR) && gzcat $(GTKFB_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(GTKFB_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------

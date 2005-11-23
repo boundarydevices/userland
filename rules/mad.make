@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.11 2005-11-09 02:21:32 ericn Exp $
+# $Id: mad.make,v 1.12 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -75,9 +75,9 @@ mad_extract_deps = $(STATEDIR)/mad.get
 $(STATEDIR)/mad.extract: $(mad_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(MAD_DIR))
-	cd $(BUILDDIR) && gzcat $(MAD_SOURCE) | tar -xvf -
+	cd $(BUILDDIR) && zcat $(MAD_SOURCE) | tar -xvf -
 	@$(call clean, $(ID3_DIR))
-	cd $(BUILDDIR) && gzcat $(ID3_SOURCE) | tar -xvf -
+	cd $(BUILDDIR) && zcat $(ID3_SOURCE) | tar -xvf -
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -189,7 +189,7 @@ madplay_extract: $(STATEDIR)/mad.extract
 $(STATEDIR)/madplay.extract: $(MADPLAY_SOURCE)
 	@$(call targetinfo, $@)
 	@$(call clean, $(MADPLAY_DIR))
-	cd $(BUILDDIR) && gzcat $(MADPLAY_SOURCE) | tar -xvf -
+	cd $(BUILDDIR) && zcat $(MADPLAY_SOURCE) | tar -xvf -
 	touch $@
 
 madplay_prepare: $(STATEDIR)/mad.install $(STATEDIR)/madplay.prepare

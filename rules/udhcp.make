@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: udhcp.make,v 1.4 2004-09-10 13:25:30 ericn Exp $
+# $Id: udhcp.make,v 1.5 2005-11-23 14:49:43 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -60,7 +60,7 @@ udhcp_extract_deps = $(STATEDIR)/udhcp.get
 $(STATEDIR)/udhcp.extract: $(udhcp_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(UDHCP_DIR))
-	@cd $(BUILDDIR) && gzcat $(UDHCP_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && zcat $(UDHCP_SOURCE) | tar -xvf -
 	cd $(BUILDDIR) && patch -p0 < $(UDHCP_PATCH_SOURCE)
 	touch $@
 
