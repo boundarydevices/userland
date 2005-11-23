@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.21 2005-11-23 12:53:17 ericn Exp $
+# $Id: bdScript.make,v 1.22 2005-11-23 14:44:24 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -41,6 +41,7 @@ ifdef CONFIG_BDSCRIPT_CVS
 
    $(STATEDIR)/bdScript.get:
 		@$(call targetinfo, $@)
+		mkdir -p $(BUILDDIR) $(STATEDIR)
 		cd $(BUILDDIR) && cvs checkout bdScript
 		touch $@
 
