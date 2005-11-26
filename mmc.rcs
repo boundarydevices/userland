@@ -1,5 +1,4 @@
 #!/bin/sh
-dd if=/dev/zero of=/dev/fb/0
 mknod /dev/ram1 b 1 1
 /sbin/mke2fs -i 1024 /dev/ram1 8192
 mkdir /newrd
@@ -33,5 +32,7 @@ ln -sf /dev/fb/0 newrd/dev/fb0
 mknod newrd/dev/dsp c 14 3
 mknod newrd/dev/timer c 253 0
 pivot_root /newrd /newrd/initrd
+cp -rp /cramfs/dev/* /dev/
+echo -e -n '\033[?25l' >/dev/ttyFB0
 exec /mmc/linux_init
 
