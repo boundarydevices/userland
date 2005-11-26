@@ -32,7 +32,7 @@ ln -sf /dev/fb/0 newrd/dev/fb0
 mknod newrd/dev/dsp c 14 3
 mknod newrd/dev/timer c 253 0
 pivot_root /newrd /newrd/initrd
-cp -rp /cramfs/dev/* /dev/
+cp -rp /cramfs/dev/* /dev/ 2>/dev/null
 echo -e -n '\033[?25l' >/dev/ttyFB0
 exec /mmc/linux_init
 
