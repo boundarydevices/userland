@@ -65,7 +65,7 @@ ifdef KERNEL_ARCH_PXA
 	@echo -e "/dev/zero\t\tc\t666\t0\t0\t1\t5\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/ptmx\t\tc\t666\t0\t0\t5\t2\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/ptyp\t\tc\t666\t0\t0\t2\t0\t0\t1\t2" >> devices.txt
-	@echo -e "/dev/tty\t\tc\t666\t0\t0\t4\t0\t0\t1\t3" >> devices.txt
+	@echo -e "/dev/ttyFB\t\tc\t666\t0\t0\t4\t0\t0\t1\t1" >> devices.txt
 	@echo -e "/dev/ttyS\t\tc\t666\t0\t0\t4\t64\t0\t1\t3" >> devices.txt
 	@echo -e "/dev/systty\t\tc\t666\t0\t0\t4\t0\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/tty\t\tc\t666\t0\t0\t5\t0\t0\t0\t-" >> devices.txt

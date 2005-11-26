@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.19  2005-11-22 02:19:24  ericn
+# Revision 1.20  2005-11-26 16:19:27  ericn
+# -create ttyFB0
+#
+# Revision 1.19  2005/11/22 02:19:24  ericn
 # -don't need root privilege to copy libpthread
 #
 # Revision 1.18  2005/11/07 01:02:24  ericn
@@ -275,7 +278,7 @@ endif
 ifdef KERNEL_DEVFS_FS
 	echo "ln -sfn /dev/fb/0 /dev/fb0" >>$@
 endif
-	echo "echo -e -n '\033[?25l' >/dev/tty0" >>$@
+	echo "echo -e -n '\033[?25l' >/dev/ttyFB0" >>$@
 	echo "fail()" >>$@
 	echo "{" >>$@
 	echo "  exec /bin/sh < /dev/console" >>$@
