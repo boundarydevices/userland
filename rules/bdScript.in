@@ -38,6 +38,13 @@ config JSSTARUSB
    help 
    Select yes to include Star Micronics printer support
 
+config JSCBM
+	bool
+	prompt "Include CBM printer support"
+   default n
+   help 
+   Select yes to include CBM BD2-1220 printer support
+
 config JSGPIO
 	bool
 	prompt "Include GPIO interface"
