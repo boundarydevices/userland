@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB.make,v 1.4 2005-11-23 14:49:43 ericn Exp $
+# $Id: DirectFB.make,v 1.5 2005-12-01 04:09:39 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -12,7 +12,7 @@
 # We provide this package
 #
 ifeq (y, $(CONFIG_DIRECTFB))
-PACKAGES += zlib
+PACKAGES += directfb
 endif
 
 #
@@ -53,15 +53,16 @@ $(STATEDIR)/directfb.extract: $(STATEDIR)/directfb.get
 # Prepare
 # ----------------------------------------------------------------------------
 
-directfb_prepare: $(STATEDIR)/directfb.prepare
+directfb_prepare: $(STATEDIR)/directfb.prepare $(STATEDIR)/JPEG.install
 
 directfb_prepare_deps = \
 	$(STATEDIR)/directfb.extract
 
 DIRECTFB_PATH	=  PATH=$(CROSS_PATH)
 DIRECTFB_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(CROSS_LIB_DIR)
+	--prefix=$(INSTALLPATH)
 
+CONFIG_DIRECTFB_SHARED = 1
 ifdef CONFIG_DIRECTFB_SHARED
    DIRECTFB_AUTOCONF 	+=  --enable-shared=yes
 else
@@ -81,11 +82,15 @@ DIRECTFB_AUTOCONF 	+=  --enable-video4linux=no
 DIRECTFB_AUTOCONF 	+=  --with-gfxdrivers=none
 DIRECTFB_AUTOCONF 	+=  --with-inputdrivers=none
 
+
 $(STATEDIR)/directfb.prepare: $(directfb_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(DIRECTFB_DIR) && \
 		$(DIRECTFB_PATH) \
       $(CROSS_ENV) \
+      CFLAGS=-I$(INSTALLPATH)/include \
+      CPPFLAGS=-I$(INSTALLPATH)/include \
+      LDFLAGS=-L$(INSTALLPATH)/lib \
       ./configure $(DIRECTFB_AUTOCONF)
 	touch $@
 
@@ -109,7 +114,9 @@ directfb_install: $(STATEDIR)/directfb.install
 $(STATEDIR)/directfb.install: $(STATEDIR)/directfb.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
-	cd $(DIRECTFB_DIR) && $(DIRECTFB_PATH) make install
+	cd $(DIRECTFB_DIR) && \
+        $(CROSS_ENV) \
+        $(DIRECTFB_PATH) make install
 	touch $@
 
 # ----------------------------------------------------------------------------
