@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: SDL.make,v 1.4 2005-11-23 14:49:43 ericn Exp $
+# $Id: SDL.make,v 1.5 2005-12-01 05:16:21 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -12,7 +12,7 @@
 # We provide this package
 #
 ifeq (y, $(CONFIG_SDL))
-PACKAGES += zlib
+PACKAGES += sdl
 endif
 
 #
@@ -62,6 +62,7 @@ SDL_PATH	=  PATH=$(CROSS_PATH)
 SDL_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
 	--prefix=$(INSTALLPATH)
 
+CONFIG_SDL_SHARED=1 
 ifdef CONFIG_SDL_SHARED
    SDL_AUTOCONF 	+=  --enable-shared=yes
 else
@@ -69,8 +70,6 @@ else
    SDL_AUTOCONF 	+=  --enable-static=yes
 endif
 
-SDL_AUTOCONF += --enable-shared=no 
-SDL_AUTOCONF += --enable-static=yes 
 SDL_AUTOCONF += --enable-debug=no 
 SDL_AUTOCONF += --enable-audio=yes 
 SDL_AUTOCONF += --enable-video=yes 
@@ -81,7 +80,7 @@ SDL_AUTOCONF += --enable-threads=yes
 SDL_AUTOCONF += --enable-timers=yes 
 SDL_AUTOCONF += --enable-endian=yes 
 SDL_AUTOCONF += --enable-file=yes 
-SDL_AUTOCONF += --enable-cpuinfo=no 
+SDL_AUTOCONF += --enable-cpuinfo=yes
 SDL_AUTOCONF += --enable-oss=yes 
 SDL_AUTOCONF += --enable-alsa=no 
 SDL_AUTOCONF += --enable-alsa-shared=no 
@@ -122,6 +121,10 @@ SDL_AUTOCONF += --enable-atari-ldg=no
 $(STATEDIR)/sdl.prepare: $(sdl_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(SDL_DIR) && \
+		$(SDL_PATH) \
+      $(CROSS_ENV) \
+      ./configure $(SDL_AUTOCONF)
+	cd $(SDL_DIR)/test && \
 		$(SDL_PATH) \
       $(CROSS_ENV) \
       ./configure $(SDL_AUTOCONF)
