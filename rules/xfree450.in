@@ -1,0 +1,13 @@
+menu "XFree86-4.5.0         "
+
+config XFREE450
+	bool
+	prompt "Compile XFree86-4.5.0"
+
+config XFREE450_CONFIG
+        prompt "Name of host.def file to be used"
+	string
+	default "build/xc-build/config/cf/xf86site.def"
+	depends on XFREE450
+
+endmenu
