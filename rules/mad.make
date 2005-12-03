@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.12 2005-11-23 14:49:43 ericn Exp $
+# $Id: mad.make,v 1.13 2005-12-03 03:30:20 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -194,14 +194,15 @@ $(STATEDIR)/madplay.extract: $(MADPLAY_SOURCE)
 
 madplay_prepare: $(STATEDIR)/mad.install $(STATEDIR)/madplay.prepare
 
-$(STATEDIR)/madplay.prepare: $(STATEDIR)/madplay.extract
+$(STATEDIR)/madplay.prepare: $(STATEDIR)/madplay.extract $(STATEDIR)/mad.install
 	@$(call targetinfo, $@)
 	@$(call clean, $(MADPLAY_DIR)/config.cache)
 	cd $(MADPLAY_DIR) && \
 		$(MAD_PATH) $(MAD_ENV) \
-		./configure $(MAD_AUTOCONF) \
-                CCFLAGS="-I$(INSTALLPATH)/include" \
-                CPPFLAGS="-I$(INSTALLPATH)/include"
+      CCFLAGS="-I$(INSTALLPATH)/include" \
+      CPPFLAGS="-I$(INSTALLPATH)/include" \
+      LDFLAGS="-L$(INSTALLPATH)/lib -lid3tag" \
+		./configure $(MAD_AUTOCONF)
 	touch $@
 
 madplay_compile: $(STATEDIR)/madplay.compile
