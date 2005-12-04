@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: fontconfig.make,v 1.3 2005-11-23 14:49:43 ericn Exp $
+# $Id: fontconfig.make,v 1.4 2005-12-04 17:22:22 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -72,6 +72,10 @@ else
 endif
 
 FONTCONFIG_AUTOCONF += --with-freetype-config=$(INSTALLPATH)/bin/freetype-config --enable-doc=no
+
+FONTCONFIG_AUTOCONF += \
+  --with-expat-includes=$(INSTALLPATH)/include \
+  --with-expat-lib=$(INSTALLPATH)/lib 
 
 $(STATEDIR)/fontconfig.prepare: $(fontconfig_prepare_deps)
 	@$(call targetinfo, $@)
