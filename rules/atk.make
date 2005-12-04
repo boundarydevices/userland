@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: atk.make,v 1.1 2005-06-19 16:50:24 ericn Exp $
+# $Id: atk.make,v 1.2 2005-12-04 17:47:02 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -56,7 +56,8 @@ $(STATEDIR)/atk.extract: $(STATEDIR)/atk.get
 atk_prepare: $(STATEDIR)/atk.prepare $(STATEDIR)/glib.prepare 
 
 atk_prepare_deps = \
-	$(STATEDIR)/atk.extract
+	$(STATEDIR)/atk.extract \
+   $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config
 
 ATK_PATH	   =  PATH=$(CROSS_PATH)
 ATK_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \

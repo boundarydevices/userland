@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pango.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
+# $Id: pango.make,v 1.3 2005-12-04 17:46:07 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -56,7 +56,8 @@ $(STATEDIR)/pango.extract: $(STATEDIR)/pango.get
 pango_prepare: $(STATEDIR)/pango.prepare $(STATEDIR)/glib.prepare 
 
 pango_prepare_deps = \
-	$(STATEDIR)/pango.extract
+	$(STATEDIR)/pango.extract \
+   $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config
 
 PANGO_PATH	   =  PATH=$(CROSS_PATH)
 PANGO_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
