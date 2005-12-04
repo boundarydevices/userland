@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.17  2005-11-19 13:17:12  ericn
+# Revision 1.18  2005-12-04 17:46:20  ericn
+# -add rule for arm-linux-pkgconfig
+#
+# Revision 1.17  2005/11/19 13:17:12  ericn
 # -keep flat, unzipped initrd
 #
 # Revision 1.16  2005/11/07 13:08:43  ericn
@@ -111,6 +114,11 @@ CROSS_ENV := \
 export TAR TOPDIR BUILDDIR SRCDIR STATEDIR PACKAGES CONFIG_GNU_TARGET 
 
 -include .config 
+
+$(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config: 
+	echo "#!/bin/sh" >$@
+	echo "PKG_CONFIG_PATH=$(CONFIG_INSTALLPATH)/lib/pkgconfig pkg-config \$$*" >>$@
+	chmod a+x $@
 
 include rules.mak
 
