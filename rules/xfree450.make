@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xfree450.make,v 1.1 2005-12-03 03:30:33 ericn Exp $
+# $Id: xfree450.make,v 1.2 2005-12-04 21:13:53 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #             Pengutronix <info@pengutronix.de>, Germany
@@ -27,6 +27,7 @@ XFREE450		= XFree86-$(XFREE450_VERSION)
 XFREE450_SUFFIX		= tgz
 XFREE450_DIR		= $(BUILDDIR)/xc
 XFREE450_BUILDDIR	= $(BUILDDIR)/xc-build
+COMPILER_PREFIX = $(CONFIG_GNU_TARGET)-
 
 XFREE450_URL_BASE		= ftp://ftp.xfree86.org/pub/XFree86/4.5.0/source/$(XFREE450)-src
 XFREE450_SOURCE_BASE = $(CONFIG_ARCHIVEPATH)/$(XFREE450)-src
@@ -123,11 +124,15 @@ $(STATEDIR)/xfree450.prepare: $(xfree450_prepare_deps)
 	cd $(XFREE450_BUILDDIR) && $(XFREE450_DIR)/config/util/lndir $(XFREE450_DIR)
 	cp $(CONFIG_XFREE450_CONFIG) $(XFREE450_BUILDDIR)/config/cf/host.def
 	cd $(XFREE450_BUILDDIR) && mkdir cross_compiler
-	for i in $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/bin/*; do ln -s $$i $(XFREE450_BUILDDIR)/cross_compiler; done
-	ln -sf $(PTXCONF_PREFIX)/bin/$(COMPILER_PREFIX)cpp $(XFREE450_BUILDDIR)/cross_compiler/cpp
-	ln -sf $(PTXCONF_PREFIX)/bin/$(COMPILER_PREFIX)gcov $(XFREE450_BUILDDIR)/cross_compiler/gcov
-	ln -sf gcc $(XFREE450_BUILDDIR)/cross_compiler/cc
-	ln -sf $(PTXCONF_PREFIX)/bin/$(COMPILER_PREFIX)g++ $(XFREE450_BUILDDIR)/cross_compiler/
+	for i in $(CONFIG_TOOLCHAINPATH)/bin/*; do ln -s $$i $(XFREE450_BUILDDIR)/cross_compiler; done
+	ln -sf $(CONFIG_TOOLCHAINPATH)/bin/$(COMPILER_PREFIX)cpp $(XFREE450_BUILDDIR)/cross_compiler/cpp
+	ln -sf $(CONFIG_TOOLCHAINPATH)/bin/$(COMPILER_PREFIX)gcov $(XFREE450_BUILDDIR)/cross_compiler/gcov
+	ln -sf $(CONFIG_TOOLCHAINPATH)/bin/$(COMPILER_PREFIX)gcc $(XFREE450_BUILDDIR)/cross_compiler/cc
+	ln -sf $(CONFIG_TOOLCHAINPATH)/bin/$(COMPILER_PREFIX)g++ $(XFREE450_BUILDDIR)/cross_compiler/
+	ln -sf $(CONFIG_TOOLCHAINPATH)/bin/$(COMPILER_PREFIX)gcc $(XFREE450_BUILDDIR)/cross_compiler/gcc
+	ln -sf $(CONFIG_TOOLCHAINPATH)/bin/$(COMPILER_PREFIX)ld $(XFREE450_BUILDDIR)/cross_compiler/ld
+	ln -sf $(CONFIG_TOOLCHAINPATH)/bin/$(COMPILER_PREFIX)ar $(XFREE450_BUILDDIR)/cross_compiler/ar
+	ln -sf $(CONFIG_TOOLCHAINPATH)/bin/$(COMPILER_PREFIX)ranlib $(XFREE450_BUILDDIR)/cross_compiler/ranlib
 	ln -sf $(COMPILER_PREFIX)g++ $(XFREE450_BUILDDIR)/cross_compiler/g++
 	ln -sf g++ $(XFREE450_BUILDDIR)/cross_compiler/c++
 
@@ -148,13 +153,17 @@ $(STATEDIR)/xfree450.compile: $(xfree450_compile_deps)
 	# FIXME: tweak, tweak...
 	#
 	echo "UGGLY HACK WARNING: creating symlink to host xcursorgen (chicken&egg problem)"
-	install -d $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/usr/X11R6/bin
-	ln -sf `which xcursorgen` $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/usr/X11R6/bin/xcursorgen
-	ln -sf `which mkfontdir` $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/usr/X11R6/bin/mkfontdir
+	mkdir -p $(INSTALLPATH)/usr/X11R6/bin
+	ln -sf `which xcursorgen` $(INSTALLPATH)/usr/X11R6/bin/xcursorgen
+	ln -sf `which mkfontdir` $(INSTALLPATH)/usr/X11R6/bin/mkfontdir
 
 	cd $(XFREE450_BUILDDIR) && \
-		$(XFREE450_ENV) DESTDIR=$(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET) \
-		make World CROSSCOMPILEDIR=$(XFREE450_BUILDDIR)/cross_compiler
+		$(XFREE450_ENV) DESTDIR=$(INSTALLPATH) \
+		make World \
+          BOOTSTRAPCFLAGS="-I$(INSTALLPATH)/include" \
+          DESTDIR=$(INSTALLPATH) \
+          PreIncDir=$(INSTALLPATH)/include \
+          CROSSCOMPILEDIR=$(XFREE450_BUILDDIR)/cross_compiler | tee make.log
 
 	touch $@
 
