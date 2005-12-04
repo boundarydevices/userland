@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: expat.make,v 1.3 2005-11-23 14:49:43 ericn Exp $
+# $Id: expat.make,v 1.4 2005-12-04 17:22:42 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -108,7 +108,8 @@ $(STATEDIR)/expat.install: $(STATEDIR)/expat.compile
 	echo "Description: An XML parsing library"
 	echo "Version: 1.95.8" >> $(expat_pc)
 	echo -E "Libs: -L$(INSTALLPATH)/lib -lexpat" >> $(expat_pc)
-	echo -E "Cflags: -L$(INSTALLPATH)/include" >> $(expat_pc)
+	echo -E "Cflags: -I$(INSTALLPATH)/include" >> $(expat_pc)
+	cd $(EXPAT_DIR) && $(EXPAT_PATH) 
 	touch $@
 
 # ----------------------------------------------------------------------------
