@@ -126,4 +126,4 @@ source "rules/alsa-utils.in"
 source "rules/libevent.in"
 source "rules/jack.in"
 source "rules/gstreamer.in"
-
+source "rules/xfree450.in"
