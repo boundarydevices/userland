@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gtkfb.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
+# $Id: gtkfb.make,v 1.3 2005-12-04 21:14:31 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -56,7 +56,9 @@ $(STATEDIR)/gtkfb.extract: $(STATEDIR)/gtkfb.get
 gtkfb_prepare: $(STATEDIR)/gtkfb.prepare $(STATEDIR)/glib.prepare 
 
 gtkfb_prepare_deps = \
-	$(STATEDIR)/gtkfb.extract
+	$(STATEDIR)/gtkfb.extract \
+	$(STATEDIR)/pango.install \
+   $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config
 
 GTKFB_PATH	   =  PATH=$(CROSS_PATH)
 GTKFB_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \

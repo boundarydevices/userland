@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pango.make,v 1.3 2005-12-04 17:46:07 ericn Exp $
+# $Id: pango.make,v 1.4 2005-12-04 21:14:14 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -92,7 +92,7 @@ $(STATEDIR)/pango.prepare: $(pango_prepare_deps)
 
 pango_compile: $(STATEDIR)/pango.compile 
 
-$(STATEDIR)/pango.compile: $(STATEDIR)/pango.prepare $(STATEDIR)/glib.install 
+$(STATEDIR)/pango.compile: $(STATEDIR)/pango.prepare $(STATEDIR)/glib.install $(INSTALLPATH)/lib/libdl.a
 	@$(call targetinfo, $@)
 	cd $(PANGO_DIR) && $(PANGO_PATH) make
 	touch $@

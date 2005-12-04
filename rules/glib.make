@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glib.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
+# $Id: glib.make,v 1.3 2005-12-04 21:14:24 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -88,7 +88,9 @@ $(STATEDIR)/glib.prepare: $(glib_prepare_deps)
 
 glib_compile: $(STATEDIR)/glib.compile
 
-$(STATEDIR)/glib.compile: $(STATEDIR)/glib.prepare 
+$(STATEDIR)/glib.compile: \
+   $(STATEDIR)/glib.prepare \
+   $(INSTALLPATH)/lib/libdl.a
 	@$(call targetinfo, $@)
 	cd $(GLIB_DIR) && $(GLIB_PATH) make
 	touch $@
