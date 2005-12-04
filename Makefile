@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.18  2005-12-04 17:46:20  ericn
+# Revision 1.19  2005-12-04 21:14:52  ericn
+# -move decls before rules inclusion
+#
+# Revision 1.18  2005/12/04 17:46:20  ericn
 # -add rule for arm-linux-pkgconfig
 #
 # Revision 1.17  2005/11/19 13:17:12  ericn
@@ -115,17 +118,6 @@ export TAR TOPDIR BUILDDIR SRCDIR STATEDIR PACKAGES CONFIG_GNU_TARGET
 
 -include .config 
 
-$(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config: 
-	echo "#!/bin/sh" >$@
-	echo "PKG_CONFIG_PATH=$(CONFIG_INSTALLPATH)/lib/pkgconfig pkg-config \$$*" >>$@
-	chmod a+x $@
-
-include rules.mak
-
-include $(wildcard rules/*.make)
-
-export PACKAGES
-
 INSTALLPATH=$(subst ",,$(CONFIG_INSTALLPATH))
 ifeq ("", $(CONFIG_INSTALLPATH))
    INSTALLPATH=$(TOPDIR)/install
@@ -149,12 +141,24 @@ CONFIG_ARCH :=$(subst ",,$(CONFIG_ARCH))
 CONFIG_TOOLCHAINPATH := $(subst ",,$(CONFIG_TOOLCHAINPATH))
 CROSS_LIB_DIR := $(subst ",,$(CONFIG_TOOLCHAINPATH)/$(CONFIG_GNU_TARGET))
 
+export ROOTDIR INSTALLPATH CONFIG_ARCH CONFIG_KERNELPATH CONFIG_TOOLCHAINPATH CROSS_LIB_DIR
+
+include rules.mak
+
+include $(wildcard rules/*.make)
+
+export PACKAGES
+
 $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config:
 	mkdir -p $(INSTALLPATH)/lib/pkgconfig
 	echo -e "#!/bin/sh\nPKG_CONFIG_PATH=$(INSTALLPATH)/lib/pkgconfig pkg-config \044@\n" >$@
 	chmod 755 $@
 
-export ROOTDIR INSTALLPATH CONFIG_ARCH CONFIG_KERNELPATH CONFIG_TOOLCHAINPATH CROSS_LIB_DIR
+$(INSTALLPATH)/lib/libdl.so.2: $(CROSS_LIB_DIR)/lib/libdl.so.2
+	cp -df $(CROSS_LIB_DIR)/lib/libdl* $(INSTALLPATH)/lib/
+
+$(INSTALLPATH)/lib/libdl.a: $(CROSS_LIB_DIR)/lib/libdl.a
+	cp -df $(CROSS_LIB_DIR)/lib/libdl* $(INSTALLPATH)/lib/
 
 PACKAGES_CLEAN			   := $(addsuffix _clean,$(PACKAGES))
 PACKAGES_GET			   := $(addsuffix _get,$(PACKAGES))
