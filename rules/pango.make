@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pango.make,v 1.4 2005-12-04 21:14:14 ericn Exp $
+# $Id: pango.make,v 1.5 2005-12-05 15:00:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -107,6 +107,7 @@ $(STATEDIR)/pango.install: $(STATEDIR)/pango.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
 	cd $(PANGO_DIR) && $(PANGO_PATH) make install
+	perl -pi -e's/-lpango/-lexpat -lpango/' $(INSTALLPATH)/lib/pkgconfig/pango.pc
 	touch $@
 
 # ----------------------------------------------------------------------------
