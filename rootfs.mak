@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.20  2005-11-26 16:19:27  ericn
+# Revision 1.21  2005-12-10 14:28:04  ericn
+# -fix kernel path for modules_install, ordering of libstdc++
+#
+# Revision 1.20  2005/11/26 16:19:27  ericn
 # -create ttyFB0
 #
 # Revision 1.19  2005/11/22 02:19:24  ericn
@@ -128,7 +131,7 @@ $(DIRS):
 	mkdir -p $@
 
 root/lib/modules:
-	make -C ~/cvs/linux-2.6.11.11 INSTALL_MOD_PATH=$(ROOTTARGET) modules_install
+	make -C $(CONFIG_KERNELPATH) INSTALL_MOD_PATH=$(ROOTTARGET) modules_install
 
 $(CROSS_LIB_LINK)/lib:
 	mkdir -p $(CROSS_LIB_LINK)
@@ -178,10 +181,12 @@ root/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
 	cp -d $(CROSS_LIB_DIR)/lib/libc.so.6 root/lib/
 
 root/lib/libgcc_s.so.1 \
-root/lib/libstdc++.so \
-root/lib/libstdc++.so.6 \
 root/lib/libstdc++.so.6.0.3:
 	cp -d $(CROSS_LIB_DIR)/lib/$(shell basename $@) $@ && chmod a+rw $@
+
+root/lib/libstdc++.so \
+root/lib/libstdc++.so.6: root/lib/libstdc++.so.6.0.3
+	cd root/lib && ln -s $(shell basename $<) $(shell basename $@)
 
 root/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1
 	cp $< $@
