@@ -59,6 +59,14 @@ config JSMONITORWLAN
    help 
    Select yes to include Linux-WLAN monitor for Intersil cards
 
+config JSCAIRO
+	bool
+	prompt "Include Cairo Graphics Library"
+   default y
+   help 
+   Select yes to include the Cairo Graphics Library
+   See http://cairographics.org/
+
 
 endmenu
 
