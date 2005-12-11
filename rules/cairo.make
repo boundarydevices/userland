@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: cairo.make,v 1.5 2005-11-23 14:49:43 ericn Exp $
+# $Id: cairo.make,v 1.6 2005-12-11 16:03:51 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-CAIRO = cairo-0.5.0
+CAIRO = cairo-0.9.2
 CAIRO_URL = http://cairographics.org/snapshots/$(CAIRO).tar.gz
 CAIRO_SOURCE = $(CONFIG_ARCHIVEPATH)/$(CAIRO).tar.gz
 CAIRO_DIR = $(BUILDDIR)/$(CAIRO)
