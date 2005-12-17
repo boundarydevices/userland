@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.19  2005-12-04 21:14:52  ericn
+# Revision 1.20  2005-12-17 19:40:09  ericn
+# -add builds for ROOTDIR sub-directories
+#
+# Revision 1.19  2005/12/04 21:14:52  ericn
 # -move decls before rules inclusion
 #
 # Revision 1.18  2005/12/04 17:46:20  ericn
@@ -135,6 +138,12 @@ ifndef CONFIG_ROOT
    ROOTDIR=$(TOPDIR)/root
 endif
 endif
+
+$(ROOTDIR)/lib:
+$(ROOTDIR)/bin:
+$(ROOTDIR)/var:
+$(ROOTDIR)/etc:
+	mkdir -p $@
 
 CONFIG_KERNELPATH := $(subst ",,$(CONFIG_KERNELPATH))
 CONFIG_ARCH :=$(subst ",,$(CONFIG_ARCH))
