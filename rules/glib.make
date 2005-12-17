@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glib.make,v 1.3 2005-12-04 21:14:24 ericn Exp $
+# $Id: glib.make,v 1.4 2005-12-17 18:34:27 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -116,6 +116,62 @@ glib_targetinstall: $(STATEDIR)/glib.targetinstall
 $(STATEDIR)/glib.targetinstall: $(STATEDIR)/glib.install
 	@$(call targetinfo, $@)
 	touch $@
+
+$(ROOTDIR)/lib/libnsl.so.1: $(CROSS_LIB_DIR)/lib/libnsl.so.1
+	cp $< $@ && chmod a+rwx $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
+$(ROOTDIR)/lib/libresolv-2.3.5.so: $(CROSS_LIB_DIR)/lib/libresolv-2.3.5.so
+	cp $< $@ && chmod a+rwx $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cd $(ROOTDIR)/lib/ && ln -s $@ libresolv.so.2
+
+$(ROOTDIR)/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
+	cp -d $(CROSS_LIB_DIR)/lib/libc-*.so* $(ROOTDIR)/lib/
+	cp -d $(CROSS_LIB_DIR)/lib/libc.so.6 $(ROOTDIR)/lib/
+
+$(ROOTDIR)/lib/libgcc_s.so.1 \
+$(ROOTDIR)/lib/libstdc++.so.6.0.3:
+	cp -d $(CROSS_LIB_DIR)/lib/$(shell basename $@) $@ && chmod a+rw $@
+
+$(ROOTDIR)/lib/libstdc++.so \
+$(ROOTDIR)/lib/libstdc++.so.6: $(ROOTDIR)/lib/libstdc++.so.6.0.3
+	cd $(ROOTDIR)/lib && ln -s $(shell basename $<) $(shell basename $@)
+
+$(ROOTDIR)/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1
+	cp $< $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
+$(ROOTDIR)/lib/libnss_dns.so.2: $(CROSS_LIB_DIR)/lib/libnss_dns.so.2
+	cp $< $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
+$(ROOTDIR)/lib/libnss_files.so.2: $(CROSS_LIB_DIR)/lib/libnss_files.so.2
+	cp $< $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
+$(ROOTDIR)/lib/libcrypt.so.1: $(CROSS_LIB_DIR)/lib/libcrypt.so.1
+	cp $< $@
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+
+$(ROOTDIR)/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
+	cp -d $(CROSS_LIB_DIR)/lib/libm.so* $(ROOTDIR)/lib/
+	cp -d $(CROSS_LIB_DIR)/lib/libm-*.so* $(ROOTDIR)/lib/
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $(ROOTDIR)/lib/libm-2.2.3.so
+
+$(ROOTDIR)/lib/libpthread.so.0: $(CROSS_LIB_DIR)/lib/libpthread.so.0
+	cp -d $(CROSS_LIB_DIR)/lib/libpthread-0.10.so $(ROOTDIR)/lib/ && chmod a+rw $(ROOTDIR)/lib/libpthread-0.10.so
+	cp -d $(CROSS_LIB_DIR)/lib/libpthread.so.0 $(ROOTDIR)/lib/ && chmod a+rw $(ROOTDIR)/lib/libpthread.so.0
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $(ROOTDIR)/lib/libpthread-*.so
+
+$(ROOTDIR)/lib/ld-2.3.5.so: $(CROSS_LIB_DIR)/lib/ld-2.3.5.so
+	cp -f $< $@
+
+$(ROOTDIR)/lib/ld-linux.so.2: $(ROOTDIR)/lib/ld-2.3.5.so
+	cd $(ROOTDIR)/lib/ && ln -s ld-2.3.5.so ld-linux.so.2
+
+$(ROOTDIR)/lib/libdl.so.2: $(CROSS_LIB_DIR)/lib/libdl.so.2
+	cp -f $< $@
 
 # ----------------------------------------------------------------------------
 # Clean
