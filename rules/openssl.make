@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssl.make,v 1.7 2005-12-17 18:33:46 ericn Exp $
+# $Id: openssl.make,v 1.8 2005-12-17 19:42:13 ericn Exp $
 #
 # Copyright (C) 2002 by Jochen Striepe for Pengutronix e.K., Hildesheim, Germany
 #               2003 by Pengutronix e.K., Hildesheim, Germany
@@ -138,6 +138,7 @@ openssl_targetinstall_deps = \
         $(ROOTDIR)/lib/libcrypto.so.$(OPENSSL_VER)
 
 $(ROOTDIR)/lib/libcrypto.so.$(OPENSSL_VER): $(OPENSSL_DIR)/libcrypto.so.$(OPENSSL_VER)
+	mkdir -p $(ROOTDIR)/lib
 	@cp -d -f $(OPENSSL_DIR)/libcrypto.so* $(ROOTDIR)/lib/
 	@chmod a+rwx $(ROOTDIR)/lib/libcrypto.so*
 	@$(OPENSSL_PATH) $(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libcrypto.so*
