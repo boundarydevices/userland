@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssl.make,v 1.6 2005-11-23 14:49:43 ericn Exp $
+# $Id: openssl.make,v 1.7 2005-12-17 18:33:46 ericn Exp $
 #
 # Copyright (C) 2002 by Jochen Striepe for Pengutronix e.K., Hildesheim, Germany
 #               2003 by Pengutronix e.K., Hildesheim, Germany
@@ -20,7 +20,8 @@ endif
 #
 # Paths and names 
 #
-OPENSSL			= openssl-0.9.7c
+OPENSSL_VER             = 0.9.7
+OPENSSL			= openssl-$(OPENSSL_VER)c
 OPENSSL_URL 		= http://www.openssl.org/source/$(OPENSSL).tar.gz
 OPENSSL_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(OPENSSL).tar.gz
 OPENSSL_DIR 		= $(BUILDDIR)/$(OPENSSL)
@@ -133,7 +134,13 @@ $(STATEDIR)/openssl.install: $(STATEDIR)/openssl.compile
 openssl_targetinstall: $(STATEDIR)/openssl.targetinstall
 
 openssl_targetinstall_deps = \
-	$(STATEDIR)/openssl.install
+	$(STATEDIR)/openssl.install \
+        $(ROOTDIR)/lib/libcrypto.so.$(OPENSSL_VER)
+
+$(ROOTDIR)/lib/libcrypto.so.$(OPENSSL_VER): $(OPENSSL_DIR)/libcrypto.so.$(OPENSSL_VER)
+	@cp -d -f $(OPENSSL_DIR)/libcrypto.so* $(ROOTDIR)/lib/
+	@chmod a+rwx $(ROOTDIR)/lib/libcrypto.so*
+	@$(OPENSSL_PATH) $(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libcrypto.so*
 
 $(STATEDIR)/openssl.targetinstall: $(openssl_targetinstall_deps)
 	@$(call targetinfo, $@)
@@ -142,9 +149,6 @@ ifdef CONFIG_OPENSSL_SHARED
 	@mkdir -p $(ROOTDIR)/lib
 	@cp -d -f $(OPENSSL_DIR)/libssl.so* $(ROOTDIR)/lib/
 	@$(OPENSSL_PATH) $(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libssl.so*
-
-	@cp -d -f $(OPENSSL_DIR)/libcrypto.so* $(ROOTDIR)/lib/
-	@$(OPENSSL_PATH) $(CROSSSTRIP) -S -R .note -R .comment $(ROOTDIR)/lib/libcrypto.so*
 endif
 	touch $@
 

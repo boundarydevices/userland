@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.6 2005-11-23 14:49:43 ericn Exp $
+# $Id: openssh.make,v 1.7 2005-12-17 18:33:56 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -184,17 +184,21 @@ openssh_targetinstall: $(STATEDIR)/openssh.targetinstall
 openssh_targetinstall_deps = \
 	$(STATEDIR)/openssl.targetinstall \
 	$(STATEDIR)/zlib.targetinstall \
-	$(STATEDIR)/openssh.compile
+	$(STATEDIR)/openssh.compile \
+        $(ROOTDIR)/lib/libnsl.so.1 \
+        $(ROOTDIR)/lib/libresolv-2.3.5.so \
+        $(ROOTDIR)/lib/libcrypto.so.0.9.7 \
+        $(ROOTDIR)/lib/libutil.so.1 \
+        $(ROOTDIR)/lib/libcrypt.so.1 \
+        $(ROOTDIR)/lib/libc.so.6
 
 $(STATEDIR)/openssh.targetinstall: $(openssh_targetinstall_deps)
 	@$(call targetinfo, openssh.targetinstall)
-
 ifdef CONFIG_OPENSSH_SSH
 	@install -m 644 -D $(OPENSSH_DIR)/ssh_config.out $(ROOTDIR)/etc/ssh/ssh_config
 	@install -m 755 -D $(OPENSSH_DIR)/ssh $(ROOTDIR)/usr/bin/ssh
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/bin/ssh
 endif
-
 ifdef CONFIG_OPENSSH_SSHD
 	@install -m 644 -D $(OPENSSH_DIR)/moduli.out $(ROOTDIR)/etc/ssh/moduli
 	@install -m 644 -D $(OPENSSH_DIR)/sshd_config.out $(ROOTDIR)/etc/ssh/sshd_config
@@ -206,23 +210,19 @@ ifdef CONFIG_OPENSSH_SSHD
 	@ssh-keygen -q -t dsa -f $(ROOTDIR)/etc/ssh/ssh_host_dsa_key -N ''
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/sbin/sshd
 endif
-
 ifdef CONFIG_OPENSSH_SCP
 	@install -m 755 -D $(OPENSSH_DIR)/scp $(ROOTDIR)/usr/bin/scp
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/bin/scp
 endif
-
 ifdef CONFIG_OPENSSH_SFTP_SERVER
 	@install -m 755 -D $(OPENSSH_DIR)/sftp-server $(ROOTDIR)/usr/sbin/sftp-server
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/sbin/sftp-server
 endif
-
 ifdef CONFIG_OPENSSH_KEYGEN
 #	@install -m 755 -D $(MISCDIR)/openssh-host-keygen.sh $(ROOTDIR)/sbin/openssh-host-keygen.sh
 	@install -m 755 -D $(OPENSSH_DIR)/ssh-keygen $(ROOTDIR)/bin/ssh-keygen
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/bin/ssh-keygen
 endif
-
 	touch $@
 
 # ----------------------------------------------------------------------------
