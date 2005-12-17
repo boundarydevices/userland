@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.21  2005-12-10 14:28:04  ericn
+# Revision 1.22  2005-12-17 18:34:59  ericn
+# -use ROOTDIR symbol, move glib library targets to rules/glib.make
+#
+# Revision 1.21  2005/12/10 14:28:04  ericn
 # -fix kernel path for modules_install, ordering of libstdc++
 #
 # Revision 1.20  2005/11/26 16:19:27  ericn
@@ -81,57 +84,57 @@ include .config
 include .kernelconfig
 include .bbconfig
 include rules/busybox.make
+include rules/glib.make
 
 CROSSSTRIP := $(CONFIG_GNU_TARGET)-strip
 CROSS_PATH := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
-ROOTTARGET := $(shell pwd)/root
 
-DIRS := root/bin root/etc root/lib root/proc root/sysfs root/tmp root/tmp/mmc
+DIRS := $(ROOTDIR)/bin $(ROOTDIR)/etc $(ROOTDIR)/lib $(ROOTDIR)/proc $(ROOTDIR)/sysfs $(ROOTDIR)/tmp $(ROOTDIR)/tmp/mmc
 
-TARGETS := root/etc/bashrc \
-           root/etc/fstab \
-           root/etc/hosts \
-           root/etc/inittab \
-           root/etc/modules.conf \
-           root/etc/nsswitch.conf \
-           root/etc/resolv.conf \
-           root/etc/ld.so.conf \
-           root/etc/ld.so.cache \
-           root/bin/jsMenu \
-           root/etc/init.d/rcS \
-           root/lib/libc.so.6 \
-           root/lib/libgcc_s.so.1 \
-           root/lib/libstdc++.so \
-           root/lib/libstdc++.so.6 \
-           root/lib/libstdc++.so.6.0.3 \
-           root/lib/libutil.so.1 \
-           root/lib/libnsl.so.1 \
-           root/lib/libnss_dns.so.2 \
-           root/lib/libnss_files.so.2 \
-           root/lib/libcrypt.so.1 \
-           root/lib/libm.so.6 \
-           root/lib/libpthread.so.0 \
-           root/lib/ld-2.3.5.so \
-           root/lib/libdl.so.2 \
-           root/lib/ld-linux.so.2 \
-           root/lib/modules \
-           root/linuxrc \
-           root/proc \
-           root/sysfs \
-           root/tmp \
-           root/tmp/mmc \
-           root/var
+TARGETS := $(ROOTDIR)/etc/bashrc \
+           $(ROOTDIR)/etc/fstab \
+           $(ROOTDIR)/etc/hosts \
+           $(ROOTDIR)/etc/inittab \
+           $(ROOTDIR)/etc/modules.conf \
+           $(ROOTDIR)/etc/nsswitch.conf \
+           $(ROOTDIR)/etc/resolv.conf \
+           $(ROOTDIR)/etc/ld.so.conf \
+           $(ROOTDIR)/etc/ld.so.cache \
+           $(ROOTDIR)/bin/jsMenu \
+           $(ROOTDIR)/etc/init.d/rcS \
+           $(ROOTDIR)/lib/libc.so.6 \
+           $(ROOTDIR)/lib/libgcc_s.so.1 \
+           $(ROOTDIR)/lib/libstdc++.so \
+           $(ROOTDIR)/lib/libstdc++.so.6 \
+           $(ROOTDIR)/lib/libstdc++.so.6.0.3 \
+           $(ROOTDIR)/lib/libutil.so.1 \
+           $(ROOTDIR)/lib/libnsl.so.1 \
+           $(ROOTDIR)/lib/libnss_dns.so.2 \
+           $(ROOTDIR)/lib/libnss_files.so.2 \
+           $(ROOTDIR)/lib/libcrypt.so.1 \
+           $(ROOTDIR)/lib/libm.so.6 \
+           $(ROOTDIR)/lib/libpthread.so.0 \
+           $(ROOTDIR)/lib/ld-2.3.5.so \
+           $(ROOTDIR)/lib/libdl.so.2 \
+           $(ROOTDIR)/lib/ld-linux.so.2 \
+           $(ROOTDIR)/lib/modules \
+           $(ROOTDIR)/linuxrc \
+           $(ROOTDIR)/proc \
+           $(ROOTDIR)/sysfs \
+           $(ROOTDIR)/tmp \
+           $(ROOTDIR)/tmp/mmc \
+           $(ROOTDIR)/var
 ifdef BUSYBOX_UDHCPC
-TARGETS += root/usr/share/udhcpc/default.script
+TARGETS += $(ROOTDIR)/usr/share/udhcpc/default.script
 endif
 
-CROSS_LIB_LINK = $(subst //,/,root/$(CROSS_LIB_DIR))
+CROSS_LIB_LINK = $(subst //,/,$(ROOTDIR)/$(CROSS_LIB_DIR))
 
 $(DIRS):
 	mkdir -p $@
 
-root/lib/modules:
-	make -C $(CONFIG_KERNELPATH) INSTALL_MOD_PATH=$(ROOTTARGET) modules_install
+$(ROOTDIR)/lib/modules:
+	make -C $(CONFIG_KERNELPATH) INSTALL_MOD_PATH=$(ROOTDIR) modules_install
 
 $(CROSS_LIB_LINK)/lib:
 	mkdir -p $(CROSS_LIB_LINK)
@@ -141,17 +144,17 @@ $(CROSS_LIB_LINK)/etc:
 	mkdir -p $(CROSS_LIB_LINK)
 	cd $(CROSS_LIB_LINK) && ln -sf /etc
 
-root/etc/bashrc:
+$(ROOTDIR)/etc/bashrc:
 	echo "#!/bin/sh" > $@
 	echo "# CURLTMPSIZE should be smaller than sizeof ramdisk from " >> $@
 	echo "# mke2fs call by size of the largest file to be downloaded" >> $@
 	echo "export CURLTMPSIZE=4000000" >> $@
 	echo "export LD_LIBRARY_PATH=/lib:/usr/lib" >> $@
 
-root/etc/hosts: /etc/hosts
+$(ROOTDIR)/etc/hosts: /etc/hosts
 	cp -f $< $@ 
 
-root/etc/inittab:
+$(ROOTDIR)/etc/inittab:
 	echo "::sysinit:/etc/init.d/rcS" >> $@
 	echo "::wait:/bin/echo Welcome" >> $@
 	echo "tty2::askfirst:-/bin/sh" >> $@
@@ -164,78 +167,27 @@ root/etc/inittab:
 	echo "::restart:/sbin/init" >> $@
 	chmod a+x $@
 
-root/etc/modules.conf:
+$(ROOTDIR)/etc/modules.conf:
 	echo "alias wlan0 prism2_cs" > $@
 
-root/etc/nsswitch.conf:
+$(ROOTDIR)/etc/nsswitch.conf:
 	echo "hosts:      files dns" > $@
 
-root/etc/resolv.conf:
+$(ROOTDIR)/etc/resolv.conf:
 	echo "# name servers go here" >$@
 
-root/etc/ld.so.conf:
+$(ROOTDIR)/etc/ld.so.conf:
 	echo -e "" > $@
 
-root/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
-	cp -d $(CROSS_LIB_DIR)/lib/libc-*.so* root/lib/
-	cp -d $(CROSS_LIB_DIR)/lib/libc.so.6 root/lib/
+$(ROOTDIR)/linuxrc: $(ROOTDIR)/bin/busybox
+	cd $(ROOTDIR) && ln -s ./bin/busybox linuxrc
 
-root/lib/libgcc_s.so.1 \
-root/lib/libstdc++.so.6.0.3:
-	cp -d $(CROSS_LIB_DIR)/lib/$(shell basename $@) $@ && chmod a+rw $@
+$(ROOTDIR)/etc/ld.so.cache: $(ROOTDIR)/etc/modules.conf $(ROOTDIR)/etc/ld.so.conf
+	mkdir -p $(ROOTDIR)/lib
+	mkdir -p $(ROOTDIR)/usr/lib
+	cd $(ROOTDIR)/etc && /sbin/ldconfig -r ../ -v
 
-root/lib/libstdc++.so \
-root/lib/libstdc++.so.6: root/lib/libstdc++.so.6.0.3
-	cd root/lib && ln -s $(shell basename $<) $(shell basename $@)
-
-root/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1
-	cp $< $@
-	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
-
-root/lib/libnsl.so.1: $(CROSS_LIB_DIR)/lib/libnsl.so.1
-	cp $< $@
-	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
-
-root/lib/libnss_dns.so.2: $(CROSS_LIB_DIR)/lib/libnss_dns.so.2
-	cp $< $@
-	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
-
-root/lib/libnss_files.so.2: $(CROSS_LIB_DIR)/lib/libnss_files.so.2
-	cp $< $@
-	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
-
-root/lib/libcrypt.so.1: $(CROSS_LIB_DIR)/lib/libcrypt.so.1
-	cp $< $@
-	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
-
-root/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
-	cp -d $(CROSS_LIB_DIR)/lib/libm.so* root/lib/
-	cp -d $(CROSS_LIB_DIR)/lib/libm-*.so* root/lib/
-	PATH=$(CROSS_PATH) $(CROSSSTRIP) root/lib/libm-2.2.3.so
-
-root/lib/libpthread.so.0: $(CROSS_LIB_DIR)/lib/libpthread.so.0
-	cp -d $(CROSS_LIB_DIR)/lib/libpthread-0.10.so root/lib/ && chmod a+rw root/lib/libpthread-0.10.so
-	cp -d $(CROSS_LIB_DIR)/lib/libpthread.so.0 root/lib/ && chmod a+rw root/lib/libpthread.so.0
-	PATH=$(CROSS_PATH) $(CROSSSTRIP) root/lib/libpthread-*.so
-
-root/lib/ld-2.3.5.so: $(CROSS_LIB_DIR)/lib/ld-2.3.5.so
-	cp -f $< $@
-
-root/lib/ld-linux.so.2: root/lib/ld-2.3.5.so
-	cd root/lib/ && ln -s ld-2.3.5.so ld-linux.so.2
-
-root/lib/libdl.so.2: $(CROSS_LIB_DIR)/lib/libdl.so.2
-	cp -f $< $@
-
-root/linuxrc: root/bin/busybox
-	cd root && ln -s ./bin/busybox linuxrc
-
-root/etc/ld.so.cache: root/etc/modules.conf root/etc/ld.so.conf
-	mkdir -p root/lib
-	mkdir -p root/usr/lib
-	cd root/etc && /sbin/ldconfig -r ../ -v
-
-root/etc/fstab:
+$(ROOTDIR)/etc/fstab:
 ifdef KERNEL_DEVPTS_FS
 	echo "none /dev/pts devpts gid=5,mode=0620 0 0" > $@
 endif   
@@ -248,19 +200,19 @@ endif
 	touch $@
 
 ifdef BUSYBOX_UDHCPC
-root/usr/share/udhcpc/default.script: $(BUSYBOX_DIR)/examples/udhcp/sample.script
-	mkdir -p root/usr/share/udhcpc
+$(ROOTDIR)/usr/share/udhcpc/default.script: $(BUSYBOX_DIR)/examples/udhcp/sample.script
+	mkdir -p $(ROOTDIR)/usr/share/udhcpc
 	cp -fv $? $@ && chmod a+x $@
-	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.bound root/usr/share/udhcpc/
-	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.deconfig root/usr/share/udhcpc/
-	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.renew root/usr/share/udhcpc/
-	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.nak root/usr/share/udhcpc/
+	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.bound $(ROOTDIR)/usr/share/udhcpc/
+	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.deconfig $(ROOTDIR)/usr/share/udhcpc/
+	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.renew $(ROOTDIR)/usr/share/udhcpc/
+	cp -fv $(BUSYBOX_DIR)/examples/udhcp/sample.nak $(ROOTDIR)/usr/share/udhcpc/
 endif
 
 #
 # Javascript startup menu
 #
-root/bin/jsMenu: 
+$(ROOTDIR)/bin/jsMenu: 
 	echo "#!/bin/sh" >$@
 	echo "rm -f /tmp/ctrlc" >>$@
 	echo "while ! [ -f /tmp/ctrlc ] ; do /bin/jsExec file:///js/mainMenu.js; done" >>$@
@@ -269,10 +221,10 @@ root/bin/jsMenu:
 #
 # startup script
 #
-root/etc/init.d:
+$(ROOTDIR)/etc/init.d:
 	mkdir -p $@
 
-root/etc/init.d/rcS: root/bin/jsMenu root/etc/init.d
+$(ROOTDIR)/etc/init.d/rcS: $(ROOTDIR)/bin/jsMenu $(ROOTDIR)/etc/init.d
 	echo "#!/bin/sh" >$@
 ifdef KERNEL_PROC_FS   
 	echo "mount -t proc /proc /proc" >>$@
@@ -326,7 +278,7 @@ endif
 	echo "/bin/jsMenu" >>$@
 	chmod a+x $@
 
-root/var:
+$(ROOTDIR)/var:
 	ln -s -f /tmp/var $@
 
 base-root: $(DIRS) $(CROSS_LIB_LINK)/etc $(CROSS_LIB_LINK)/lib $(TARGETS)
