@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glib.make,v 1.4 2005-12-17 18:34:27 ericn Exp $
+# $Id: glib.make,v 1.5 2005-12-17 19:41:06 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -124,11 +124,15 @@ $(ROOTDIR)/lib/libnsl.so.1: $(CROSS_LIB_DIR)/lib/libnsl.so.1
 $(ROOTDIR)/lib/libresolv-2.3.5.so: $(CROSS_LIB_DIR)/lib/libresolv-2.3.5.so
 	cp $< $@ && chmod a+rwx $@
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
-	cd $(ROOTDIR)/lib/ && ln -s $@ libresolv.so.2
 
-$(ROOTDIR)/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
-	cp -d $(CROSS_LIB_DIR)/lib/libc-*.so* $(ROOTDIR)/lib/
-	cp -d $(CROSS_LIB_DIR)/lib/libc.so.6 $(ROOTDIR)/lib/
+$(ROOTDIR)/lib/libresolv.so.2: $(ROOTDIR)/lib/libresolv-2.3.5.so
+	cd $(ROOTDIR)/lib/ && ln -s $> $@
+
+$(ROOTDIR)/lib/libc-2.3.5.so: $(CROSS_LIB_DIR)/lib/libc-2.3.5.so
+	cp $< $@ && chmod a+rwx $@
+
+$(ROOTDIR)/lib/libc.so.6: $(ROOTDIR)/lib/libc-2.3.5.so
+	cd $(ROOTDIR)/lib/ && ln -s $< $@
 
 $(ROOTDIR)/lib/libgcc_s.so.1 \
 $(ROOTDIR)/lib/libstdc++.so.6.0.3:
