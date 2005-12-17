@@ -55,6 +55,7 @@ endif
 	@touch $@
 
 $(STARTSCRIPT): mmc.rcs
+	mkdir -p $(MMCDIR)/etc/init.d
 	cp -fv $? $@
 	chmod a+x $@
 
