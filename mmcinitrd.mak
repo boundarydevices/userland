@@ -31,8 +31,8 @@ endif
 	@cp $(ROOTDIR)/bin/busybox $(MMCDIR)/bin
 	@echo "Hello\n"
 	@cd $(MMCDIR) && ln -s bin/busybox linuxrc
-	@find root/bin/ -type l -exec cp -rd {} mmc.initrd/bin/ \;
-	@find root/sbin/ -type l -exec cp -rd {} mmc.initrd/sbin/ \;
+	@find $(ROOTDIR)/bin/ -type l -exec cp -rd {} mmc.initrd/bin/ \;
+	@find $(ROOTDIR)/sbin/ -type l -exec cp -rd {} mmc.initrd/sbin/ \;
 	@mkdir -p $(MMCDIR)/etc
 	@cp $(ROOTDIR)/etc/fstab $(MMCDIR)/etc
 	@cp $(ROOTDIR)/etc/inittab $(MMCDIR)/etc
