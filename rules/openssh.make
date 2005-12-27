@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.7 2005-12-17 18:33:56 ericn Exp $
+# $Id: openssh.make,v 1.8 2005-12-27 17:29:49 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -185,6 +185,7 @@ openssh_targetinstall_deps = \
 	$(STATEDIR)/openssl.targetinstall \
 	$(STATEDIR)/zlib.targetinstall \
 	$(STATEDIR)/openssh.compile \
+        $(STATEDIR)/tinylogin.targetinstall \
         $(ROOTDIR)/lib/libnsl.so.1 \
         $(ROOTDIR)/lib/libresolv-2.3.5.so \
         $(ROOTDIR)/lib/libcrypto.so.0.9.7 \
@@ -223,6 +224,8 @@ ifdef CONFIG_OPENSSH_KEYGEN
 	@install -m 755 -D $(OPENSSH_DIR)/ssh-keygen $(ROOTDIR)/bin/ssh-keygen
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/bin/ssh-keygen
 endif
+	echo "1:x:1:sshd" >> $(ROOTDIR)/etc/group
+	echo "sshd:ebYKsxjc5fMYM:1:1:sshd:/:/bin/sh" >> $(ROOTDIR)/etc/passwd
 	touch $@
 
 # ----------------------------------------------------------------------------
