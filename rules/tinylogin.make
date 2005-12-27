@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tinylogin.make,v 1.5 2005-12-27 17:29:27 ericn Exp $
+# $Id: tinylogin.make,v 1.6 2005-12-27 20:20:14 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -111,6 +111,7 @@ tinylogin_install: $(STATEDIR)/tinylogin.install
 $(STATEDIR)/tinylogin.install: $(STATEDIR)/tinylogin.compile
 	@$(call targetinfo, $@)
 	$(TINYLOGIN_PATH) sudo make -C $(TINYLOGIN_DIR) CROSS=arm-linux- PREFIX=$(INSTALLPATH) install
+	sudo chmod a+rw $(INSTALLPATH)/usr/bin
 	touch $@
 
 # ----------------------------------------------------------------------------
