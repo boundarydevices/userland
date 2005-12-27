@@ -33,6 +33,9 @@ mknod newrd/dev/dsp c 14 3
 mknod newrd/dev/timer c 253 0
 pivot_root /newrd /newrd/initrd
 cp -rp /cramfs/dev/* /dev/ 2>/dev/null
+mount -vt devpts none /dev/pts
+mkdir -p /var/run/sshd
+ln -s /cramfs/etc /etc
 echo -e -n '\033[?25l' >/dev/ttyFB0
 exec /mmc/linux_init
 
