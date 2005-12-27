@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.8 2005-12-27 17:29:49 ericn Exp $
+# $Id: openssh.make,v 1.9 2005-12-27 21:56:15 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -225,7 +225,7 @@ ifdef CONFIG_OPENSSH_KEYGEN
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/bin/ssh-keygen
 endif
 	echo "1:x:1:sshd" >> $(ROOTDIR)/etc/group
-	echo "sshd:ebYKsxjc5fMYM:1:1:sshd:/:/bin/sh" >> $(ROOTDIR)/etc/passwd
+	echo "sshd::1:1:sshd:/:/bin/echo" >> $(ROOTDIR)/etc/passwd
 	touch $@
 
 # ----------------------------------------------------------------------------
