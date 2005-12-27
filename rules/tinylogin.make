@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tinylogin.make,v 1.6 2005-12-27 20:20:14 ericn Exp $
+# $Id: tinylogin.make,v 1.7 2005-12-27 21:55:34 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -125,6 +125,7 @@ tinylogin_targetinstall_deps = $(STATEDIR)/tinylogin.compile
 $(STATEDIR)/tinylogin.targetinstall: $(tinylogin_targetinstall_deps)
 	@$(call targetinfo, $@)
 	$(TINYLOGIN_PATH) sudo make -C $(TINYLOGIN_DIR) CROSS=arm-linux- PREFIX=$(ROOTDIR) install
+	$(TINYLOGIN_PATH) sudo chmod a+rw $(ROOTDIR)/usr/bin
 	mkdir -p $(ROOTDIR)/etc
 	echo "root:dPNVk0EWq1pjE:0:0:Linux User,,,:/:/bin/sh" > $(ROOTDIR)/etc/passwd
 	echo "0:x:0:root" > $(ROOTDIR)/etc/group
