@@ -87,6 +87,10 @@ choice
       bool
       prompt "Neon, cramfs"
 	
+      config HALOGEN
+      bool
+      prompt "Halogen"
+
 endchoice
 
 source "rules/tinylogin.in"
