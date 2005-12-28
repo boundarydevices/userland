@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.20  2005-12-17 19:40:09  ericn
+# Revision 1.21  2005-12-28 00:32:41  ericn
+# -libdl targets in rules/glib.make
+#
+# Revision 1.20  2005/12/17 19:40:09  ericn
 # -add builds for ROOTDIR sub-directories
 #
 # Revision 1.19  2005/12/04 21:14:52  ericn
@@ -162,12 +165,6 @@ $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config:
 	mkdir -p $(INSTALLPATH)/lib/pkgconfig
 	echo -e "#!/bin/sh\nPKG_CONFIG_PATH=$(INSTALLPATH)/lib/pkgconfig pkg-config \044@\n" >$@
 	chmod 755 $@
-
-$(INSTALLPATH)/lib/libdl.so.2: $(CROSS_LIB_DIR)/lib/libdl.so.2
-	cp -df $(CROSS_LIB_DIR)/lib/libdl* $(INSTALLPATH)/lib/
-
-$(INSTALLPATH)/lib/libdl.a: $(CROSS_LIB_DIR)/lib/libdl.a
-	cp -df $(CROSS_LIB_DIR)/lib/libdl* $(INSTALLPATH)/lib/
 
 PACKAGES_CLEAN			   := $(addsuffix _clean,$(PACKAGES))
 PACKAGES_GET			   := $(addsuffix _get,$(PACKAGES))
