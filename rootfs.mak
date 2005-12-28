@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.22  2005-12-17 18:34:59  ericn
+# Revision 1.23  2005-12-28 00:32:05  ericn
+# -fix line ends
+#
+# Revision 1.22  2005/12/17 18:34:59  ericn
 # -use ROOTDIR symbol, move glib library targets to rules/glib.make
 #
 # Revision 1.21  2005/12/10 14:28:04  ericn
