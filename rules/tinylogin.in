@@ -13,3 +13,11 @@ config TINYLOGIN
      
      See http://tinylogin.busybox.net/ for details.
 
+config ROOTPASSWORD
+   string
+   depends on TINYLOGIN
+   prompt "root password"
+   default "BoundaryDevices"
+   help
+      Enter the root password for the system
+
