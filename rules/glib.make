@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glib.make,v 1.5 2005-12-17 19:41:06 ericn Exp $
+# $Id: glib.make,v 1.6 2006-01-10 04:37:04 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -175,6 +175,9 @@ $(ROOTDIR)/lib/ld-linux.so.2: $(ROOTDIR)/lib/ld-2.3.5.so
 	cd $(ROOTDIR)/lib/ && ln -s ld-2.3.5.so ld-linux.so.2
 
 $(ROOTDIR)/lib/libdl.so.2: $(CROSS_LIB_DIR)/lib/libdl.so.2
+	cp -f $< $@
+
+$(INSTALLPATH)/lib/libdl.a: $(CROSS_LIB_DIR)/lib/libdl.a
 	cp -f $< $@
 
 # ----------------------------------------------------------------------------
