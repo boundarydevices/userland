@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pango.make,v 1.5 2005-12-05 15:00:43 ericn Exp $
+# $Id: pango.make,v 1.6 2006-01-10 04:37:22 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -90,7 +90,7 @@ $(STATEDIR)/pango.prepare: $(pango_prepare_deps)
 # Compile
 # ----------------------------------------------------------------------------
 
-pango_compile: $(STATEDIR)/pango.compile 
+pango_compile: $(STATEDIR)/pango.compile $(STATEDIR)/fontconfig.install
 
 $(STATEDIR)/pango.compile: $(STATEDIR)/pango.prepare $(STATEDIR)/glib.install $(INSTALLPATH)/lib/libdl.a
 	@$(call targetinfo, $@)
