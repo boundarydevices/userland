@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xfree450.make,v 1.2 2005-12-04 21:13:53 ericn Exp $
+# $Id: xfree450.make,v 1.3 2006-01-10 04:37:44 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #             Pengutronix <info@pengutronix.de>, Germany
@@ -181,33 +181,33 @@ $(STATEDIR)/xfree450.install: $(STATEDIR)/xfree450.compile
 	# ln -sf $(XFREE450_BUILDDIR)/programs/Xserver/hw/xfree86/xf86Version.h $(XFREE450_BUILDDIR)/config/cf/version.def
 
 	cd $(XFREE450_BUILDDIR) && \
-		$(XFREE450_ENV) DESTDIR=$(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET) \
+		$(XFREE450_ENV) DESTDIR=$(INSTALLPATH) \
 		make install
 
 	# 'make install' copies the pkg-config '.pc' files to the 
 	# wrong location: we usually search them here...
 	 
-	rm -f $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/fontconfig.pc
-	cp $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/usr/X11R6/lib/pkgconfig/fontconfig.pc \
-	   $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/
-	rm -f $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/xcursor.pc
-	cp $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/usr/X11R6/lib/pkgconfig/xcursor.pc \
-	   $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/
-	rm -f $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/xft.pc
-	cp $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/usr/X11R6/lib/pkgconfig/xft.pc \
-	   $(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/
+	rm -f $(INSTALLPATH)/lib/pkgconfig/fontconfig.pc
+	cp $(INSTALLPATH)/usr/X11R6/lib/pkgconfig/fontconfig.pc \
+	   $(INSTALLPATH)/lib/pkgconfig/
+	rm -f $(INSTALLPATH)/lib/pkgconfig/xcursor.pc
+	cp $(INSTALLPATH)/usr/X11R6/lib/pkgconfig/xcursor.pc \
+	   $(INSTALLPATH)/lib/pkgconfig/
+	rm -f $(INSTALLPATH)/lib/pkgconfig/xft.pc
+	cp $(INSTALLPATH)/usr/X11R6/lib/pkgconfig/xft.pc \
+	   $(INSTALLPATH)/lib/pkgconfig/
 
 	# Now fix the paths: 
-	perl -i -p -e "s,/usr/X11R6,$(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/usr/X11R6,g" \
-		$(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/fontconfig.pc
-	perl -i -p -e "s,/usr/X11R6,$(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/usr/X11R6,g" \
-		$(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/xcursor.pc
-	perl -i -p -e "s,/usr/X11R6,$(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/usr/X11R6,g" \
-		$(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/xft.pc
+	perl -i -p -e "s,/usr/X11R6,$(INSTALLPATH)/usr/X11R6,g" \
+		$(INSTALLPATH)/lib/pkgconfig/fontconfig.pc
+	perl -i -p -e "s,/usr/X11R6,$(INSTALLPATH)/usr/X11R6,g" \
+		$(INSTALLPATH)/lib/pkgconfig/xcursor.pc
+	perl -i -p -e "s,/usr/X11R6,$(INSTALLPATH)/usr/X11R6,g" \
+		$(INSTALLPATH)/lib/pkgconfig/xft.pc
 
 	# libXft does also need libXrender:
 	perl -i -p -e "s,-lXft,-lXext -lXft,g" \
-		$(PTXCONF_PREFIX)/$(PTXCONF_GNU_TARGET)/lib/pkgconfig/xft.pc
+		$(INSTALLPATH)/lib/pkgconfig/xft.pc
 
 	touch $@
 
