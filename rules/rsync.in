@@ -1,0 +1,4 @@
+config RSYNC
+	bool
+   default y
+	prompt "Compile rsync"
