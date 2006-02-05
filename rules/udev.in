@@ -1,0 +1,9 @@
+config UDEV
+	bool "udev - Userspace device daemon"
+	default y
+	help
+	  Userspace device daemon.
+
+	  ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
+
+
