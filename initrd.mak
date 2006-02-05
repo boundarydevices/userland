@@ -95,7 +95,13 @@ else
    UDEV_INSTALLED = 
 endif
 
-$(INITRD_START): initrd.rcs
+ifeq (,$(findstring 2.6.19,$(CONFIG_KERNELPATH)))
+        INITRCSFILE = initrd.rcs
+else
+        INITRCSFILE = initrd-2.6.19.rcs
+endif
+
+$(INITRD_START): $(INITRCSFILE)
 	mkdir -p $(INITRD_DIR)/etc/init.d
 	cp -fv $? $@
 	chmod a+x $@
