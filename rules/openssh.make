@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.10 2005-12-28 00:33:04 ericn Exp $
+# $Id: openssh.make,v 1.16 2006-02-05 18:52:50 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -141,7 +141,6 @@ OPENSSH_AUTOCONF = \
 	--with-ipv4-default \
 	--with-zlib=$(INSTALLPATH) \
 	--disable-etc-default-login \
-   --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \
    --datadir=$(INSTALLPATH)/share \
    --mandir=$(INSTALLPATH)/man \
@@ -183,15 +182,35 @@ openssh_targetinstall: $(STATEDIR)/openssh.targetinstall
 
 openssh_targetinstall_deps = \
 	$(STATEDIR)/openssl.targetinstall \
+   $(STATEDIR)/busybox.targetinstall \
 	$(STATEDIR)/zlib.targetinstall \
 	$(STATEDIR)/openssh.compile \
-        $(STATEDIR)/tinylogin.targetinstall \
-        $(ROOTDIR)/lib/libnsl.so.1 \
-        $(ROOTDIR)/lib/libresolv-2.3.5.so \
-        $(ROOTDIR)/lib/libcrypto.so.0.9.7 \
-        $(ROOTDIR)/lib/libutil.so.1 \
-        $(ROOTDIR)/lib/libcrypt.so.1 \
-        $(ROOTDIR)/lib/libc.so.6
+   $(ROOTDIR)/lib/libnsl.so.1 \
+   $(ROOTDIR)/lib/libresolv-$(GLIBC_VER).so \
+   $(ROOTDIR)/lib/libcrypto.so.0.9.7 \
+   $(ROOTDIR)/lib/libutil.so.1 \
+   $(ROOTDIR)/lib/libcrypt.so.1 \
+   $(ROOTDIR)/lib/libc.so.6 \
+   $(ROOTDIR)/etc/ssh/ssh_host_key \
+   $(ROOTDIR)/etc/ssh/ssh_host_rsa_key \
+   $(ROOTDIR)/etc/ssh/ssh_host_dsa_key
+   
+ifdef CONFIG_TINYLOGIN
+   $(STATEDIR)/tinylogin.targetinstall
+endif
+
+
+$(ROOTDIR)/etc/ssh/ssh_host_key:
+	mkdir -p $(ROOTDIR)/etc/ssh/
+	@ssh-keygen -q -t rsa1 -f $(ROOTDIR)/etc/ssh/ssh_host_key -N ''
+
+$(ROOTDIR)/etc/ssh/ssh_host_rsa_key:
+	mkdir -p $(ROOTDIR)/etc/ssh/
+	@ssh-keygen -q -t rsa -f $(ROOTDIR)/etc/ssh/ssh_host_rsa_key -N ''
+
+$(ROOTDIR)/etc/ssh/ssh_host_dsa_key:
+	mkdir -p $(ROOTDIR)/etc/ssh/
+	@ssh-keygen -q -t dsa -f $(ROOTDIR)/etc/ssh/ssh_host_dsa_key -N ''
 
 $(STATEDIR)/openssh.targetinstall: $(openssh_targetinstall_deps)
 	@$(call targetinfo, openssh.targetinstall)
@@ -206,9 +225,6 @@ ifdef CONFIG_OPENSSH_SSHD
 	@perl -p -i -e "s/#PermitRootLogin yes/PermitRootLogin yes/" $(OPENSSH_DIR)/sshd_config.out 
 	@install -m 644 -D $(OPENSSH_DIR)/sshd_config.out $(ROOTDIR)/etc/ssh/sshd_config
 	@install -m 755 -D $(OPENSSH_DIR)/sshd $(ROOTDIR)/usr/sbin/sshd
-	@ssh-keygen -q -t rsa1 -f $(ROOTDIR)/etc/ssh/ssh_host_key -N ''
-	@ssh-keygen -q -t rsa -f $(ROOTDIR)/etc/ssh/ssh_host_rsa_key -N ''
-	@ssh-keygen -q -t dsa -f $(ROOTDIR)/etc/ssh/ssh_host_dsa_key -N ''
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/sbin/sshd
 endif
 ifdef CONFIG_OPENSSH_SCP
@@ -224,8 +240,6 @@ ifdef CONFIG_OPENSSH_KEYGEN
 	@install -m 755 -D $(OPENSSH_DIR)/ssh-keygen $(ROOTDIR)/bin/ssh-keygen
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/bin/ssh-keygen
 endif
-	@echo "1:x:1:sshd" >> $(ROOTDIR)/etc/group
-	@echo "sshd::1:1:sshd:/:/bin/echo" >> $(ROOTDIR)/etc/passwd
 	@touch $@
 
 # ----------------------------------------------------------------------------
