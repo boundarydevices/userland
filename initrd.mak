@@ -35,6 +35,8 @@ endif
 	@find $(ROOTDIR)/bin/ -type l -exec cp -rd {} $(INITRD_DIR)/bin/ \;
 	@find $(ROOTDIR)/sbin/ -type l -exec cp -rd {} $(INITRD_DIR)/sbin/ \;
 	@mkdir -p $(INITRD_DIR)/etc
+	@cp $(ROOTDIR)/etc/passwd $(INITRD_DIR)/etc
+	@cp $(ROOTDIR)/etc/group $(INITRD_DIR)/etc
 	@cp $(ROOTDIR)/etc/fstab $(INITRD_DIR)/etc
 	@cp $(ROOTDIR)/etc/inittab $(INITRD_DIR)/etc
 	@mkdir -p $(INITRD_DIR)/etc/init.d
@@ -86,7 +88,7 @@ $(INITRD_DIR)/sbin/udevstart: $(INITRD_DIR) $(ROOTDIR)/sbin/udevstart
 	cp -fv $(ROOTDIR)/sbin/udev* $(INITRD_DIR)/sbin/
 $(INITRD_DIR)/etc/udev: $(ROOTdir)/etc/udev
 	mkdir -p $(INITRD_DIR)/etc/udev
-	cp -rvf $(ROOTdir)/etc/udev/* $(INITRD_DIR)/etc/udev/
+	cp -rvf $(ROOTDIR)/etc/udev/* $(INITRD_DIR)/etc/udev/
 
    UDEV_INSTALLED = $(INITRD_DIR)/sbin/udevstart $(INITRD_DIR)/etc/udev
 else
