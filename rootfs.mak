@@ -8,7 +8,31 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.23  2005-12-28 00:32:05  ericn
+# Revision 1.31  2006-02-05 18:56:48  ericn
+# -pull password handling here (from tinylogin)
+#
+# Revision 1.30  2006/09/21 23:44:42  ericn
+# -add /proc/bus/usb to fstab
+#
+# Revision 1.29  2006/09/21 22:37:56  ericn
+# -use GLIBC_VER instead of 2.3.5
+#
+# Revision 1.28  2006/08/17 15:48:21  ericn
+# -fix glibc dependencies
+#
+# Revision 1.27  2006/08/17 12:55:33  ericn
+# -move glibc rules into rules/glibc.mak
+#
+# Revision 1.26  2006/07/30 15:06:03  ericn
+# -more fixes for nss libs
+#
+# Revision 1.25  2006/07/29 21:39:37  ericn
+# -add libnsl.so (from glibc)
+#
+# Revision 1.24  2006/06/22 13:50:26  ericn
+# -moved stock libraries from rules/glib
+#
+# Revision 1.23  2005/12/28 00:32:05  ericn
 # -fix line ends
 #
 # Revision 1.22  2005/12/17 18:34:59  ericn
@@ -87,7 +111,7 @@ include .config
 include .kernelconfig
 include .bbconfig
 include rules/busybox.make
-include rules/glib.make
+include rules/glibc.make
 
 CROSSSTRIP := $(CONFIG_GNU_TARGET)-strip
 CROSS_PATH := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
@@ -96,30 +120,38 @@ DIRS := $(ROOTDIR)/bin $(ROOTDIR)/etc $(ROOTDIR)/lib $(ROOTDIR)/proc $(ROOTDIR)/
 
 TARGETS := $(ROOTDIR)/etc/bashrc \
            $(ROOTDIR)/etc/fstab \
+           $(ROOTDIR)/etc/group \
            $(ROOTDIR)/etc/hosts \
            $(ROOTDIR)/etc/inittab \
            $(ROOTDIR)/etc/modules.conf \
            $(ROOTDIR)/etc/nsswitch.conf \
+           $(ROOTDIR)/etc/passwd \
            $(ROOTDIR)/etc/resolv.conf \
            $(ROOTDIR)/etc/ld.so.conf \
            $(ROOTDIR)/etc/ld.so.cache \
            $(ROOTDIR)/bin/jsMenu \
            $(ROOTDIR)/etc/init.d/rcS \
+           $(ROOTDIR)/lib/libc-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libc.so.6 \
            $(ROOTDIR)/lib/libgcc_s.so.1 \
            $(ROOTDIR)/lib/libstdc++.so \
            $(ROOTDIR)/lib/libstdc++.so.6 \
            $(ROOTDIR)/lib/libstdc++.so.6.0.3 \
+           $(ROOTDIR)/lib/libutil-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libutil.so.1 \
            $(ROOTDIR)/lib/libnsl.so.1 \
            $(ROOTDIR)/lib/libnss_dns.so.2 \
            $(ROOTDIR)/lib/libnss_files.so.2 \
+           $(ROOTDIR)/lib/libcrypt-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libcrypt.so.1 \
+           $(ROOTDIR)/lib/libm-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libm.so.6 \
+           $(ROOTDIR)/lib/libpthread-0.10.so \
            $(ROOTDIR)/lib/libpthread.so.0 \
-           $(ROOTDIR)/lib/ld-2.3.5.so \
-           $(ROOTDIR)/lib/libdl.so.2 \
+           $(ROOTDIR)/lib/ld-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/ld-linux.so.2 \
+           $(ROOTDIR)/lib/libdl.so.2 \
+           $(ROOTDIR)/lib/libdl-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/modules \
            $(ROOTDIR)/linuxrc \
            $(ROOTDIR)/proc \
@@ -147,7 +179,7 @@ $(CROSS_LIB_LINK)/etc:
 	mkdir -p $(CROSS_LIB_LINK)
 	cd $(CROSS_LIB_LINK) && ln -sf /etc
 
-$(ROOTDIR)/etc/bashrc:
+$(ROOTDIR)/etc/bashrc:  $(ROOTDIR)/etc
 	echo "#!/bin/sh" > $@
 	echo "# CURLTMPSIZE should be smaller than sizeof ramdisk from " >> $@
 	echo "# mke2fs call by size of the largest file to be downloaded" >> $@
@@ -157,48 +189,64 @@ $(ROOTDIR)/etc/bashrc:
 $(ROOTDIR)/etc/hosts: /etc/hosts
 	cp -f $< $@ 
 
-$(ROOTDIR)/etc/inittab:
-	echo "::sysinit:/etc/init.d/rcS" >> $@
-	echo "::wait:/bin/echo Welcome" >> $@
-	echo "tty2::askfirst:-/bin/sh" >> $@
-	echo "tty3::askfirst:-/bin/sh" >> $@
-	echo "tty4::askfirst:-/bin/sh" >> $@
-	echo "::respawn:/bin/sh" >> $@
+$(ROOTDIR)/etc/inittab: $(ROOTDIR)/etc
+	echo "::sysinit:/etc/init.d/rcS" > $@
+	echo "tty0::respawn:/sbin/getty 115200 /dev/ttyS0" >> $@
+	echo "tty1::askfirst:-/sbin/getty 115200 /dev/ttyS1" >> $@
+	echo "tty2::askfirst:-/sbin/getty 115200 /dev/ttyS2" >> $@
+	echo "::respawn:/sbin/getty 115200 /dev/ttyS0" >> $@
 	echo "::ctrlaltdel:/sbin/reboot" >> $@
 	echo "::shutdown:/sbin/swapoff -a" >> $@
 	echo "::shutdown:/bin/umount -a -r" >> $@
 	echo "::restart:/sbin/init" >> $@
 	chmod a+x $@
 
-$(ROOTDIR)/etc/modules.conf:
+$(ROOTDIR)/etc/modules.conf: $(ROOTDIR)/etc
 	echo "alias wlan0 prism2_cs" > $@
 
-$(ROOTDIR)/etc/nsswitch.conf:
+$(ROOTDIR)/etc/nsswitch.conf: $(ROOTDIR)/etc
 	echo "hosts:      files dns" > $@
+	echo "passwd:     files" >> $@
+	echo "group:      files" >> $@
 
-$(ROOTDIR)/etc/resolv.conf:
+$(ROOTDIR)/etc/resolv.conf: $(ROOTDIR)/etc
 	echo "# name servers go here" >$@
 
-$(ROOTDIR)/etc/ld.so.conf:
+CRYPT_SALT = dP
+PASSWORD_STRING = $(shell perl -e 'print crypt($(CONFIG_ROOTPASSWORD), "$(CRYPT_SALT)"),"\n"')
+
+$(ROOTDIR)/etc/passwd: $(ROOTDIR)/etc
+	@echo "root:$(PASSWORD_STRING):0:0:Linux User,,,:/:/bin/sh" > $@
+ifdef CONFIG_OPENSSH
+	@echo "sshd:x:1:1:sshd:/:/bin/false" >> $(ROOTDIR)/etc/passwd
+endif
+
+$(ROOTDIR)/etc/group: $(ROOTDIR)/etc
+	@echo "0:x:0:root" > $@
+ifdef CONFIG_OPENSSH
+	@echo "1:x:1:sshd" >> $@
+endif
+
+$(ROOTDIR)/etc/ld.so.conf: $(ROOTDIR)/etc
 	echo -e "" > $@
 
 $(ROOTDIR)/linuxrc: $(ROOTDIR)/bin/busybox
 	cd $(ROOTDIR) && ln -s ./bin/busybox linuxrc
 
-$(ROOTDIR)/etc/ld.so.cache: $(ROOTDIR)/etc/modules.conf $(ROOTDIR)/etc/ld.so.conf
+$(ROOTDIR)/etc/ld.so.cache: $(ROOTDIR)/etc $(ROOTDIR)/etc/modules.conf $(ROOTDIR)/etc/ld.so.conf
 	mkdir -p $(ROOTDIR)/lib
 	mkdir -p $(ROOTDIR)/usr/lib
 	cd $(ROOTDIR)/etc && /sbin/ldconfig -r ../ -v
 
-$(ROOTDIR)/etc/fstab:
+$(ROOTDIR)/etc/fstab: $(ROOTDIR)/etc
 ifdef KERNEL_DEVPTS_FS
 	echo "none /dev/pts devpts gid=5,mode=0620 0 0" > $@
-endif   
+endif  
 ifdef KERNEL_USB_DEVICEFS
 	echo "none /proc/bus/usb usbdevfs noauto 0 0" >>$@
 endif
 ifdef KERNEL_MMC
-	echo "none /tmp/mmc vfat gid=5,mode=0620 0 0" > $@
+	echo "none /tmp/mmc vfat gid=5,mode=0620 0 0" >> $@
 endif   
 	touch $@
 
@@ -224,13 +272,16 @@ $(ROOTDIR)/bin/jsMenu:
 #
 # startup script
 #
-$(ROOTDIR)/etc/init.d:
+$(ROOTDIR)/etc/init.d: $(ROOTDIR)/etc
 	mkdir -p $@
 
 $(ROOTDIR)/etc/init.d/rcS: $(ROOTDIR)/bin/jsMenu $(ROOTDIR)/etc/init.d
 	echo "#!/bin/sh" >$@
 ifdef KERNEL_PROC_FS   
 	echo "mount -t proc /proc /proc" >>$@
+endif   
+ifdef KERNEL_USB_DEVICEFS
+	echo "mount -t usbfs none /proc/bus/usb" >>$@
 endif   
 ifdef KERNEL_SYSFS   
 	echo "mount -t sysfs /sysfs /sysfs" >>$@
