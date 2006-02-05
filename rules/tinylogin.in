@@ -1,6 +1,6 @@
 config TINYLOGIN
 	bool
-   default y
+   default n
 	prompt "Compile tinylogin"
    help
      TinyLogin is a suite of tiny Unix utilities for handling logging into,
@@ -15,7 +15,6 @@ config TINYLOGIN
 
 config ROOTPASSWORD
    string
-   depends on TINYLOGIN
    prompt "root password"
    default "BoundaryDevices"
    help
