@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: udev.make,v 1.1 2006-02-05 18:53:30 ericn Exp $
+# $Id: udev.make,v 1.2 2006-02-05 22:01:47 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -102,9 +102,11 @@ $(STATEDIR)/udev.targetinstall: $(STATEDIR)/udev.install
 	@$(call targetinfo, $@)
 	-mkdir $(ROOTDIR)/sys
 	$(MAKE) CROSS_COMPILE=$(CONFIG_GNU_TARGET)- DESTDIR=$(ROOTDIR) \
-		udevdir=$(UDEV_ROOT) V=1 -C $(UDEV_DIR) install-bin install-config
+		udevdir=$(UDEV_ROOT) V=1 -C $(UDEV_DIR) install-bin
 	cp -fv $(UDEV_DIR)/udevstart $(ROOTDIR)/sbin/
 	$(CROSSSTRIP) $(ROOTDIR)/sbin/udev*
+	mkdir -p $(ROOTDIR)/etc/udev/rules.d
+	cp -fv $(UDEV_DIR)/etc/udev/frugalware/* $(ROOTDIR)/etc/udev/rules.d
 	touch $@
 
 # ----------------------------------------------------------------------------
