@@ -19,8 +19,8 @@ CROSS_LIB_LINK = $(subst //,/,$(MMCDIR)/$(CROSS_LIB_DIR))
 $(MMCDIR):
 	@echo "Building RAMDISK in $(MMCDIR)"
 	@rm -rf $(MMCDIR)
-	@mkdir -p $(MMCDIR)
 	@mkdir -p $(MMCDIR)/bin
+	@mkdir -p $(MMCDIR)/lib
 ifdef MODULES   
 	make -C ~/cvs/linux-2.6.11.11 INSTALL_MOD_PATH=$(MMCDIR) modules_install
 	cp ~/zd1211.cvs/src/modules-2.6.11.11/zd1211_mod.ko $(MMCDIR)   
@@ -41,7 +41,7 @@ endif
 	@mkdir -p $(MMCDIR)/lib
 	@cp -rvd $(CROSS_LIB_DIR)/lib/ld-* $(MMCDIR)/lib
 	@cp -rvd $(CROSS_LIB_DIR)/lib/libc-* $(MMCDIR)/lib
-	@cp -rvd $(CROSS_LIB_DIR)/lib/libc.* $(MMCDIR)/lib
+	@cp -rvd $(CROSS_LIB_DIR)/lib/libc.so* $(MMCDIR)/lib
 	@mkdir -p $(MMCDIR)/proc
 	@mkdir -p $(MMCDIR)/tmp
 	@mkdir -p $(MMCDIR)/usr
