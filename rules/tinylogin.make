@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tinylogin.make,v 1.8 2005-12-28 00:33:51 ericn Exp $
+# $Id: tinylogin.make,v 1.9 2006-02-26 16:27:16 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -99,7 +99,7 @@ tinylogin_compile_deps = $(STATEDIR)/tinylogin.prepare
 $(STATEDIR)/tinylogin.compile: $(tinylogin_compile_deps)
 	@$(call targetinfo, $@)
 	$(TINYLOGIN_PATH) \
-   $(TINYLOGIN_ENV) make -C $(TINYLOGIN_DIR) CROSS=arm-linux- all
+   $(TINYLOGIN_ENV) make -C $(TINYLOGIN_DIR) CROSS=$(CONFIG_CROSSPREFIX)- all
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -110,7 +110,7 @@ tinylogin_install: $(STATEDIR)/tinylogin.install
 
 $(STATEDIR)/tinylogin.install: $(STATEDIR)/tinylogin.compile
 	@$(call targetinfo, $@)
-	$(TINYLOGIN_PATH) sudo make -C $(TINYLOGIN_DIR) CROSS=arm-linux- PREFIX=$(INSTALLPATH) install
+	$(TINYLOGIN_PATH) sudo make -C $(TINYLOGIN_DIR) CROSS=$(CONFIG_CROSSPREFIX) PREFIX=$(INSTALLPATH) install
 	sudo chmod a+rw $(INSTALLPATH)/usr/bin
 	touch $@
 
@@ -127,7 +127,7 @@ PASSWORD_STRING = $(shell perl -e 'print crypt($(CONFIG_ROOTPASSWORD), "$(CRYPT_
 
 $(STATEDIR)/tinylogin.targetinstall: $(tinylogin_targetinstall_deps)
 	@$(call targetinfo, $@)
-	@$(TINYLOGIN_PATH) sudo make -C $(TINYLOGIN_DIR) CROSS=arm-linux- PREFIX=$(ROOTDIR) install
+	@$(TINYLOGIN_PATH) sudo make -C $(TINYLOGIN_DIR) CROSS=$(CONFIG_CROSSPREFIX) PREFIX=$(ROOTDIR) install
 	@$(TINYLOGIN_PATH) sudo chmod a+rw $(ROOTDIR)/usr/bin
 	@mkdir -p $(ROOTDIR)/etc
 	@echo "root:$(PASSWORD_STRING):0:0:Linux User,,,:/:/bin/sh" > $(ROOTDIR)/etc/passwd
