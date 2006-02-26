@@ -1,0 +1,12 @@
+config CROSSCOMPILE_ALIAS
+	bool
+	default y
+	prompt "Build Cross-Compile aliases"
+        help
+		Choosing this option will create a userland/crosscompile
+		directory with aliases (symlinks, actually) for gcc, ld,
+		etc, for use by packet builds that don't do proper configuration
+		or use environment variables.
+
+		X in particular, needs these aliases.
+        
