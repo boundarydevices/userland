@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xfree450.make,v 1.3 2006-01-10 04:37:44 ericn Exp $
+# $Id: xfree450.make,v 1.4 2006-02-26 15:25:32 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #             Pengutronix <info@pengutronix.de>, Germany
@@ -159,7 +159,7 @@ $(STATEDIR)/xfree450.compile: $(xfree450_compile_deps)
 
 	cd $(XFREE450_BUILDDIR) && \
 		$(XFREE450_ENV) DESTDIR=$(INSTALLPATH) \
-		make World \
+		make -k World \
           BOOTSTRAPCFLAGS="-I$(INSTALLPATH)/include" \
           DESTDIR=$(INSTALLPATH) \
           PreIncDir=$(INSTALLPATH)/include \
@@ -182,7 +182,7 @@ $(STATEDIR)/xfree450.install: $(STATEDIR)/xfree450.compile
 
 	cd $(XFREE450_BUILDDIR) && \
 		$(XFREE450_ENV) DESTDIR=$(INSTALLPATH) \
-		make install
+		make -k install
 
 	# 'make install' copies the pkg-config '.pc' files to the 
 	# wrong location: we usually search them here...
@@ -219,7 +219,7 @@ xfree450_targetinstall: $(STATEDIR)/xfree450.targetinstall
 
 xfree450_targetinstall_deps =  $(STATEDIR)/xfree450.compile
 xfree450_targetinstall_deps += $(STATEDIR)/ncurses.targetinstall
-xfree450_targetinstall_deps += $(STATEDIR)/libpng125.targetinstall
+xfree450_targetinstall_deps += $(STATEDIR)/libpng.targetinstall
 xfree450_targetinstall_deps += $(STATEDIR)/zlib.targetinstall
 
 $(STATEDIR)/xfree450.targetinstall: $(xfree450_targetinstall_deps)
@@ -231,12 +231,12 @@ $(STATEDIR)/xfree450.targetinstall: $(xfree450_targetinstall_deps)
 
 #	# FIXME: this is somehow not being built...
 	touch $(XFREE450_BUILDDIR)/fonts/encodings/encodings.dir
-	cd $(XFREE450_BUILDDIR) && make install DESTDIR=$(ROOTDIR)
+	cd $(XFREE450_BUILDDIR) && make -k install DESTDIR=$(ROOTDIR)
 
 #	# FIXME: correct path? 
-	cp -f $(XFREE450_BUILDDIR)/lib/freetype2/libfreetype.so.6.3.3 $(ROOTDIR)/lib
-	ln -sf libfreetype.so.6.3.3 $(ROOTDIR)/lib/libfreetype.so.6
-	ln -sf libfreetype.so.6.3.3 $(ROOTDIR)/lib/libfreetype.so
+#	cp -f $(XFREE450_BUILDDIR)/lib/freetype2/libfreetype.so.6.3.3 $(ROOTDIR)/lib
+#	ln -sf libfreetype.so.6.3.3 $(ROOTDIR)/lib/libfreetype.so.6
+#	ln -sf libfreetype.so.6.3.3 $(ROOTDIR)/lib/libfreetype.so
 
 	touch $@
 
