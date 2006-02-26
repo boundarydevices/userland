@@ -3,6 +3,9 @@ menu "XFree86-4.5.0         "
 config XFREE450
 	bool
 	prompt "Compile XFree86-4.5.0"
+	depends on FREETYPE
+        depends on LIBPNG125
+        depends on ZLIB
 
 config XFREE450_CONFIG
         prompt "Name of host.def file to be used"
