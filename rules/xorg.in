@@ -1,0 +1,10 @@
+config XORG
+	bool
+	default y
+	prompt "Build X from XOrg"
+        help
+		Choosing this option will build an X-Server using sources
+                from the x.org tree.
+                
+                http://www.x.org
+        
