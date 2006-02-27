@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xorg.make,v 1.1 2006-02-27 00:38:59 ericn Exp $
+# $Id: xorg.make,v 1.2 2006-02-27 00:48:12 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -66,38 +66,38 @@ XORG_AUTOGEN = --prefix=$(INSTALLPATH)/ --host=$(CONFIG_CROSSPREFIX)
 
 $(STATEDIR)/xorg.prepare: $(STATEDIR)/xorg.extract
 	@$(call targetinfo, $@)
-# || pushd $(XORG_DIR)/Xproto && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Xdmcp && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/XExtensions && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/xtrans && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Xau && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/X11 && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Xext && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Randr && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Render && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Xrender && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Xrandr && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/FixesExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/DamageExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Xfont && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/ResourceExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/RecordExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/CompositeExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/xkbfile && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd 
-# || pushd $(XORG_DIR)/randrproto-1.1.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/renderproto-0.9.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/fixesproto-3.0.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/damageproto-1.0.3/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/xextproto-7.0.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/compositeproto-0.2.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/recordproto-X11R7.0-1.13.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/resourceproto-X11R7.0-1.0.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/xineramaproto-X11R7.0-1.1.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xproto && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xdmcp && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/XExtensions && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/xtrans && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xau && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/X11 && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xext && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Randr && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Render && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xrender && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xrandr && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/FixesExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/DamageExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xfont && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/ResourceExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/RecordExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/CompositeExt && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/xkbfile && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd 
+	pushd $(XORG_DIR)/randrproto-1.1.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/renderproto-0.9.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/fixesproto-3.0.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/damageproto-1.0.3/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/xextproto-7.0.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/compositeproto-0.2.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/recordproto-X11R7.0-1.13.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/resourceproto-X11R7.0-1.0.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/xineramaproto-X11R7.0-1.1.2/ && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
 	pushd $(XORG_DIR)/xserver && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
 	perl -pi -e 's/ephyr//' $(XORG_DIR)/xserver/hw/kdrive/Makefile
-# || pushd $(XORG_DIR)/Xfixes && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Xcomposite && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
-# || pushd $(XORG_DIR)/Xdamage && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xfixes && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xcomposite && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
+	pushd $(XORG_DIR)/Xdamage && $(XORG_ENV) ./autogen.sh $(XORG_AUTOGEN)  && popd
 	touch $@
 
 
