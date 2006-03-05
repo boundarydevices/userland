@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glib.make,v 1.6 2006-01-10 04:37:04 ericn Exp $
+# $Id: glib.make,v 1.7 2006-03-05 23:07:19 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,10 +18,10 @@ endif
 #
 # Paths and names 
 #
-GLIB			= glib-2.6.5
-GLIB_URL 	= ftp://ftp.gtk.org/pub/gtk/v2.6/$(GLIB).tar.gz
+GLIB		= glib-2.8.6
+GLIB_URL 	= ftp://ftp.gtk.org/pub/gtk/v2.8/$(GLIB).tar.gz
 GLIB_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(GLIB).tar.gz
-GLIB_DIR		= $(BUILDDIR)/$(GLIB)
+GLIB_DIR        = $(BUILDDIR)/$(GLIB)
 
 # ----------------------------------------------------------------------------
 # Get
@@ -88,9 +88,7 @@ $(STATEDIR)/glib.prepare: $(glib_prepare_deps)
 
 glib_compile: $(STATEDIR)/glib.compile
 
-$(STATEDIR)/glib.compile: \
-   $(STATEDIR)/glib.prepare \
-   $(INSTALLPATH)/lib/libdl.a
+$(STATEDIR)/glib.compile: $(STATEDIR)/glib.prepare 
 	@$(call targetinfo, $@)
 	cd $(GLIB_DIR) && $(GLIB_PATH) make
 	touch $@
@@ -167,18 +165,6 @@ $(ROOTDIR)/lib/libpthread.so.0: $(CROSS_LIB_DIR)/lib/libpthread.so.0
 	cp -d $(CROSS_LIB_DIR)/lib/libpthread-0.10.so $(ROOTDIR)/lib/ && chmod a+rw $(ROOTDIR)/lib/libpthread-0.10.so
 	cp -d $(CROSS_LIB_DIR)/lib/libpthread.so.0 $(ROOTDIR)/lib/ && chmod a+rw $(ROOTDIR)/lib/libpthread.so.0
 	PATH=$(CROSS_PATH) $(CROSSSTRIP) $(ROOTDIR)/lib/libpthread-*.so
-
-$(ROOTDIR)/lib/ld-2.3.5.so: $(CROSS_LIB_DIR)/lib/ld-2.3.5.so
-	cp -f $< $@
-
-$(ROOTDIR)/lib/ld-linux.so.2: $(ROOTDIR)/lib/ld-2.3.5.so
-	cd $(ROOTDIR)/lib/ && ln -s ld-2.3.5.so ld-linux.so.2
-
-$(ROOTDIR)/lib/libdl.so.2: $(CROSS_LIB_DIR)/lib/libdl.so.2
-	cp -f $< $@
-
-$(INSTALLPATH)/lib/libdl.a: $(CROSS_LIB_DIR)/lib/libdl.a
-	cp -f $< $@
 
 # ----------------------------------------------------------------------------
 # Clean
