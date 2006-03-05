@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xorg.make,v 1.2 2006-02-27 00:48:12 ericn Exp $
+# $Id: xorg.make,v 1.3 2006-03-05 23:07:52 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -109,39 +109,39 @@ xorg_compile: $(STATEDIR)/xorg.compile
 
 $(STATEDIR)/xorg.compile: $(STATEDIR)/xorg.prepare 
 	@$(call targetinfo, $@)
-	pushd $(XORG_DIR)/Xproto && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Xdmcp && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/XExtensions && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/xtrans && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Xau && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/X11/src/util && $(XORG_ENV) make && popd
+	pushd $(XORG_DIR)/Xproto && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Xdmcp && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/XExtensions && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/xtrans && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Xau && $(XORG_ENV) make install && popd
 	pushd $(XORG_DIR)/X11/src/util && $(XORG_ENV) make install && popd
-	pushd $(XORG_DIR)/X11 && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Xext && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Randr && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Render && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Xrender && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Xrandr && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/FixesExt && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/DamageExt && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Xfont && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/ResourceExt && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/RecordExt && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/CompositeExt && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/xkbfile && $(XORG_ENV) make && popd 
-	pushd $(XORG_DIR)/randrproto-1.1.2/ && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/renderproto-0.9.2/ && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/fixesproto-3.0.2/ && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/damageproto-1.0.3/ && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/xextproto-7.0.2/ && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/compositeproto-0.2.2/ && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/recordproto-X11R7.0-1.13.2/ && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/resourceproto-X11R7.0-1.0.2/ && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/xineramaproto-X11R7.0-1.1.2/ && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/xserver && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Xfixes && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Xcomposite && $(XORG_ENV) make && popd
-	pushd $(XORG_DIR)/Xdamage && $(XORG_ENV) make && popd
+	pushd $(XORG_DIR)/X11/src/util && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/X11 && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Xext && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Randr && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Render && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Xrender && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Xrandr && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/FixesExt && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/DamageExt && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Xfont && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/ResourceExt && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/RecordExt && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/CompositeExt && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/xkbfile && $(XORG_ENV) make install && popd 
+	pushd $(XORG_DIR)/randrproto-1.1.2/ && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/renderproto-0.9.2/ && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/fixesproto-3.0.2/ && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/damageproto-1.0.3/ && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/xextproto-7.0.2/ && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/compositeproto-0.2.2/ && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/recordproto-X11R7.0-1.13.2/ && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/resourceproto-X11R7.0-1.0.2/ && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/xineramaproto-X11R7.0-1.1.2/ && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/xserver && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Xfixes && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Xcomposite && $(XORG_ENV) make install && popd
+	pushd $(XORG_DIR)/Xdamage && $(XORG_ENV) make install && popd
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -150,21 +150,11 @@ $(STATEDIR)/xorg.compile: $(STATEDIR)/xorg.prepare
 
 xorg_install: $(STATEDIR)/xorg.install
 
-CCPATH = $(TOPDIR)/xorg
-
+#
+# because of dependencies, all install targets are called in the compile step
+#
 $(STATEDIR)/xorg.install: $(STATEDIR)/xorg.compile
 	@$(call targetinfo, $@)
-	mkdir -p $(CCPATH)
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-gcc gcc 
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-gcc cc 
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-ld ld 
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-ar ar 
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-cpp cpp
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-gcov gcov
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-ranlib ranlib 
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-nm nm 
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-objdump objdump 
-	cd $(CCPATH) && ln -sf $(CONFIG_TOOLCHAINPATH)bin/$(CONFIG_CROSSPREFIX)-g++ g++
 	touch $@
 
 # ----------------------------------------------------------------------------
