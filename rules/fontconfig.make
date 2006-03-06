@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: fontconfig.make,v 1.4 2005-12-04 17:22:22 ericn Exp $
+# $Id: fontconfig.make,v 1.5 2006-03-06 03:17:51 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -111,6 +111,7 @@ $(STATEDIR)/fontconfig.install: $(STATEDIR)/fontconfig.compile
 	install -d $(INSTALLPATH)/include
 	cd $(FONTCONFIG_DIR) && $(FONTCONFIG_PATH) make install
 	cp -rv $(FONTCONFIG_DIR)/fontconfig.pc $(INSTALLPATH)/lib/pkgconfig/
+	perl -pi.orig -e 's/-lfontconfig/-lfontconfig -lexpat/' $(INSTALLPATH)/lib/pkgconfig/fontconfig.pc
 	touch $@
 
 # ----------------------------------------------------------------------------
