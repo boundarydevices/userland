@@ -1,6 +1,6 @@
 
 # -*-makefile-*-
-# $Id: libusb.make,v 1.3 2005-11-23 14:49:43 ericn Exp $
+# $Id: libusb.make,v 1.4 2006-03-26 14:49:35 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -20,7 +20,7 @@ endif
 #
 # Paths and names
 #
-LIBUSB_VERSION	= 0.1.8
+LIBUSB_VERSION	= 0.1.12
 LIBUSB		= libusb-$(LIBUSB_VERSION)
 LIBUSB_SUFFIX		= tar.gz
 LIBUSB_URL		= http://easynews.dl.sourceforge.net/sourceforge/libusb/$(LIBUSB).$(LIBUSB_SUFFIX)
@@ -90,7 +90,8 @@ LIBUSB_AUTOCONF = \
    --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \
    --mandir=$(INSTALLPATH)/man \
-   --infodir=$(INSTALLPATH)/info
+   --infodir=$(INSTALLPATH)/info \
+   --disable-build-docs
 
 $(STATEDIR)/libusb.prepare: $(libusb_prepare_deps)
 	@$(call targetinfo, $@)
