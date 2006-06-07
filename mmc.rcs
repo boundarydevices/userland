@@ -30,7 +30,6 @@ mknod newrd/dev/mtd1 c 90 2
 mknod newrd/dev/mtd2 c 90 4
 ln -sf /dev/fb/0 newrd/dev/fb0
 mknod newrd/dev/dsp c 14 3
-mknod newrd/dev/timer c 253 0
 pivot_root /newrd /newrd/initrd
 cp -rp /cramfs/dev/* /dev/ 2>/dev/null
 mount -vt devpts none /dev/pts
