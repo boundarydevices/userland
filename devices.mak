@@ -73,7 +73,7 @@ ifdef KERNEL_ARCH_PXA
 	@echo -e "/dev/console\t\tc\t666\t0\t0\t5\t1\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/cua0\t\tc\t666\t0\t0\t5\t64\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/rawctl\t\tc\t666\t0\t0\t162\t0\t0\t0\t-" >> devices.txt
-	@echo -e "/dev/timer\t\tc\t666\t0\t0\t253\t0\t0\t0\t-" >> devices.txt
+	@echo -e "/dev/timer\t\tc\t666\t0\t0\t252\t0\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/random\t\tc\t666\t0\t0\t1\t8\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/urandom\t\tc\t666\t0\t0\t1\t9\t0\t0\t-" >> devices.txt
 	@echo -e "/dev/raw\t\td\t777\t0\t0\t-\t-\t-\t-\t-" >> devices.txt                               
