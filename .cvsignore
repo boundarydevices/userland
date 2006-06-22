@@ -19,3 +19,7 @@ mmc.initrd
 mmcinitrd.gz
 mmcinitrd.img
 crosscompile
+gtk.out
+initrd
+initrd.gz
+initrd.img
