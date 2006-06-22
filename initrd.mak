@@ -38,7 +38,6 @@ endif
 	@cp $(ROOTDIR)/etc/fstab $(INITRD_DIR)/etc
 	@cp $(ROOTDIR)/etc/inittab $(INITRD_DIR)/etc
 	@mkdir -p $(INITRD_DIR)/etc/init.d
-	@cp $(ROOTDIR)/sbin/mke2fs $(INITRD_DIR)/bin
 	@mkdir -p $(INITRD_DIR)/lib
 	@cp -rvd $(CROSS_LIB_DIR)/lib/ld-* $(INITRD_DIR)/lib
 	@cp -rvd $(CROSS_LIB_DIR)/lib/libc-* $(INITRD_DIR)/lib
@@ -55,10 +54,34 @@ endif
 	cd $(INITRD_DIR)/etc && /sbin/ldconfig -r ../ -v
 	@touch $@
 
+ifdef CONFIG_E2FSPROGS
+$(INITRD_DIR)/sbin/mke2fs: $(INITRD_DIR)
+	@cp $(ROOTDIR)/sbin/mke2fs $(INITRD_DIR)/bin
+
+$(INITRD_DIR)/sbin/e2fsck: $(INITRD_DIR)
+	@cp $(ROOTDIR)/sbin/e2fsck $(INITRD_DIR)/bin
+
+   E2FSPROGS_INSTALLED =  $(INITRD_DIR)/sbin/mke2fs $(INITRD_DIR)/sbin/e2fsck
+else
+   E2FSPROGS_INSTALLED =   
+endif
+
+ifdef CONFIG_DOSFSTOOLS
+$(INITRD_DIR)/bin/mkdosfs: $(INITRD_DIR)
+	@cp $(ROOTDIR)/bin/mkdosfs $(INITRD_DIR)/bin
+
+$(INITRD_DIR)/bin/dosfsck: $(INITRD_DIR)
+	@cp $(ROOTDIR)/bin/dosfsck $(INITRD_DIR)/bin
+
+   DOSFSPROGS_INSTALLED =  $(INITRD_DIR)/bin/mkdosfs $(INITRD_DIR)/bin/dosfsck
+else
+   DOSFSPROGS_INSTALLED =   
+endif
+
 $(INITRD_START): initrd.rcs
 	mkdir -p $(INITRD_DIR)/etc/init.d
 	cp -fv $? $@
 	chmod a+x $@
 
-$(STATEDIR)/initrd.built: $(INITRD_DIR) targetinstall $(INITRD_START) rootfs devices
+$(STATEDIR)/initrd.built: $(INITRD_DIR) targetinstall $(INITRD_START) rootfs devices $(E2FSPROGS_INSTALLED) $(DOSFSPROGS_INSTALLED)
 	touch $@
