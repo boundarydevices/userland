@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.21  2005-12-28 00:32:41  ericn
+# Revision 1.22  2006-06-22 13:49:28  ericn
+# -add initrd build (not auto-mount mmc)
+#
+# Revision 1.21  2005/12/28 00:32:41  ericn
 # -libdl targets in rules/glib.make
 #
 # Revision 1.20  2005/12/17 19:40:09  ericn
@@ -301,6 +304,7 @@ jffs2: jffs2.img
 	echo "JFFS2 image built"
 
 -include mmcinitrd.mak
+-include initrd.mak
 
 mmcinitrd.gz: $(STATEDIR)/mmcinitrd.built
 	genext2fs mmcinitrd.img -d mmc.initrd -U -D devices.txt -b 8192
@@ -308,5 +312,12 @@ mmcinitrd.gz: $(STATEDIR)/mmcinitrd.built
 
 mmcinitrd.u-boot: mmcinitrd.gz
 	mkimage -A arm -O linux -T ramdisk -n "Initial Ram Disk" -d mmcinitrd.gz mmcinitrd.u-boot
+
+initrd.gz: $(STATEDIR)/initrd.built
+	genext2fs initrd.img -d initrd -U -D devices.txt -b 8192
+	gzip -f -v9 initrd.img -c >$@
+
+initrd.u-boot: initrd.gz
+	mkimage -A arm -O linux -T ramdisk -n "Initial Ram Disk" -d initrd.gz initrd.u-boot
 
 
