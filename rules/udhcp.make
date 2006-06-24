@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: udhcp.make,v 1.6 2006-02-26 16:27:41 ericn Exp $
+# $Id: udhcp.make,v 1.7 2006-06-24 23:09:24 tkisky Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -78,7 +78,7 @@ udhcp_prepare_deps = \
 
 UDHCP_PATH	=  PATH=$(CROSS_PATH)
 UDHCP_ENV 	=  $(CROSS_ENV)
-UDHCP_ENV	+= CROSS_COMPILE=$(CONFIG_CROSSPREFIX) 
+UDHCP_ENV	+= CROSS_COMPILE=$(CONFIG_CROSSPREFIX)- 
 
 #
 # autoconf
