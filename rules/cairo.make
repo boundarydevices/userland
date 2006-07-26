@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: cairo.make,v 1.6 2005-12-11 16:03:51 ericn Exp $
+# $Id: cairo.make,v 1.7 2006-07-26 22:49:26 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,8 +18,8 @@ endif
 #
 # Paths and names 
 #
-CAIRO = cairo-0.9.2
-CAIRO_URL = http://cairographics.org/snapshots/$(CAIRO).tar.gz
+CAIRO = cairo-1.0.2
+CAIRO_URL = http://cairographics.org/releases/$(CAIRO).tar.gz
 CAIRO_SOURCE = $(CONFIG_ARCHIVEPATH)/$(CAIRO).tar.gz
 CAIRO_DIR = $(BUILDDIR)/$(CAIRO)
 
@@ -61,8 +61,11 @@ cairo_prepare_deps = \
 
 CAIRO_PATH	=  PATH=$(CROSS_PATH)
 CAIRO_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(INSTALLPATH)
+	--prefix=$(INSTALLPATH) \
+        --x-includes=$(INSTALLPATH)/include \
+        --x-libraries=$(INSTALLPATH)/lib
 
+CONFIG_CAIRO_SHARED = 1
 ifdef CONFIG_CAIRO_SHARED
    CAIRO_AUTOCONF 	+=  --enable-shared=yes
 else
@@ -70,11 +73,14 @@ else
    CAIRO_AUTOCONF 	+=  --enable-static=yes
 endif
 
-CAIRO_AUTOCONF += --without-x
-CAIRO_AUTOCONF += --enable-pdf=no
+# CAIRO_AUTOCONF += --without-x
+# CAIRO_AUTOCONF += --enable-pdf=no
 CAIRO_AUTOCONF += --with-png=$(INSTALLPATH)
 
-$(STATEDIR)/cairo.prepare: $(cairo_prepare_deps) $(STATEDIR)/pixman.install $(STATEDIR)/fontconfig.install
+$(STATEDIR)/cairo.prepare: $(cairo_prepare_deps) \
+        $(STATEDIR)/pixman.install \
+        $(STATEDIR)/fontconfig.install \
+        $(STATEDIR)/expat.install
 	@$(call targetinfo, $@)
 	cd $(CAIRO_DIR) && \
 		$(CAIRO_PATH) \
@@ -82,6 +88,8 @@ $(STATEDIR)/cairo.prepare: $(cairo_prepare_deps) $(STATEDIR)/pixman.install $(ST
       PKG_CONFIG_PATH=$(INSTALLPATH)/lib/pkgconfig/ \
       PATH=$(INSTALLPATH)/bin:$(PATH) \
       PKG_CONFIG=$(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config \
+      CFLAGS=-I$(INSTALLPATH)/include \
+      CPPFLAGS=-I$(INSTALLPATH)/include \
       ./configure $(CAIRO_AUTOCONF)
 	touch $@
 
@@ -91,9 +99,9 @@ $(STATEDIR)/cairo.prepare: $(cairo_prepare_deps) $(STATEDIR)/pixman.install $(ST
 
 cairo_compile: $(STATEDIR)/cairo.compile
 
-$(STATEDIR)/cairo.compile: $(STATEDIR)/cairo.prepare 
+$(STATEDIR)/cairo.compile: $(STATEDIR)/cairo.prepare $(STATEDIR)/libpng.install
 	@$(call targetinfo, $@)
-	cd $(CAIRO_DIR) && $(CAIRO_PATH) make
+	LDFLAGS=-lexpat cd $(CAIRO_DIR) && $(CAIRO_PATH) make
 	touch $@
 
 # ----------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pango.make,v 1.6 2006-01-10 04:37:22 ericn Exp $
+# $Id: pango.make,v 1.7 2006-07-26 22:49:31 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-PANGO			= pango-1.8.1
+PANGO			= pango-1.8.2
 PANGO_URL 	= ftp://ftp.gtk.org/pub/gtk/v2.6/$(PANGO).tar.gz
 PANGO_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(PANGO).tar.gz
 PANGO_DIR		= $(BUILDDIR)/$(PANGO)
@@ -59,31 +59,35 @@ pango_prepare_deps = \
 	$(STATEDIR)/pango.extract \
    $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config
 
-PANGO_PATH	   =  PATH=$(CROSS_PATH)
+PANGO_PATH	   =  PATH=$(CROSS_PATH):$(INSTALLPATH)/bin
 PANGO_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
 	--prefix=$(INSTALLPATH) \
    --without-libtiff \
-   --with-gdktarget=linux-fb  \
-   --disable-shadowfb \
    --disable-modules \
    --with-included-loaders=xpm,png,jpeg \
-   --without-x
+   --with-cairo=$(INSTALLPATH) \
+   --with-x=$(INSTALLPATH) \
+   --x-includes=$(INSTALLPATH)/include \
+   --x-libraries=$(INSTALLPATH)/lib
+
+CONFIG_PANGO_SHARED = 1
 
 ifdef CONFIG_PANGO_SHARED
-   PANGO_AUTOCONF 	+=  --shared
+   PANGO_AUTOCONF 	+=  --enable-shared
 else
 endif
 
 $(STATEDIR)/pango.prepare: $(pango_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(PANGO_DIR) && \
-		$(PANGO_PATH) \
-      $(CROSS_ENV) \
-      PKG_CONFIG_PATH=$(INSTALLPATH)/lib/pkgconfig/ \
-      PATH=$(INSTALLPATH)/bin:$(PATH) \
-      PKG_CONFIG=$(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config \
-      PKG_CONFIG_PATH=$(INSTALLPATH)/lib/pkgconfig/ \
-		./configure $(PANGO_AUTOCONF)
+	$(PANGO_PATH) \
+        $(CROSS_ENV) \
+        PKG_CONFIG_PATH=$(INSTALLPATH)/lib/pkgconfig/ \
+        PKG_CONFIG=$(TOPDIR)/arm-linux-pkg-config \
+        CFLAGS=-I$(INSTALLPATH)/include \
+        CPPFLAGS=-I$(INSTALLPATH)/include \
+        LDFLAGS=-L$(INSTALLPATH)/lib \
+	./configure $(PANGO_AUTOCONF)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -92,7 +96,7 @@ $(STATEDIR)/pango.prepare: $(pango_prepare_deps)
 
 pango_compile: $(STATEDIR)/pango.compile $(STATEDIR)/fontconfig.install
 
-$(STATEDIR)/pango.compile: $(STATEDIR)/pango.prepare $(STATEDIR)/glib.install $(INSTALLPATH)/lib/libdl.a
+$(STATEDIR)/pango.compile: $(STATEDIR)/pango.prepare $(STATEDIR)/glib.install
 	@$(call targetinfo, $@)
 	cd $(PANGO_DIR) && $(PANGO_PATH) make
 	touch $@
