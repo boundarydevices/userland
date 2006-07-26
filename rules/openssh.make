@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.16 2006-02-05 18:52:50 ericn Exp $
+# $Id: openssh.make,v 1.11 2006-07-26 22:50:47 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -141,6 +141,7 @@ OPENSSH_AUTOCONF = \
 	--with-ipv4-default \
 	--with-zlib=$(INSTALLPATH) \
 	--disable-etc-default-login \
+   --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \
    --datadir=$(INSTALLPATH)/share \
    --mandir=$(INSTALLPATH)/man \
@@ -182,35 +183,45 @@ openssh_targetinstall: $(STATEDIR)/openssh.targetinstall
 
 openssh_targetinstall_deps = \
 	$(STATEDIR)/openssl.targetinstall \
-   $(STATEDIR)/busybox.targetinstall \
 	$(STATEDIR)/zlib.targetinstall \
 	$(STATEDIR)/openssh.compile \
-   $(ROOTDIR)/lib/libnsl.so.1 \
-   $(ROOTDIR)/lib/libresolv-$(GLIBC_VER).so \
-   $(ROOTDIR)/lib/libcrypto.so.0.9.7 \
-   $(ROOTDIR)/lib/libutil.so.1 \
-   $(ROOTDIR)/lib/libcrypt.so.1 \
-   $(ROOTDIR)/lib/libc.so.6 \
-   $(ROOTDIR)/etc/ssh/ssh_host_key \
-   $(ROOTDIR)/etc/ssh/ssh_host_rsa_key \
-   $(ROOTDIR)/etc/ssh/ssh_host_dsa_key
-   
-ifdef CONFIG_TINYLOGIN
-   $(STATEDIR)/tinylogin.targetinstall
-endif
+        $(STATEDIR)/tinylogin.targetinstall \
+        $(ROOTDIR)/lib/libnsl.so.1 \
+        $(ROOTDIR)/lib/libresolv-2.3.5.so \
+        $(ROOTDIR)/lib/libcrypto.so.0.9.7 \
+        $(ROOTDIR)/lib/libutil.so.1 \
+        $(ROOTDIR)/lib/libcrypt.so.1 \
+        $(ROOTDIR)/lib/libc.so.6
 
+$(ROOTDIR)/lib/libcrypt-2.3.5.so: $(CROSS_LIB_DIR)/lib/libcrypt-2.3.5.so
+	mkdir -p $(ROOTDIR)/lib
+	cp -fvd $< $@
 
-$(ROOTDIR)/etc/ssh/ssh_host_key:
-	mkdir -p $(ROOTDIR)/etc/ssh/
-	@ssh-keygen -q -t rsa1 -f $(ROOTDIR)/etc/ssh/ssh_host_key -N ''
+$(ROOTDIR)/lib/libcrypt.so.1: $(ROOTDIR)/lib/libcrypt-2.3.5.so
+	pushd $(ROOTDIR)/lib && ln -sf libcrypt-2.3.5.so $@ && popd
 
-$(ROOTDIR)/etc/ssh/ssh_host_rsa_key:
-	mkdir -p $(ROOTDIR)/etc/ssh/
-	@ssh-keygen -q -t rsa -f $(ROOTDIR)/etc/ssh/ssh_host_rsa_key -N ''
+$(ROOTDIR)/lib/libcrypt.so: $(ROOTDIR)/lib/libcrypt.so.1
+	pushd $(ROOTDIR)/lib && ln -sf libcrypt.so.1 $@ && popd
 
-$(ROOTDIR)/etc/ssh/ssh_host_dsa_key:
-	mkdir -p $(ROOTDIR)/etc/ssh/
-	@ssh-keygen -q -t dsa -f $(ROOTDIR)/etc/ssh/ssh_host_dsa_key -N ''
+$(ROOTDIR)/lib/libnsl-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnsl-2.3.5.so
+	mkdir -p $(ROOTDIR)/lib
+	cp -fvd $< $@
+
+$(ROOTDIR)/lib/libnsl.so.1: $(ROOTDIR)/lib/libnsl-2.3.5.so
+	pushd $(ROOTDIR)/lib && ln -sf libnsl-2.3.5.so $@ && popd
+
+$(ROOTDIR)/lib/libnsl.so: $(ROOTDIR)/lib/libnsl.so.1
+	pushd $(ROOTDIR)/lib && ln -sf libnsl.so.1 $@ && popd
+
+$(ROOTDIR)/lib/libutil-2.3.5.so: $(CROSS_LIB_DIR)/lib/libutil-2.3.5.so
+	mkdir -p $(ROOTDIR)/lib
+	cp -fvd $< $@
+
+$(ROOTDIR)/lib/libutil.so.1: $(ROOTDIR)/lib/libutil-2.3.5.so
+	pushd $(ROOTDIR)/lib && ln -sf libutil-2.3.5.so $@ && popd
+
+$(ROOTDIR)/lib/libutil.so: $(ROOTDIR)/lib/libutil.so.1
+	pushd $(ROOTDIR)/lib && ln -sf libutil.so.1 $@ && popd
 
 $(STATEDIR)/openssh.targetinstall: $(openssh_targetinstall_deps)
 	@$(call targetinfo, openssh.targetinstall)
@@ -225,6 +236,9 @@ ifdef CONFIG_OPENSSH_SSHD
 	@perl -p -i -e "s/#PermitRootLogin yes/PermitRootLogin yes/" $(OPENSSH_DIR)/sshd_config.out 
 	@install -m 644 -D $(OPENSSH_DIR)/sshd_config.out $(ROOTDIR)/etc/ssh/sshd_config
 	@install -m 755 -D $(OPENSSH_DIR)/sshd $(ROOTDIR)/usr/sbin/sshd
+	@ssh-keygen -q -t rsa1 -f $(ROOTDIR)/etc/ssh/ssh_host_key -N ''
+	@ssh-keygen -q -t rsa -f $(ROOTDIR)/etc/ssh/ssh_host_rsa_key -N ''
+	@ssh-keygen -q -t dsa -f $(ROOTDIR)/etc/ssh/ssh_host_dsa_key -N ''
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/usr/sbin/sshd
 endif
 ifdef CONFIG_OPENSSH_SCP
@@ -240,6 +254,8 @@ ifdef CONFIG_OPENSSH_KEYGEN
 	@install -m 755 -D $(OPENSSH_DIR)/ssh-keygen $(ROOTDIR)/bin/ssh-keygen
 	@$(OPENSSH_PATH) $(CROSSSTRIP) -R .notes -R .comment $(ROOTDIR)/bin/ssh-keygen
 endif
+	@echo "1:x:1:sshd" >> $(ROOTDIR)/etc/group
+	@echo "sshd::1:1:sshd:/:/bin/echo" >> $(ROOTDIR)/etc/passwd
 	@touch $@
 
 # ----------------------------------------------------------------------------
