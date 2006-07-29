@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.24  2006-06-22 13:50:26  ericn
+# Revision 1.25  2006-07-29 21:39:37  ericn
+# -add libnsl.so (from glibc)
+#
+# Revision 1.24  2006/06/22 13:50:26  ericn
 # -moved stock libraries from rules/glib
 #
 # Revision 1.23  2005/12/28 00:32:05  ericn
@@ -222,6 +225,15 @@ $(ROOTDIR)/lib/ld-linux.so.2: $(CROSS_LIB_DIR)/lib/ld-linux.so.2
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
+$(ROOTDIR)/lib/libnsl-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnsl-2.3.5.so
+	mkdir -p $(ROOTDIR)/lib
+	cp -fvd $< $@
+
+$(ROOTDIR)/lib/libnsl.so.1: $(ROOTDIR)/lib/libnsl-2.3.5.so
+	pushd $(ROOTDIR)/lib && ln -s libnsl-2.3.5.so $@ && popd
+
+$(ROOTDIR)/lib/libnsl.so: $(ROOTDIR)/lib/libnsl.so.1
+	pushd $(ROOTDIR)/lib && ln -s libnsl.so.1 $@ && popd
 
 $(ROOTDIR)/etc/hosts: /etc/hosts
 	cp -f $< $@ 
