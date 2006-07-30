@@ -1,0 +1,14 @@
+
+config THEORA
+	bool
+   default y
+	prompt "Compile Theora"
+   help 
+   
+   Theora is a free video codec and library from Xiph.org, the people 
+   who brought you Ogg Vorbis.
+   
+   It is released under the terms of the GPL license.
+   
+   http://theora.org
+

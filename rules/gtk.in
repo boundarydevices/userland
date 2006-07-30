@@ -1,0 +1,4 @@
+config GTK
+	bool
+   default n
+	prompt "Compile GTK+"

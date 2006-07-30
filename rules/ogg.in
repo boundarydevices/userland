@@ -1,0 +1,13 @@
+
+config OGG
+	bool
+   default y
+	prompt "Compile Ogg"
+   help 
+   
+   Theora is a media envelope format and library from Xiph.org.
+      
+   It is released under the terms of the GPL license.
+   
+   http://xiph.org/ogg
+

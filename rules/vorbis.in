@@ -1,0 +1,13 @@
+
+config VORBIS
+	bool
+   default y
+	prompt "Compile Vorbis"
+   help 
+   
+   Theora is a free audio codec and library from Xiph.org.
+      
+   It is released under the terms of the GPL license.
+   
+   http://xiph.org/vorbis
+
