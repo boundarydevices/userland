@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tinylogin.make,v 1.9 2006-02-26 16:27:16 ericn Exp $
+# $Id: tinylogin.make,v 1.10 2006-07-30 15:10:00 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -132,6 +132,10 @@ $(STATEDIR)/tinylogin.targetinstall: $(tinylogin_targetinstall_deps)
 	@mkdir -p $(ROOTDIR)/etc
 	@echo "root:$(PASSWORD_STRING):0:0:Linux User,,,:/:/bin/sh" > $(ROOTDIR)/etc/passwd
 	@echo "0:x:0:root" > $(ROOTDIR)/etc/group
+ifdef CONFIG_OPENSSH
+	@echo "1:x:1:sshd" >> $(ROOTDIR)/etc/group
+	@echo "sshd:x:1:1:sshd:/:/bin/false" >> $(ROOTDIR)/etc/passwd
+endif
 	@touch $@
 
 # ----------------------------------------------------------------------------
