@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.25  2006-07-29 21:39:37  ericn
+# Revision 1.26  2006-07-30 15:06:03  ericn
+# -more fixes for nss libs
+#
+# Revision 1.25  2006/07/29 21:39:37  ericn
 # -add libnsl.so (from glibc)
 #
 # Revision 1.24  2006/06/22 13:50:26  ericn
@@ -106,6 +109,7 @@ TARGETS := $(ROOTDIR)/etc/bashrc \
            $(ROOTDIR)/etc/inittab \
            $(ROOTDIR)/etc/modules.conf \
            $(ROOTDIR)/etc/nsswitch.conf \
+           $(ROOTDIR)/etc/passwd \
            $(ROOTDIR)/etc/resolv.conf \
            $(ROOTDIR)/etc/ld.so.conf \
            $(ROOTDIR)/etc/ld.so.cache \
@@ -188,16 +192,20 @@ $(ROOTDIR)/lib/libstdc++.so.6.0.3: $(CROSS_LIB_DIR)/lib/libstdc++.so.6.0.3
 $(ROOTDIR)/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libnsl.so.1: $(CROSS_LIB_DIR)/lib/libnsl.so.1
+
+$(ROOTDIR)/lib/libnss_dns-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnss_dns-2.3.5.so
+	mkdir -p $(ROOTDIR)/lib
+	cp -fvd $< $@
+
+$(ROOTDIR)/lib/libnss_files-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnss_files-2.3.5.so
+	mkdir -p $(ROOTDIR)/lib
+	cp -fvd $< $@
+
+$(ROOTDIR)/lib/libnss_dns.so.2: $(CROSS_LIB_DIR)/lib/libnss_dns.so.2 $(ROOTDIR)/lib/libnss_dns-2.3.5.so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
-$(ROOTDIR)/lib/libnss_dns.so.2: $(CROSS_LIB_DIR)/lib/libnss_dns.so.2
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libnss_files.so.2: $(CROSS_LIB_DIR)/lib/libnss_files.so.2
+$(ROOTDIR)/lib/libnss_files.so.2: $(CROSS_LIB_DIR)/lib/libnss_files.so.2 $(ROOTDIR)/lib/libnss_files-2.3.5.so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
@@ -230,6 +238,7 @@ $(ROOTDIR)/lib/libnsl-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnsl-2.3.5.so
 	cp -fvd $< $@
 
 $(ROOTDIR)/lib/libnsl.so.1: $(ROOTDIR)/lib/libnsl-2.3.5.so
+	mkdir -p $(ROOTDIR)/lib
 	pushd $(ROOTDIR)/lib && ln -s libnsl-2.3.5.so $@ && popd
 
 $(ROOTDIR)/lib/libnsl.so: $(ROOTDIR)/lib/libnsl.so.1
@@ -256,6 +265,8 @@ $(ROOTDIR)/etc/modules.conf:
 
 $(ROOTDIR)/etc/nsswitch.conf:
 	echo "hosts:      files dns" > $@
+	echo "passwd:     files" >> $@
+	echo "group:      files" >> $@
 
 $(ROOTDIR)/etc/resolv.conf:
 	echo "# name servers go here" >$@
