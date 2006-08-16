@@ -16,47 +16,16 @@ include .config
 include .kernelconfig
 CROSS_LIB_LINK = $(subst //,/,$(MMCDIR)/$(CROSS_LIB_DIR))
 
-$(MMCDIR):
-	@echo "Building RAMDISK in $(MMCDIR)"
+$(MMCDIR): $(STATEDIR)/initrd.built
+	@echo "Copying RAMDISK to $(MMCDIR)"
 	@rm -rf $(MMCDIR)
-	@mkdir -p $(MMCDIR)/bin
-	@mkdir -p $(MMCDIR)/lib
-ifdef MODULES   
-	make -C ~/cvs/linux-2.6.11.11 INSTALL_MOD_PATH=$(MMCDIR) modules_install
-	cp ~/zd1211.cvs/src/modules-2.6.11.11/zd1211_mod.ko $(MMCDIR)   
-endif   
-	echo "CROSS_LIB_DIR == " $(CROSS_LIB_DIR)
-	echo "ROOTDIR == " $(ROOTDIR)
-	@cd $(MMCDIR) && ln -s bin sbin
-	@cp $(ROOTDIR)/bin/busybox $(MMCDIR)/bin
-	@echo "Hello\n"
-	@cd $(MMCDIR) && ln -s bin/busybox linuxrc
-	@find $(ROOTDIR)/bin/ -type l -exec cp -rd {} mmc.initrd/bin/ \;
-	@find $(ROOTDIR)/sbin/ -type l -exec cp -rd {} mmc.initrd/sbin/ \;
-	@mkdir -p $(MMCDIR)/etc
-	@cp $(ROOTDIR)/etc/fstab $(MMCDIR)/etc
-	@cp $(ROOTDIR)/etc/inittab $(MMCDIR)/etc
-	@mkdir -p $(MMCDIR)/etc/init.d
-	@cp $(ROOTDIR)/sbin/mke2fs $(MMCDIR)/bin
-	@mkdir -p $(MMCDIR)/lib
-	@cp -rvd $(CROSS_LIB_DIR)/lib/ld-* $(MMCDIR)/lib
-	@cp -rvd $(CROSS_LIB_DIR)/lib/libc-* $(MMCDIR)/lib
-	@cp -rvd $(CROSS_LIB_DIR)/lib/libc.so* $(MMCDIR)/lib
-	@mkdir -p $(MMCDIR)/proc
-	@mkdir -p $(MMCDIR)/tmp
-	@mkdir -p $(MMCDIR)/usr
-	@mkdir -p $(MMCDIR)/usr/bin
-	@mkdir -p $(MMCDIR)/usr/lib
-	@mkdir -p $(MMCDIR)/var
-	@mkdir -p $(CROSS_LIB_LINK)
-	@cd $(CROSS_LIB_LINK) && ln -sf /lib
-	@cd $(CROSS_LIB_LINK) && ln -sf /bin
-	cd $(MMCDIR)/etc && /sbin/ldconfig -r ../ -v
-	@touch $@
+	@mkdir -p $(MMCDIR)
+	@cp -rfv $(INITRD_DIR)/* $(MMCDIR)
+	@rm -f $(STARTSCRIPT)
 
-$(STARTSCRIPT): mmc.rcs
+$(STARTSCRIPT): $(MMCDIR) mmc.rcs
 	mkdir -p $(MMCDIR)/etc/init.d
-	cp -fv $? $@
+	cp -fv mmc.rcs $@
 	chmod a+x $@
 
 $(STATEDIR)/mmcinitrd.built: $(MMCDIR) targetinstall $(STARTSCRIPT) rootfs devices
