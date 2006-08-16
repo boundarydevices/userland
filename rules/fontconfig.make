@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: fontconfig.make,v 1.5 2006-03-06 03:17:51 ericn Exp $
+# $Id: fontconfig.make,v 1.6 2006-08-16 18:40:28 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -11,7 +11,7 @@
 #
 # We provide this package
 #
-ifeq (y, $(CONFIG_PIXMAN))
+ifeq (y, $(CONFIG_FONTCONFIG))
 PACKAGES += fontconfig
 endif
 
