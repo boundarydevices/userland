@@ -1,0 +1,12 @@
+config XINE
+	bool
+   default y
+	prompt "Compile XINE"
+   help 
+   
+   XINE is a free multimedia player
+   
+   It is released under the terms of the GPL license.
+   
+   http://xinehq.de/
+

@@ -1,0 +1,12 @@
+config XVID
+	bool
+   default y
+	prompt "Compile XVID"
+   help 
+   
+   XVID is a free codec for MPEG-4
+   
+   It is released under the terms of the GPL license.
+   
+   http://xvid.org/
+
