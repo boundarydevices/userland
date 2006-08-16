@@ -1,6 +1,6 @@
 config XINE
 	bool
-   default y
+   default n
 	prompt "Compile XINE"
    help 
    

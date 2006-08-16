@@ -1,6 +1,6 @@
 config XVID
 	bool
-   default y
+   default n
 	prompt "Compile XVID"
    help 
    

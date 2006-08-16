@@ -1,6 +1,6 @@
 config XORG
 	bool
-	default y
+	default n
 	prompt "Build X from XOrg"
         help
 		Choosing this option will build an X-Server using sources

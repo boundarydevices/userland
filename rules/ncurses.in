@@ -10,7 +10,7 @@ config NCURSES
 
 config NCURSES_TERMCAP
 	bool "install minimal set of termcap data files"
-	default y
+	default n
 	depends on NCURSES
 	help
 		Installes the following termcap files:
