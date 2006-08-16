@@ -48,9 +48,16 @@ config JSCBM
 config JSGPIO
 	bool
 	prompt "Include GPIO interface"
-   default n
+   default y
    help 
    Select yes to include GPIO Javascript interface
+
+config JSMPEG
+	bool
+	prompt "Include MPEG interface"
+   default y
+   help 
+   Select yes to include MPEG Javascript interface
 
 config JSMONITORWLAN
 	bool
