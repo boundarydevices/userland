@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.12 2006-07-30 15:09:38 ericn Exp $
+# $Id: openssh.make,v 1.13 2006-08-16 18:40:51 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -141,7 +141,6 @@ OPENSSH_AUTOCONF = \
 	--with-ipv4-default \
 	--with-zlib=$(INSTALLPATH) \
 	--disable-etc-default-login \
-   --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \
    --datadir=$(INSTALLPATH)/share \
    --mandir=$(INSTALLPATH)/man \
