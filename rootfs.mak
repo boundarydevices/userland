@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.27  2006-08-17 12:55:33  ericn
+# Revision 1.28  2006-08-17 15:48:21  ericn
+# -fix glibc dependencies
+#
+# Revision 1.27  2006/08/17 12:55:33  ericn
 # -move glibc rules into rules/glibc.mak
 #
 # Revision 1.26  2006/07/30 15:06:03  ericn
@@ -118,17 +121,22 @@ TARGETS := $(ROOTDIR)/etc/bashrc \
            $(ROOTDIR)/etc/ld.so.cache \
            $(ROOTDIR)/bin/jsMenu \
            $(ROOTDIR)/etc/init.d/rcS \
+           $(ROOTDIR)/lib/libc-2.3.5.so \
            $(ROOTDIR)/lib/libc.so.6 \
            $(ROOTDIR)/lib/libgcc_s.so.1 \
            $(ROOTDIR)/lib/libstdc++.so \
            $(ROOTDIR)/lib/libstdc++.so.6 \
            $(ROOTDIR)/lib/libstdc++.so.6.0.3 \
+           $(ROOTDIR)/lib/libutil-2.3.5.so \
            $(ROOTDIR)/lib/libutil.so.1 \
            $(ROOTDIR)/lib/libnsl.so.1 \
            $(ROOTDIR)/lib/libnss_dns.so.2 \
            $(ROOTDIR)/lib/libnss_files.so.2 \
+           $(ROOTDIR)/lib/libcrypt-2.3.5.so \
            $(ROOTDIR)/lib/libcrypt.so.1 \
+           $(ROOTDIR)/lib/libm-2.3.5.so \
            $(ROOTDIR)/lib/libm.so.6 \
+           $(ROOTDIR)/lib/libpthread-0.10.so \
            $(ROOTDIR)/lib/libpthread.so.0 \
            $(ROOTDIR)/lib/ld-2.3.5.so \
            $(ROOTDIR)/lib/ld-linux.so.2 \
