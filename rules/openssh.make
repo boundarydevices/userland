@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.13 2006-08-16 18:40:51 ericn Exp $
+# $Id: openssh.make,v 1.14 2006-08-17 12:55:53 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -194,36 +194,6 @@ openssh_targetinstall_deps = \
    $(ROOTDIR)/etc/ssh/ssh_host_key \
    $(ROOTDIR)/etc/ssh/ssh_host_rsa_key \
    $(ROOTDIR)/etc/ssh/ssh_host_dsa_key
-
-$(ROOTDIR)/lib/libcrypt-2.3.5.so: $(CROSS_LIB_DIR)/lib/libcrypt-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-
-$(ROOTDIR)/lib/libcrypt.so.1: $(ROOTDIR)/lib/libcrypt-2.3.5.so
-	pushd $(ROOTDIR)/lib && ln -sf libcrypt-2.3.5.so $@ && popd
-
-$(ROOTDIR)/lib/libcrypt.so: $(ROOTDIR)/lib/libcrypt.so.1
-	pushd $(ROOTDIR)/lib && ln -sf libcrypt.so.1 $@ && popd
-
-$(ROOTDIR)/lib/libnsl-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnsl-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-
-$(ROOTDIR)/lib/libnsl.so.1: $(ROOTDIR)/lib/libnsl-2.3.5.so
-	pushd $(ROOTDIR)/lib && ln -sf libnsl-2.3.5.so $@ && popd
-
-$(ROOTDIR)/lib/libnsl.so: $(ROOTDIR)/lib/libnsl.so.1
-	pushd $(ROOTDIR)/lib && ln -sf libnsl.so.1 $@ && popd
-
-$(ROOTDIR)/lib/libutil-2.3.5.so: $(CROSS_LIB_DIR)/lib/libutil-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-
-$(ROOTDIR)/lib/libutil.so.1: $(ROOTDIR)/lib/libutil-2.3.5.so
-	pushd $(ROOTDIR)/lib && ln -sf libutil-2.3.5.so $@ && popd
-
-$(ROOTDIR)/lib/libutil.so: $(ROOTDIR)/lib/libutil.so.1
-	pushd $(ROOTDIR)/lib && ln -sf libutil.so.1 $@ && popd
 
 $(ROOTDIR)/etc/ssh/ssh_host_key:
 	mkdir -p $(ROOTDIR)/etc/ssh/

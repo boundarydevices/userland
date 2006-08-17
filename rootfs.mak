@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.26  2006-07-30 15:06:03  ericn
+# Revision 1.27  2006-08-17 12:55:33  ericn
+# -move glibc rules into rules/glibc.mak
+#
+# Revision 1.26  2006/07/30 15:06:03  ericn
 # -more fixes for nss libs
 #
 # Revision 1.25  2006/07/29 21:39:37  ericn
@@ -96,7 +99,7 @@ include .config
 include .kernelconfig
 include .bbconfig
 include rules/busybox.make
-include rules/glib.make
+include rules/glibc.make
 
 CROSSSTRIP := $(CONFIG_GNU_TARGET)-strip
 CROSS_PATH := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
@@ -164,85 +167,6 @@ $(ROOTDIR)/etc/bashrc:
 	echo "# mke2fs call by size of the largest file to be downloaded" >> $@
 	echo "export CURLTMPSIZE=4000000" >> $@
 	echo "export LD_LIBRARY_PATH=/lib:/usr/lib" >> $@
-
-$(ROOTDIR)/lib/ld-2.3.5.so: $(CROSS_LIB_DIR)/lib/ld-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-
-$(ROOTDIR)/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libgcc_s.so.1: $(CROSS_LIB_DIR)/lib/libgcc_s.so.1
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libstdc++.so: $(CROSS_LIB_DIR)/lib/libstdc++.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libstdc++.so.6: $(CROSS_LIB_DIR)/lib/libstdc++.so.6
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libstdc++.so.6.0.3: $(CROSS_LIB_DIR)/lib/libstdc++.so.6.0.3
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-
-$(ROOTDIR)/lib/libnss_dns-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnss_dns-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-
-$(ROOTDIR)/lib/libnss_files-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnss_files-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-
-$(ROOTDIR)/lib/libnss_dns.so.2: $(CROSS_LIB_DIR)/lib/libnss_dns.so.2 $(ROOTDIR)/lib/libnss_dns-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libnss_files.so.2: $(CROSS_LIB_DIR)/lib/libnss_files.so.2 $(ROOTDIR)/lib/libnss_files-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libcrypt.so.1: $(CROSS_LIB_DIR)/lib/libcrypt.so.1
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libpthread.so.0: $(CROSS_LIB_DIR)/lib/libpthread.so.0
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libdl-2.3.5.so: $(CROSS_LIB_DIR)/lib/libdl-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-
-$(ROOTDIR)/lib/libdl.so.2: $(CROSS_LIB_DIR)/lib/libdl.so.2
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/ld-linux.so.2: $(CROSS_LIB_DIR)/lib/ld-linux.so.2
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-                
-$(ROOTDIR)/lib/libnsl-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnsl-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@
-
-$(ROOTDIR)/lib/libnsl.so.1: $(ROOTDIR)/lib/libnsl-2.3.5.so
-	mkdir -p $(ROOTDIR)/lib
-	pushd $(ROOTDIR)/lib && ln -s libnsl-2.3.5.so $@ && popd
-
-$(ROOTDIR)/lib/libnsl.so: $(ROOTDIR)/lib/libnsl.so.1
-	pushd $(ROOTDIR)/lib && ln -s libnsl.so.1 $@ && popd
 
 $(ROOTDIR)/etc/hosts: /etc/hosts
 	cp -f $< $@ 
