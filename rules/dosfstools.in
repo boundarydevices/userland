@@ -1,5 +1,5 @@
 config DOSFSTOOLS
    bool
-   default n
+   default y
    prompt "Include dosfsck, mkdosfs"
 
