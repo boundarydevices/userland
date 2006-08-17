@@ -27,14 +27,14 @@ config JSBARCODE
 config JSCAMERA
 	bool
 	prompt "Include Quickcam support"
-   default n
+   default y
    help 
    Select yes to include support for the Camera object
 
 config JSSTARUSB
 	bool
 	prompt "Include Star USB printer"
-   default n
+   default y
    help 
    Select yes to include Star Micronics printer support
 
@@ -69,7 +69,7 @@ config JSMONITORWLAN
 config JSCAIRO
 	bool
 	prompt "Include Cairo Graphics Library"
-   default y
+   default n
    help 
    Select yes to include the Cairo Graphics Library
    See http://cairographics.org/
