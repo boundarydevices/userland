@@ -14,7 +14,7 @@ config LIBMPEG2
 config LIBMPEG2_OLD
    depends on LIBMPEG2
    bool
-   default y
+   default n
    prompt "Compile older version (0.3.1)"
 
 endmenu
