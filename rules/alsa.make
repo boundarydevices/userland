@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: alsa.make,v 1.2 2005-08-24 03:23:18 ericn Exp $
+# $Id: alsa.make,v 1.3 2006-09-04 14:24:12 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -74,6 +74,7 @@ ALSA_AUTOCONF = \
 $(STATEDIR)/alsa.prepare: $(alsa_prepare_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(ALSA_DIR)/config.cache)
+	cd $(ALSA_DIR) && libtoolize --copy --force
 	cd $(ALSA_DIR) && aclocal && autoconf && automake --add-missing
 	cd $(ALSA_DIR) && \
 		$(ALSA_PATH) \
