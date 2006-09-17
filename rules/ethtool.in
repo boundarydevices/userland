@@ -1,0 +1,4 @@
+config ETHTOOL
+	bool
+   default n
+	prompt "Compile ethtool"
