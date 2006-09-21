@@ -51,6 +51,7 @@ endif
 	@mkdir -p $(CROSS_LIB_LINK)
 	@cd $(CROSS_LIB_LINK) && ln -sf /lib
 	@cd $(CROSS_LIB_LINK) && ln -sf /bin
+	mkdir $(INITRD_DIR)/lib64 && mkdir $(INITRD_DIR)/usr/lib64
 	cd $(INITRD_DIR)/etc && /sbin/ldconfig -r ../ -v
 	@touch $@
 
