@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xine.make,v 1.1 2006-08-16 18:41:28 ericn Exp $
+# $Id: xine.make,v 1.2 2006-09-21 15:12:23 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -79,8 +79,8 @@ XINE_ENV 	=  $(CROSS_ENV)
 XINE_AUTOCONF = \
 	--host=$(CONFIG_GNU_TARGET) \
 	--prefix=$(CROSS_LIB_DIR) \
-   --enable-shared=no \
-   --enable-static=yes \
+   --enable-shared=yes \
+   --enable-static=no \
    --disable-sdl \
    --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \
@@ -97,15 +97,14 @@ XINE_AUTOCONF = \
    --disable-mlib          \
    --disable-opengl        \
    --disable-glu           \
-   --disable-fb            \
+   --enable-fb             \
    --disable-v4l           \
-   --enable-static-xv      \
+   --disable-static-xv     \
    --disable-xinerama      \
    --disable-aalib         \
    --disable-aalibtest     \
    --disable-caca          \
    --disable-cacatest      \
-   --disable-fb            \
    --disable-sdl           \
    --disable-sdltest       \
    --disable-polypaudio    \
@@ -119,11 +118,11 @@ XINE_AUTOCONF = \
    --disable-flac          \
    --disable-libFLACtest   \
    --disable-a52dec        \
-   --disable-mad           \
+   --enable-mad           \
    --disable-mng           \
    --disable-imagemagick   \
    --disable-freetype      \
-   --disable-oss           \
+   --enable-oss           \
    --disable-alsa          \
    --disable-alsatest      \
    --disable-esd           \
@@ -190,6 +189,10 @@ xine_targetinstall_deps = $(STATEDIR)/xine.compile
 
 $(STATEDIR)/xine.targetinstall: $(xine_targetinstall_deps)
 	@$(call targetinfo, $@)
+	mkdir -p $(ROOTDIR)/usr/lib
+	cp -d install/lib/libxine.* $(ROOTDIR)/usr/lib/
+	cp -r install/lib/xine $(ROOTDIR)/usr/lib/
+	cp -d $(CROSS_LIB_DIR)/lib/librt* $(ROOTDIR)/usr/lib/
 	touch $@
 
 # ----------------------------------------------------------------------------
