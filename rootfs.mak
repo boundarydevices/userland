@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.29  2006-09-21 22:37:56  ericn
+# Revision 1.30  2006-09-21 23:44:42  ericn
+# -add /proc/bus/usb to fstab
+#
+# Revision 1.29  2006/09/21 22:37:56  ericn
 # -use GLIBC_VER instead of 2.3.5
 #
 # Revision 1.28  2006/08/17 15:48:21  ericn
@@ -258,6 +261,9 @@ $(ROOTDIR)/etc/init.d/rcS: $(ROOTDIR)/bin/jsMenu $(ROOTDIR)/etc/init.d
 	echo "#!/bin/sh" >$@
 ifdef KERNEL_PROC_FS   
 	echo "mount -t proc /proc /proc" >>$@
+endif   
+ifdef KERNEL_USB_DEVICEFS
+	echo "mount -t usbfs none /proc/bus/usb" >>$@
 endif   
 ifdef KERNEL_SYSFS   
 	echo "mount -t sysfs /sysfs /sysfs" >>$@
