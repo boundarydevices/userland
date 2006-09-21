@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glibc.make,v 1.2 2006-08-17 15:48:36 ericn Exp $
+# $Id: glibc.make,v 1.3 2006-09-21 22:39:16 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -9,16 +9,17 @@
 # see the README file.
 #
 
+GLIBC_VER=2.3.5
 
-$(ROOTDIR)/lib/ld-2.3.5.so: $(CROSS_LIB_DIR)/lib/ld-2.3.5.so
+$(ROOTDIR)/lib/ld-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/ld-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
-$(ROOTDIR)/lib/libc-2.3.5.so: $(CROSS_LIB_DIR)/lib/libc-2.3.5.so
+$(ROOTDIR)/lib/libc-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libc-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
-$(ROOTDIR)/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6 $(ROOTDIR)/lib/libc-2.3.5.so
+$(ROOTDIR)/lib/libc.so.6: $(CROSS_LIB_DIR)/lib/libc.so.6 $(ROOTDIR)/lib/libc-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
@@ -38,47 +39,47 @@ $(ROOTDIR)/lib/libstdc++.so.6.0.3: $(CROSS_LIB_DIR)/lib/libstdc++.so.6.0.3
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
-$(ROOTDIR)/lib/libutil-2.3.5.so: $(CROSS_LIB_DIR)/lib/libutil-2.3.5.so
+$(ROOTDIR)/lib/libutil-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libutil-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
-$(ROOTDIR)/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1 $(ROOTDIR)/lib/libutil-2.3.5.so
+$(ROOTDIR)/lib/libutil.so.1: $(CROSS_LIB_DIR)/lib/libutil.so.1 $(ROOTDIR)/lib/libutil-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
-$(ROOTDIR)/lib/libresolv-2.3.5.so: $(CROSS_LIB_DIR)/lib/libresolv-2.3.5.so
+$(ROOTDIR)/lib/libresolv-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libresolv-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
-$(ROOTDIR)/lib/libnss_dns-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnss_dns-2.3.5.so
+$(ROOTDIR)/lib/libnss_dns-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libnss_dns-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
-$(ROOTDIR)/lib/libnss_files-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnss_files-2.3.5.so
+$(ROOTDIR)/lib/libnss_files-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libnss_files-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
-$(ROOTDIR)/lib/libnss_dns.so.2: $(CROSS_LIB_DIR)/lib/libnss_dns.so.2 $(ROOTDIR)/lib/libnss_dns-2.3.5.so
+$(ROOTDIR)/lib/libnss_dns.so.2: $(CROSS_LIB_DIR)/lib/libnss_dns.so.2 $(ROOTDIR)/lib/libnss_dns-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
-$(ROOTDIR)/lib/libnss_files.so.2: $(CROSS_LIB_DIR)/lib/libnss_files.so.2 $(ROOTDIR)/lib/libnss_files-2.3.5.so
+$(ROOTDIR)/lib/libnss_files.so.2: $(CROSS_LIB_DIR)/lib/libnss_files.so.2 $(ROOTDIR)/lib/libnss_files-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
-$(ROOTDIR)/lib/libcrypt-2.3.5.so: $(CROSS_LIB_DIR)/lib/libcrypt-2.3.5.so
+$(ROOTDIR)/lib/libcrypt-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libcrypt-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
-$(ROOTDIR)/lib/libcrypt.so.1: $(CROSS_LIB_DIR)/lib/libcrypt.so.1 $(ROOTDIR)/lib/libcrypt-2.3.5.so
+$(ROOTDIR)/lib/libcrypt.so.1: $(CROSS_LIB_DIR)/lib/libcrypt.so.1 $(ROOTDIR)/lib/libcrypt-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
-$(ROOTDIR)/lib/libm-2.3.5.so: $(CROSS_LIB_DIR)/lib/libm-2.3.5.so
+$(ROOTDIR)/lib/libm-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libm-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
-$(ROOTDIR)/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6 $(ROOTDIR)/lib/libm-2.3.5.so
+$(ROOTDIR)/lib/libm.so.6: $(CROSS_LIB_DIR)/lib/libm.so.6 $(ROOTDIR)/lib/libm-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
@@ -90,7 +91,7 @@ $(ROOTDIR)/lib/libpthread.so.0: $(CROSS_LIB_DIR)/lib/libpthread.so.0 $(ROOTDIR)/
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
-$(ROOTDIR)/lib/libdl-2.3.5.so: $(CROSS_LIB_DIR)/lib/libdl-2.3.5.so
+$(ROOTDIR)/lib/libdl-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libdl-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
@@ -102,13 +103,13 @@ $(ROOTDIR)/lib/ld-linux.so.2: $(CROSS_LIB_DIR)/lib/ld-linux.so.2
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
                 
-$(ROOTDIR)/lib/libnsl-2.3.5.so: $(CROSS_LIB_DIR)/lib/libnsl-2.3.5.so
+$(ROOTDIR)/lib/libnsl-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libnsl-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
-$(ROOTDIR)/lib/libnsl.so.1: $(ROOTDIR)/lib/libnsl-2.3.5.so
+$(ROOTDIR)/lib/libnsl.so.1: $(ROOTDIR)/lib/libnsl-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	pushd $(ROOTDIR)/lib && ln -s libnsl-2.3.5.so $@ && popd
+	pushd $(ROOTDIR)/lib && ln -s libnsl-$(GLIBC_VER).so $@ && popd
 
 $(ROOTDIR)/lib/libnsl.so: $(ROOTDIR)/lib/libnsl.so.1
 	pushd $(ROOTDIR)/lib && ln -s libnsl.so.1 $@ && popd

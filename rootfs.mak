@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.28  2006-08-17 15:48:21  ericn
+# Revision 1.29  2006-09-21 22:37:56  ericn
+# -use GLIBC_VER instead of 2.3.5
+#
+# Revision 1.28  2006/08/17 15:48:21  ericn
 # -fix glibc dependencies
 #
 # Revision 1.27  2006/08/17 12:55:33  ericn
@@ -121,27 +124,27 @@ TARGETS := $(ROOTDIR)/etc/bashrc \
            $(ROOTDIR)/etc/ld.so.cache \
            $(ROOTDIR)/bin/jsMenu \
            $(ROOTDIR)/etc/init.d/rcS \
-           $(ROOTDIR)/lib/libc-2.3.5.so \
+           $(ROOTDIR)/lib/libc-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libc.so.6 \
            $(ROOTDIR)/lib/libgcc_s.so.1 \
            $(ROOTDIR)/lib/libstdc++.so \
            $(ROOTDIR)/lib/libstdc++.so.6 \
            $(ROOTDIR)/lib/libstdc++.so.6.0.3 \
-           $(ROOTDIR)/lib/libutil-2.3.5.so \
+           $(ROOTDIR)/lib/libutil-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libutil.so.1 \
            $(ROOTDIR)/lib/libnsl.so.1 \
            $(ROOTDIR)/lib/libnss_dns.so.2 \
            $(ROOTDIR)/lib/libnss_files.so.2 \
-           $(ROOTDIR)/lib/libcrypt-2.3.5.so \
+           $(ROOTDIR)/lib/libcrypt-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libcrypt.so.1 \
-           $(ROOTDIR)/lib/libm-2.3.5.so \
+           $(ROOTDIR)/lib/libm-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libm.so.6 \
            $(ROOTDIR)/lib/libpthread-0.10.so \
            $(ROOTDIR)/lib/libpthread.so.0 \
-           $(ROOTDIR)/lib/ld-2.3.5.so \
+           $(ROOTDIR)/lib/ld-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/ld-linux.so.2 \
            $(ROOTDIR)/lib/libdl.so.2 \
-           $(ROOTDIR)/lib/libdl-2.3.5.so \
+           $(ROOTDIR)/lib/libdl-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/modules \
            $(ROOTDIR)/linuxrc \
            $(ROOTDIR)/proc \
@@ -217,12 +220,12 @@ $(ROOTDIR)/etc/ld.so.cache: $(ROOTDIR)/etc/modules.conf $(ROOTDIR)/etc/ld.so.con
 $(ROOTDIR)/etc/fstab:
 ifdef KERNEL_DEVPTS_FS
 	echo "none /dev/pts devpts gid=5,mode=0620 0 0" > $@
-endif   
+endif  
 ifdef KERNEL_USB_DEVICEFS
 	echo "none /proc/bus/usb usbdevfs noauto 0 0" >>$@
 endif
 ifdef KERNEL_MMC
-	echo "none /tmp/mmc vfat gid=5,mode=0620 0 0" > $@
+	echo "none /tmp/mmc vfat gid=5,mode=0620 0 0" >> $@
 endif   
 	touch $@
 

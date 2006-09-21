@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.14 2006-08-17 12:55:53 ericn Exp $
+# $Id: openssh.make,v 1.15 2006-09-21 22:38:16 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -186,7 +186,7 @@ openssh_targetinstall_deps = \
 	$(STATEDIR)/openssh.compile \
    $(STATEDIR)/tinylogin.targetinstall \
    $(ROOTDIR)/lib/libnsl.so.1 \
-   $(ROOTDIR)/lib/libresolv-2.3.5.so \
+   $(ROOTDIR)/lib/libresolv-$(GLIBC_VER).so \
    $(ROOTDIR)/lib/libcrypto.so.0.9.7 \
    $(ROOTDIR)/lib/libutil.so.1 \
    $(ROOTDIR)/lib/libcrypt.so.1 \
