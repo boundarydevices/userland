@@ -6,6 +6,7 @@ mount -t ext2 -o loop dev/ram1 /newrd
 
 mkdir /newrd/proc
 mount -t proc none /newrd/proc/ 
+mount -t usbfs none /newrd/proc/bus/usb
 mkdir /newrd/dev
 mount -t devfs none /newrd/dev/ 
 mkdir /newrd/mmc
