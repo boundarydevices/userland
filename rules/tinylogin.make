@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tinylogin.make,v 1.10 2006-07-30 15:10:00 ericn Exp $
+# $Id: tinylogin.make,v 1.11 2006-09-22 01:43:30 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -112,6 +112,7 @@ $(STATEDIR)/tinylogin.install: $(STATEDIR)/tinylogin.compile
 	@$(call targetinfo, $@)
 	$(TINYLOGIN_PATH) sudo make -C $(TINYLOGIN_DIR) CROSS=$(CONFIG_CROSSPREFIX) PREFIX=$(INSTALLPATH) install
 	sudo chmod a+rw $(INSTALLPATH)/usr/bin
+	sudo chmod a+rw $(INSTALLPATH)/usr/bin/*
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -128,7 +129,8 @@ PASSWORD_STRING = $(shell perl -e 'print crypt($(CONFIG_ROOTPASSWORD), "$(CRYPT_
 $(STATEDIR)/tinylogin.targetinstall: $(tinylogin_targetinstall_deps)
 	@$(call targetinfo, $@)
 	@$(TINYLOGIN_PATH) sudo make -C $(TINYLOGIN_DIR) CROSS=$(CONFIG_CROSSPREFIX) PREFIX=$(ROOTDIR) install
-	@$(TINYLOGIN_PATH) sudo chmod a+rw $(ROOTDIR)/usr/bin
+	sudo chmod a+rw $(ROOTDIR)/usr/bin
+	sudo chmod a+rw $(ROOTDIR)/usr/bin/*
 	@mkdir -p $(ROOTDIR)/etc
 	@echo "root:$(PASSWORD_STRING):0:0:Linux User,,,:/:/bin/sh" > $(ROOTDIR)/etc/passwd
 	@echo "0:x:0:root" > $(ROOTDIR)/etc/group
