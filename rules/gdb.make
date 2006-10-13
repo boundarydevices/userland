@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gdb.make,v 1.2 2005-06-18 17:03:09 ericn Exp $
+# $Id: gdb.make,v 1.3 2006-10-13 19:47:42 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,12 +18,10 @@ endif
 #
 # Paths and names 
 #
-gdb			= gdb-5.3
-gdb_URL 	= ftp://ftp.gnu.org/gnu/gdb/gdb-5.3.tar.gz
+gdb			= gdb-6.5
+gdb_URL 	= ftp://ftp.gnu.org/gnu/gdb/$(gdb).tar.gz
 gdb_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(gdb).tar.gz
 gdb_DIR		= $(BUILDDIR)/$(gdb)
-gdb_PATCH   = generic-readline-xcompile.diff
-gdb_PATCH_URL	= http://www.pengutronix.de/software/ptxdist/patches-cvs/gdb-5.3/generic/$(gdb_PATCH)
 
 # ----------------------------------------------------------------------------
 # Get
@@ -31,17 +29,13 @@ gdb_PATCH_URL	= http://www.pengutronix.de/software/ptxdist/patches-cvs/gdb-5.3/g
 
 gdb_get: $(STATEDIR)/gdb.get
 
-$(STATEDIR)/gdb.get: $(gdb_SOURCE)  $(CONFIG_ARCHIVEPATH)/$(gdb_PATCH)
+$(STATEDIR)/gdb.get: $(gdb_SOURCE)
 	@$(call targetinfo, $@)
 	touch $@
 
 $(gdb_SOURCE):
 	@$(call targetinfo, $@)
 	@cd $(CONFIG_ARCHIVEPATH) && wget $(gdb_URL)
-
-$(CONFIG_ARCHIVEPATH)/$(gdb_PATCH):
-	@$(call targetinfo, $@)
-	@cd $(CONFIG_ARCHIVEPATH) && wget $(gdb_PATCH_URL)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -53,7 +47,6 @@ $(STATEDIR)/gdb.extract: $(STATEDIR)/gdb.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(gdb_DIR))
 	@cd $(BUILDDIR) && tar -zxvf $(gdb_SOURCE)
-	@cd $(BUILDDIR) && patch -p0 <$(CONFIG_ARCHIVEPATH)/$(gdb_PATCH)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -65,18 +58,68 @@ gdb_prepare: $(STATEDIR)/gdb.prepare
 gdb_prepare_deps = \
 	$(STATEDIR)/gdb.extract
 
+GDB_TARGET_CONFIGURE_VARS:= \
+	ac_cv_type_uintptr_t=yes \
+	gt_cv_func_gettext_libintl=yes \
+	ac_cv_func_dcgettext=yes \
+	gdb_cv_func_sigsetjmp=yes \
+	bash_cv_func_strcoll_broken=no \
+	bash_cv_must_reinstall_sighandlers=no \
+	bash_cv_func_sigsetjmp=present \
+	bash_cv_have_mbstate_t=yes
+
 gdb_PATH	=  PATH=$(CROSS_PATH)
-gdb_AUTOCONF 	= --prefix=$(INSTALLPATH) 
-gdb_AUTOCONF  += --target=$(CONFIG_GNU_TARGET)
-gdb_AUTOCONF  += --prefix=$(CROSS_LIB_DIR)
-gdb_AUTOCONF  += --exec-prefix=$(INSTALLPATH)
+gdb_AUTOCONF 	= \
+	--host=$(CONFIG_GNU_TARGET) \
+	--target=$(CONFIG_GNU_TARGET) \
+	--prefix=$(INSTALLPATH) \
+   --exec-prefix=$(INSTALLPATH) \
+   --includedir=$(INSTALLPATH)/include \
+   --mandir=$(INSTALLPATH)/man \
+   --exec-prefix=/usr \
+   --bindir=/usr/bin \
+   --sbindir=/usr/sbin \
+   --libexecdir=/usr/lib \
+   --sysconfdir=/etc \
+   --datadir=/usr/share \
+   --localstatedir=/var \
+   --mandir=/usr/man \
+   --infodir=/usr/info \
+	--without-uiout \
+	--disable-tui --disable-gdbtk --without-x \
+	--disable-sim --disable-gdbserver \
+	--without-included-gettext
+      
+gdbserver_AUTOCONF 	= \
+	--host=$(CONFIG_GNU_TARGET) \
+	--prefix=$(INSTALLPATH) \
+   --exec-prefix=$(INSTALLPATH) \
+   --includedir=$(INSTALLPATH)/include \
+   --mandir=$(INSTALLPATH)/man \
+   --exec-prefix=/usr \
+   --bindir=/usr/bin \
+   --sbindir=/usr/sbin \
+   --libexecdir=/usr/lib \
+   --sysconfdir=/etc \
+   --datadir=/usr/share \
+   --localstatedir=/var \
+   --mandir=/usr/man \
+   --infodir=/usr/info \
+	--without-uiout \
+	--disable-tui --disable-gdbtk --without-x \
+	--disable-sim --enable-gdbserver \
+	--without-included-gettext
+
+#
+# There appears to be a bug/issue in the makefiles for gdb
+# that require (re)configuration between compilation of the
+# cross-compiled gdbserver and the natively compiled gdb
+#      
 
 $(STATEDIR)/gdb.prepare: $(gdb_prepare_deps)
 	@$(call targetinfo, $@)
-	cd $(gdb_DIR) && $(gdb_PATH) ./configure $(gdb_AUTOCONF)
-	cd $(gdb_DIR)/gdb/gdbserver && chmod a+x configure && $(gdb_PATH) $(CROSS_ENV) ./configure $(gdb_AUTOCONF)
 	touch $@
-
+   
 # ----------------------------------------------------------------------------
 # Compile
 # ----------------------------------------------------------------------------
@@ -85,7 +128,10 @@ gdb_compile: $(STATEDIR)/gdb.compile
 
 $(STATEDIR)/gdb.compile: $(STATEDIR)/gdb.prepare 
 	@$(call targetinfo, $@)
+	cd $(gdb_DIR) && $(GDB_TARGET_CONFIGURE_VARS) $(gdb_PATH) ./configure $(gdb_AUTOCONF)
 	cd $(gdb_DIR) && $(gdb_PATH) make all
+	cd $(gdb_DIR)/gdb/gdbserver && make realclean && chmod a+x configure && $(GDB_TARGET_CONFIGURE_VARS) $(gdb_PATH) $(CROSS_ENV) ./configure $(gdbserver_AUTOCONF)
+	cd $(gdb_DIR)/gdb/gdbserver && $(CROSS_ENV) $(gdb_PATH) make all
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -96,8 +142,10 @@ gdb_install: $(STATEDIR)/gdb.install
 
 $(STATEDIR)/gdb.install: $(STATEDIR)/gdb.compile
 	@$(call targetinfo, $@)
-	install -d $(INSTALLPATH)/include
-	cd $(gdb_DIR) && $(gdb_PATH) make install
+	mkdir -p $(TOPDIR)/tools
+	cd $(gdb_DIR) && install -c gdb/gdb $(TOPDIR)/tools/gdb
+	cd $(gdb_DIR) && install -c gdb/gdbserver/gdbserver $(INSTALLPATH)/bin/gdbserver
+#	cd $(gdb_DIR) && $(gdb_PATH) make install
 	touch $@
 
 # ----------------------------------------------------------------------------
