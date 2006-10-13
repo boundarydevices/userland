@@ -31,6 +31,13 @@ config JSCAMERA
    help 
    Select yes to include support for the Camera object
 
+config JSDHCP
+	bool
+	prompt "Use bdScript DHCP scripts"
+   default n
+   help 
+   Select yes to use Boundary Devices DHCP client scripts
+
 config JSSTARUSB
 	bool
 	prompt "Include Star USB printer"
