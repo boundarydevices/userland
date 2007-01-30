@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: ffmpeg.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
+# $Id: ffmpeg.make,v 1.3 2007-01-30 00:13:15 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -19,12 +19,12 @@ endif
 #
 # Paths and names
 #
-FFMPEG_VERSION	= 0.4.8
+FFMPEG_VERSION	= 20061207
 FFMPEG		= ffmpeg-$(FFMPEG_VERSION)
 FFMPEG_SUFFIX		= tar.gz
-FFMPEG_URL		= http://easynews.dl.sourceforge.net/sourceforge/ffmpeg/$(FFMPEG).$(FFMPEG_SUFFIX)
+FFMPEG_URL		= http://boundarydevices.com/archives/$(FFMPEG).$(FFMPEG_SUFFIX)
 FFMPEG_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(FFMPEG).$(FFMPEG_SUFFIX)
-FFMPEG_DIR		= $(BUILDDIR)/$(FFMPEG)
+FFMPEG_DIR		= $(BUILDDIR)/ffmpeg
 
 # ----------------------------------------------------------------------------
 # Get
@@ -76,18 +76,22 @@ FFMPEG_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 FFMPEG_AUTOCONF = \
-	--build=$(GNU_HOST) \
-	--host=$(CONFIG_GNU_TARGET) \
 	--prefix=$(CROSS_LIB_DIR) \
-   --cpu=$(CONFIG_FFMPEG_CPU) \
-   --strip=$(CROSS_STRIP) \
+   --arch=armv4l \
+   --cross-compile \
+   --cross-prefix=arm-linux- \
    --cross-prefix=$(CONFIG_GNU_TARGET)- \
-   --enable-shared=no \
-   --enable-static=yes \
-   --exec-prefix=$(INSTALLPATH) \
-   --includedir=$(INSTALLPATH)/include \
+   --enable-static \
+   --prefix=$(INSTALLPATH) \
+   --incdir=$(INSTALLPATH)/include \
    --mandir=$(INSTALLPATH)/man \
-   --infodir=$(INSTALLPATH)/info
+   --libdir=$(INSTALLPATH)/lib \
+   --disable-decoder=snow \
+   --disable-encoder=snow \
+   --disable-v4l \
+   --disable-v4l2 \
+   --enable-gpl \
+   --enable-xvid 
 
 
 $(STATEDIR)/ffmpeg.prepare: $(ffmpeg_prepare_deps)
@@ -96,7 +100,9 @@ $(STATEDIR)/ffmpeg.prepare: $(ffmpeg_prepare_deps)
 	cd $(FFMPEG_DIR) && \
 		$(FFMPEG_PATH) $(FFMPEG_ENV) \
       $(CROSS_ENV_STRIP) \
-		./configure $(FFMPEG_AUTOCONF)
+      CFLAGS="-I$(INSTALLPATH)/include" \
+		LDFLAGS="-L$(INSTALLPATH)/lib" \
+      ./configure $(FFMPEG_AUTOCONF)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -110,6 +116,7 @@ ffmpeg_compile_deps = $(STATEDIR)/ffmpeg.prepare
 $(STATEDIR)/ffmpeg.compile: $(ffmpeg_compile_deps)
 	@$(call targetinfo, $@)
 	$(FFMPEG_PATH) make -C $(FFMPEG_DIR)
+	$(FFMPEG_PATH) make -C $(FFMPEG_DIR)/libavutil
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -127,6 +134,9 @@ $(STATEDIR)/ffmpeg.install: $(STATEDIR)/ffmpeg.compile
 	mkdir -p $(INSTALLPATH)/include/libavcodec
 	cp -f $(FFMPEG_DIR)/libavcodec/*.h $(INSTALLPATH)/include/libavcodec
 	cp -f $(FFMPEG_DIR)/libavcodec/libavcodec.a $(INSTALLPATH)/lib/libavcodec.a
+	mkdir -p $(INSTALLPATH)/include/libavutil
+	cp -f $(FFMPEG_DIR)/libavutil/*.h $(INSTALLPATH)/include/libavutil
+	cp -f $(FFMPEG_DIR)/libavutil/libavutil.a $(INSTALLPATH)/lib/libavutil.a
 	touch $@
 
 # ----------------------------------------------------------------------------

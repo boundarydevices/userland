@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glibc.make,v 1.4 2006-10-13 19:48:59 ericn Exp $
+# $Id: glibc.make,v 1.5 2007-01-30 00:12:51 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -9,7 +9,7 @@
 # see the README file.
 #
 
-GLIBC_VER=2.3.5
+GLIBC_VER=2.3.6
 
 $(ROOTDIR)/lib/ld-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/ld-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib

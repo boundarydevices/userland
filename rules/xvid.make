@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xvid.make,v 1.1 2006-08-16 18:41:28 ericn Exp $
+# $Id: xvid.make,v 1.2 2007-01-30 00:12:37 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -20,7 +20,7 @@ endif
 # Paths and names
 #
 
-XVID_VERSION   = 1.1.0
+XVID_VERSION   = 1.1.2
 XVID	         = xvidcore-$(XVID_VERSION)
 XVID_SUFFIX	   = tar.gz
 XVID_URLDIR    = http://downloads.xvid.org/downloads
