@@ -1,0 +1,115 @@
+# -*-makefile-*-
+# $Id: wpa_supplicant.make,v 1.1 2007-01-30 00:13:29 ericn Exp $
+#
+# Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
+# See CREDITS for details about who has contributed to this project. 
+#
+# For further information about the PTXdist project and license conditions
+# see the README file.
+#
+
+#
+# We provide this package
+#
+ifeq (y, $(CONFIG_WPA_SUPPLICANT))
+PACKAGES += wpa_supplicant
+endif
+
+#
+# Paths and names 
+#
+WPA_SUPPLICANT			= wpa_supplicant-0.5.7
+WPA_SUPPLICANT_URL 	= http://boundarydevices.com/archives/$(WPA_SUPPLICANT).tar.gz
+WPA_SUPPLICANT_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(WPA_SUPPLICANT).tar.gz
+WPA_SUPPLICANT_DIR		= $(BUILDDIR)/$(WPA_SUPPLICANT)
+WPA_SUPPLICANT_CONFIG_PATCH = $(CONFIG_ARCHIVEPATH)/wpas_config_20070128.diff
+WPA_SUPPLICANT_CONFIG_PATCH_URL = http://boundarydevices.com/wpas_config_20070128.diff
+
+# ----------------------------------------------------------------------------
+# Get
+# ----------------------------------------------------------------------------
+
+wpa_supplicant_get: $(STATEDIR)/wpa_supplicant.get
+
+$(STATEDIR)/wpa_supplicant.get: $(WPA_SUPPLICANT_SOURCE)
+	@$(call targetinfo, $@)
+	touch $@
+
+$(WPA_SUPPLICANT_SOURCE):
+	@$(call targetinfo, $@)
+	@cd $(CONFIG_ARCHIVEPATH) && wget $(WPA_SUPPLICANT_URL)
+
+# ----------------------------------------------------------------------------
+# Extract
+# ----------------------------------------------------------------------------
+
+wpa_supplicant_extract: $(STATEDIR)/wpa_supplicant.extract
+
+$(WPA_SUPPLICANT_CONFIG_PATCH):
+	@cd $(CONFIG_ARCHIVEPATH) && wget $(WPA_SUPPLICANT_CONFIG_PATCH_URL)
+
+$(STATEDIR)/wpa_supplicant.extract: $(STATEDIR)/wpa_supplicant.get $(WPA_SUPPLICANT_CONFIG_PATCH)
+	@$(call targetinfo, $@)
+	@$(call clean, $(WPA_SUPPLICANT_DIR))
+	@cd $(BUILDDIR) && zcat $(WPA_SUPPLICANT_SOURCE) | tar -xvf -
+	@cd $(WPA_SUPPLICANT_DIR) && cp -fv defconfig .config && patch < $(WPA_SUPPLICANT_CONFIG_PATCH)
+	@echo -e "\nCC=arm-linux-gcc" >> $(WPA_SUPPLICANT_DIR)/.config
+	@echo -e CFLAGS += -Os -I$(INSTALLPATH)/include/openssl -I$(INSTALLPATH)/include >> $(WPA_SUPPLICANT_DIR)/.config
+	@echo -e LIBS += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
+	@echo -e LIBS_p += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
+	touch $@
+
+# ----------------------------------------------------------------------------
+# Prepare
+# ----------------------------------------------------------------------------
+
+wpa_supplicant_prepare: $(STATEDIR)/wpa_supplicant.prepare
+
+wpa_supplicant_prepare_deps = \
+	$(STATEDIR)/wpa_supplicant.extract
+
+$(STATEDIR)/wpa_supplicant.prepare: $(wpa_supplicant_prepare_deps)
+	@$(call targetinfo, $@)
+	touch $@
+
+# ----------------------------------------------------------------------------
+# Compile
+# ----------------------------------------------------------------------------
+
+wpa_supplicant_compile: $(STATEDIR)/wpa_supplicant.compile
+
+$(STATEDIR)/wpa_supplicant.compile: $(STATEDIR)/wpa_supplicant.prepare 
+	@$(call targetinfo, $@)
+	cd $(WPA_SUPPLICANT_DIR) && $(WPA_SUPPLICANT_PATH) make
+	touch $@
+
+# ----------------------------------------------------------------------------
+# Install
+# ----------------------------------------------------------------------------
+
+wpa_supplicant_install: $(STATEDIR)/wpa_supplicant.install
+
+$(STATEDIR)/wpa_supplicant.install: $(STATEDIR)/wpa_supplicant.compile
+	@$(call targetinfo, $@)
+	install -d $(INSTALLPATH)/include
+	cd $(WPA_SUPPLICANT_DIR) && $(WPA_SUPPLICANT_PATH) make install
+	touch $@
+
+# ----------------------------------------------------------------------------
+# Target-Install
+# ----------------------------------------------------------------------------
+
+wpa_supplicant_targetinstall: $(STATEDIR)/wpa_supplicant.targetinstall
+
+$(STATEDIR)/wpa_supplicant.targetinstall: $(STATEDIR)/wpa_supplicant.install
+	@$(call targetinfo, $@)
+	touch $@
+
+# ----------------------------------------------------------------------------
+# Clean
+# ----------------------------------------------------------------------------
+
+wpa_supplicant_clean: 
+	rm -rf $(STATEDIR)/wpa_supplicant.* $(WPA_SUPPLICANT_DIR)
+
+# vim: syntax=make
