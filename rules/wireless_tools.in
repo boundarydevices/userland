@@ -1,0 +1,4 @@
+config WIRELESS_TOOLS
+	bool
+   default y
+	prompt "Compile wireless tools"
