@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: udev.make,v 1.2 2006-02-05 22:01:47 ericn Exp $
+# $Id: udev.make,v 1.3 2007-05-11 19:24:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -19,8 +19,9 @@ endif
 # Get
 # ----------------------------------------------------------------------------
 UDEV_VERSION:=105
-UDEV_SOURCE:=$(CONFIG_ARCHIVEPATH)/udev-$(UDEV_VERSION).tar.bz2
-UDEV_URL:=ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/$(UDEV_SOURCE)
+UDEV_TARBALL:=udev-$(UDEV_VERSION).tar.bz2
+UDEV_SOURCE:=$(CONFIG_ARCHIVEPATH)/$(UDEV_TARBALL)
+UDEV_URL:=ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/$(UDEV_TARBALL)
 UDEV_DIR:=$(BUILDDIR)/udev-$(UDEV_VERSION)
 
 udev_get: $(STATEDIR)/udev.get
