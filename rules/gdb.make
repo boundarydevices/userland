@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gdb.make,v 1.3 2006-10-13 19:47:42 ericn Exp $
+# $Id: gdb.make,v 1.4 2007-05-11 19:25:23 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-gdb			= gdb-6.5
+gdb			= gdb-6.6
 gdb_URL 	= ftp://ftp.gnu.org/gnu/gdb/$(gdb).tar.gz
 gdb_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(gdb).tar.gz
 gdb_DIR		= $(BUILDDIR)/$(gdb)

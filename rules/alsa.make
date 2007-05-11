@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: alsa.make,v 1.3 2006-09-04 14:24:12 ericn Exp $
+# $Id: alsa.make,v 1.4 2007-05-11 19:26:12 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-ALSA			= alsa-lib-1.0.9
+ALSA			= alsa-lib-1.0.13
 ALSA_URL 	= http://gd.tuwien.ac.at/opsys/linux/alsa/lib/$(ALSA).tar.bz2
 ALSA_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(ALSA).tar.bz2
 ALSA_DIR		= $(BUILDDIR)/$(ALSA)
@@ -74,8 +74,6 @@ ALSA_AUTOCONF = \
 $(STATEDIR)/alsa.prepare: $(alsa_prepare_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(ALSA_DIR)/config.cache)
-	cd $(ALSA_DIR) && libtoolize --copy --force
-	cd $(ALSA_DIR) && aclocal && autoconf && automake --add-missing
 	cd $(ALSA_DIR) && \
 		$(ALSA_PATH) \
       $(CROSS_ENV) \

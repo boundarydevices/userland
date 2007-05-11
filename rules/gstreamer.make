@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gstreamer.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
+# $Id: gstreamer.make,v 1.3 2007-05-11 19:24:48 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-GSTREAMER	        = gstreamer-0.9.2
+GSTREAMER	        = gstreamer-0.10.4
 GSTREAMER_URL 	        = http://gstreamer.freedesktop.org/src/gstreamer/$(GSTREAMER).tar.gz
 GSTREAMER_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(GSTREAMER).tar.gz
 GSTREAMER_DIR		= $(BUILDDIR)/$(GSTREAMER)
