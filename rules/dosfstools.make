@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: dosfstools.make,v 1.1 2006-06-22 13:46:09 ericn Exp $
+# $Id: dosfstools.make,v 1.2 2007-05-11 19:25:52 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -85,7 +85,7 @@ dosfstools_compile: $(STATEDIR)/dosfstools.compile
 
 $(STATEDIR)/dosfstools.compile: $(STATEDIR)/dosfstools.prepare 
 	@$(call targetinfo, $@)
-	cd $(DOSFSTOOLS_DIR) && CC=$(CONFIG_GNU_TARGET)-gcc make
+	cd $(DOSFSTOOLS_DIR) && CC=$(CONFIG_GNU_TARGET)-gcc CFLAGS=-D__arm make
 	touch $@
 
 # ----------------------------------------------------------------------------
