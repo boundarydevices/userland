@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.15 2006-09-21 22:38:16 ericn Exp $
+# $Id: openssh.make,v 1.17 2007-05-11 19:24:28 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -32,7 +32,7 @@ OPENSSH_URL 		= ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$(OPENSSH).ta
 OPENSSH_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(OPENSSH).tar.gz
 OPENSSH_DIR 		= $(BUILDDIR)/$(OPENSSH)
 OPENSSH_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/openssh-$(OPENSSH_VER).patch
-OPENSSH_PATCH_URL    = http://www.pengutronix.de/software/ptxdist/patches-0.7.5/$(OPENSSH)/generic/generic-configure-ac.patch
+OPENSSH_PATCH_URL    = http://boundarydevices.com/archives/openssh-$(OPENSSH_VER).patch
 
 # ----------------------------------------------------------------------------
 # Get
@@ -182,9 +182,9 @@ openssh_targetinstall: $(STATEDIR)/openssh.targetinstall
 
 openssh_targetinstall_deps = \
 	$(STATEDIR)/openssl.targetinstall \
+   $(STATEDIR)/busybox.targetinstall \
 	$(STATEDIR)/zlib.targetinstall \
 	$(STATEDIR)/openssh.compile \
-   $(STATEDIR)/tinylogin.targetinstall \
    $(ROOTDIR)/lib/libnsl.so.1 \
    $(ROOTDIR)/lib/libresolv-$(GLIBC_VER).so \
    $(ROOTDIR)/lib/libcrypto.so.0.9.7 \
@@ -194,6 +194,11 @@ openssh_targetinstall_deps = \
    $(ROOTDIR)/etc/ssh/ssh_host_key \
    $(ROOTDIR)/etc/ssh/ssh_host_rsa_key \
    $(ROOTDIR)/etc/ssh/ssh_host_dsa_key
+   
+ifdef CONFIG_TINYLOGIN
+   $(STATEDIR)/tinylogin.targetinstall
+endif
+
 
 $(ROOTDIR)/etc/ssh/ssh_host_key:
 	mkdir -p $(ROOTDIR)/etc/ssh/
