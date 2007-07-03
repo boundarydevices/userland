@@ -35,6 +35,8 @@ endif
 	@find $(ROOTDIR)/bin/ -type l -exec cp -rd {} $(INITRD_DIR)/bin/ \;
 	@find $(ROOTDIR)/sbin/ -type l -exec cp -rd {} $(INITRD_DIR)/sbin/ \;
 	@mkdir -p $(INITRD_DIR)/etc
+	@cp $(ROOTDIR)/etc/passwd $(INITRD_DIR)/etc
+	@cp $(ROOTDIR)/etc/group $(INITRD_DIR)/etc
 	@cp $(ROOTDIR)/etc/fstab $(INITRD_DIR)/etc
 	@cp $(ROOTDIR)/etc/inittab $(INITRD_DIR)/etc
 	@mkdir -p $(INITRD_DIR)/etc/init.d
@@ -42,6 +44,7 @@ endif
 	@cp -rvd $(CROSS_LIB_DIR)/lib/ld-* $(INITRD_DIR)/lib
 	@cp -rvd $(CROSS_LIB_DIR)/lib/libc-* $(INITRD_DIR)/lib
 	@cp -rvd $(CROSS_LIB_DIR)/lib/libc.so* $(INITRD_DIR)/lib
+	@cp -rvd $(CROSS_LIB_DIR)/lib/libcrypt*.so* $(INITRD_DIR)/lib
 	@mkdir -p $(INITRD_DIR)/proc
 	@mkdir -p $(INITRD_DIR)/tmp
 	@mkdir -p $(INITRD_DIR)/usr
@@ -79,10 +82,31 @@ else
    DOSFSPROGS_INSTALLED =   
 endif
 
-$(INITRD_START): initrd.rcs
+ifdef CONFIG_UDEV
+$(INITRD_DIR)/sbin/udevstart: $(INITRD_DIR) $(ROOTDIR)/sbin/udevstart
+	mkdir -p $(INITRD_DIR)/sbin
+	cp -fv $(ROOTDIR)/sbin/udev* $(INITRD_DIR)/sbin/
+$(INITRD_DIR)/etc/udev: $(ROOTdir)/etc/udev
+	mkdir -p $(INITRD_DIR)/etc/udev
+	cp -rvf $(ROOTDIR)/etc/udev/* $(INITRD_DIR)/etc/udev/
+$(INITRD_DIR)/etc/udev:
+	mkdir -p $(INITRD_DIR)/etc/udev
+
+   UDEV_INSTALLED = $(INITRD_DIR)/sbin/udevstart $(INITRD_DIR)/etc/udev
+else
+   UDEV_INSTALLED = 
+endif
+
+ifeq (,$(findstring 2.6.19,$(CONFIG_KERNELPATH)))
+        INITRCSFILE = initrd.rcs
+else
+        INITRCSFILE = initrd-2.6.19.rcs
+endif
+
+$(INITRD_START): $(INITRCSFILE)
 	mkdir -p $(INITRD_DIR)/etc/init.d
 	cp -fv $? $@
 	chmod a+x $@
 
-$(STATEDIR)/initrd.built: $(INITRD_DIR) targetinstall $(INITRD_START) rootfs devices $(E2FSPROGS_INSTALLED) $(DOSFSPROGS_INSTALLED)
+$(STATEDIR)/initrd.built: $(INITRD_DIR) targetinstall $(INITRD_START) rootfs devices $(E2FSPROGS_INSTALLED) $(DOSFSPROGS_INSTALLED) $(UDEV_INSTALLED)
 	touch $@
