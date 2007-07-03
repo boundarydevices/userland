@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: strace.make,v 1.1 2006-10-12 13:37:03 ericn Exp $
+# $Id: strace.make,v 1.2 2007-07-03 22:15:01 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-STRACE			= strace-4.5.12
+STRACE			= strace-4.5.14
 STRACE_URL 	= http://easynews.dl.sourceforge.net/sourceforge/strace/$(STRACE).tar.bz2
 STRACE_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(STRACE).tar.bz2
 STRACE_DIR		= $(BUILDDIR)/$(STRACE)
@@ -104,6 +104,7 @@ strace_install: $(STATEDIR)/strace.install
 
 $(STATEDIR)/strace.install: $(STATEDIR)/strace.compile
 	@$(call targetinfo, $@)
+	mkdir -p $(INSTALLPATH)/usr/bin/
 	install -c $(STRACE_DIR)/strace $(INSTALLPATH)/usr/bin/strace
 	$(CROSSSTRIP) $(INSTALLPATH)/usr/bin/strace > /dev/null 2>&1   
 	touch $@
