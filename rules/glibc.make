@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glibc.make,v 1.5 2007-01-30 00:12:51 ericn Exp $
+# $Id: glibc.make,v 1.6 2007-07-03 22:14:35 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -109,18 +109,18 @@ $(ROOTDIR)/lib/libnsl-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/libnsl-$(GLIBC_VER).
 
 $(ROOTDIR)/lib/libnsl.so.1: $(ROOTDIR)/lib/libnsl-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	pushd $(ROOTDIR)/lib && ln -s libnsl-$(GLIBC_VER).so $@ && popd
+	cd $(ROOTDIR)/lib && ln -s libnsl-$(GLIBC_VER).so $@
 
 $(ROOTDIR)/lib/libnsl.so: $(ROOTDIR)/lib/libnsl.so.1
-	pushd $(ROOTDIR)/lib && ln -s libnsl.so.1 $@ && popd
+	cd $(ROOTDIR)/lib && ln -s libnsl.so.1 $@
 
 $(ROOTDIR)/lib/libthread_db-1.0.so: $(CROSS_LIB_DIR)/lib/libthread_db-1.0.so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@
 
 $(ROOTDIR)/lib/libthread_db.so: $(ROOTDIR)/lib/libthread_db-1.0.so
-	pushd $(ROOTDIR)/lib && ln -s $(notdir $<) $(notdir $@) && popd
+	cd $(ROOTDIR)/lib && ln -s $(notdir $<) $(notdir $@)
 
 $(ROOTDIR)/lib/libthread_db.so.1:  $(ROOTDIR)/lib/libthread_db-1.0.so
-	pushd $(ROOTDIR)/lib && ln -s $(notdir $<) $(notdir $@) && popd
+	cd $(ROOTDIR)/lib && ln -s $(notdir $<) $(notdir $@)
 
