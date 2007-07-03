@@ -86,12 +86,9 @@ ifdef CONFIG_UDEV
 $(INITRD_DIR)/sbin/udevstart: $(INITRD_DIR) $(ROOTDIR)/sbin/udevstart
 	mkdir -p $(INITRD_DIR)/sbin
 	cp -fv $(ROOTDIR)/sbin/udev* $(INITRD_DIR)/sbin/
-$(INITRD_DIR)/etc/udev: $(ROOTdir)/etc/udev
+$(INITRD_DIR)/etc/udev: $(ROOTDIR)/etc/udev
 	mkdir -p $(INITRD_DIR)/etc/udev
 	cp -rvf $(ROOTDIR)/etc/udev/* $(INITRD_DIR)/etc/udev/
-$(INITRD_DIR)/etc/udev:
-	mkdir -p $(INITRD_DIR)/etc/udev
-
    UDEV_INSTALLED = $(INITRD_DIR)/sbin/udevstart $(INITRD_DIR)/etc/udev
 else
    UDEV_INSTALLED = 
