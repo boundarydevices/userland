@@ -1,64 +1,37 @@
 #!/bin/sh
-mknod /dev/ram1 b 1 1
+#!/bin/sh
+echo "This is kernel 2.6.19"
+mkdir -p /proc
+mount -t proc none /proc/ 
+mkdir -p /proc/bus
+mount -t usbfs none /proc/bus/usb
+if ! [ -d /sys ] ; then mkdir /sys ; fi
+mount -t sysfs /sys /sys
+if [ -d /dev ] ; then mv /dev /dev-old ; fi
+mkdir /dev
+mount -t ramfs /dev /dev
+echo -e '\000\000\000\000' > /proc/sys/kernel/hotplug
+/sbin/udevd --daemon
+time /sbin/udevstart
+/sbin/udevsettle
 /sbin/mke2fs -i 1024 /dev/ram1 8192
 mkdir /newrd
 mount -t ext2 -o loop dev/ram1 /newrd
-
 mkdir /newrd/proc
 mount -t proc none /newrd/proc/ 
 mount -t usbfs none /newrd/proc/bus/usb
-mkdir /newrd/dev
-mount -t devfs none /newrd/dev/ 
-mkdir /newrd/mmc
-mkdir /newrd/cramfs
+if ! [ -f /dev/mmcblk0 ] ; then echo "Building mmc node!!!" && mknod /dev/mmcblk0 b 254 0 ; fi
+mkdir -p /mmc && mount -t vfat /dev/mmcblk0 /mmc
+mkdir -p /cramfs && mount -t cramfs -o loop /mmc/cramfs.img /cramfs
+export LD_LIBRARY_PATH=/lib:/usr/lib:/mmc:/cramfs/lib:/cramfs/usr/lib
+export PATH=/cramfs/bin:/cramfs/sbin:/bin:/usr/bin:/usr/sbin:/bin:/sbin
+ifconfig eth0 up
+ifconfig eth0 192.168.1.110
+mkdir -p /home/ericn/userland/install/share/alsa/ && ln -s /mmc/alsa.conf /home/ericn/userland/install/share/alsa/alsa.conf
+# mknod /dev/timer c 253 0
 
-ln -sf initrd/bin /newrd/bin
-ln -sf initrd/lib /newrd/lib
-if [ -b /dev/mmc/blk0/part1 ] ; then 
-   mount -t vfat  /newrd/dev/mmc/blk0/part1 /newrd/mmc
-   mount -o loop -t cramfs /newrd/mmc/cramfs.img /newrd/cramfs
-   ln -sf /cramfs/bin /newrd/bin
-   ln -sf /cramfs/lib /newrd/lib
-   ln -sf /cramfs/usr /newrd/usr
-   ln -sf /cramfs/var /newrd/var
-   ln -sf /cramfs/sbin /newrd/sbin
-   ln -sf /cramfs/share /newrd/share
-   mkdir -p /newrd/tmp/var
-   mkdir -p /newrd/tmp/curl
-   mkdir /newrd/sysfs
-   mount -t sysfs none /newrd/sysfs
-   mkdir /newrd/initrd
-   mknod newrd/dev/mtd0 c 90 0
-   mknod newrd/dev/mtd1 c 90 2
-   mknod newrd/dev/mtd2 c 90 4
-   ln -sf /dev/fb/0 newrd/dev/fb0
-   mknod newrd/dev/dsp c 14 3
-   pivot_root /newrd /newrd/initrd
-   cp -rp /cramfs/dev/* /dev/ 2>/dev/null
-   mount -vt devpts none /dev/pts
-   mkdir -p /var/run/sshd
-   ln -s /cramfs/etc /etc
-   export PATH=$PATH:/initrd/bin
-fi
+# no blanking
+echo -e "\033[9;0]" > /dev/tty0
+# no blinking cursor
+echo -e -n '\033[?25l' >/dev/tty0
 
-if [ -b /dev/mmc/blk0/part2 ] ; then 
-   mkdir -p /ext2
-   if e2fsck -nf /dev/mmc/blk0/part2 ; then
-      echo "ext2 filesystem looks good"
-   else
-      echo "ext2 filesystem invalid. restoring"
-      mke2fs /dev/mmc/blk0/part2
-      if e2fsck -yf /dev/mmc/blk0/part2 ; then
-         echo "ext2 filesystem restored"
-      else
-         echo "error fixing ext2 filesystem"
-      fi
-   fi
-   mount -t ext2 -o noatime /dev/mmc/blk0/part2 /ext2/
-fi
-
-echo -e -n '\033[?25l' >/dev/ttyFB0
-
-if [ -f /mmc/linux_init ] ; then 
-   exec /mmc/linux_init
-fi
