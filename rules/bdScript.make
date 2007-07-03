@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.33 2007-07-03 17:55:27 ericn Exp $
+# $Id: bdScript.make,v 1.34 2007-07-03 18:01:45 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -118,7 +118,7 @@ $(STATEDIR)/bdScript.prepare: $(bdScript_prepare_deps)
          >$(BDSCRIPT_DIR)/config.mk ;
 	cat $(TOPDIR)/.kernelconfig \
         >>$(BDSCRIPT_DIR)/config.mk ;
-	echo -e "\n\n#\n#Build directory\n#\nBUILDDIR=$(BUILDDIR)/" \
+	/bin/echo -e "\n\n#\n#Build directory\n#\nBUILDDIR=$(BUILDDIR)/" \
         >>$(BDSCRIPT_DIR)/config.mk
 	touch $@
 
