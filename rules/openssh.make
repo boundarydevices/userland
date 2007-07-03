@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.17 2007-05-11 19:24:28 ericn Exp $
+# $Id: openssh.make,v 1.18 2007-07-03 17:16:09 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -135,6 +135,7 @@ OPENSSH_AUTOCONF = \
 	--host=$(CONFIG_GNU_TARGET) \
 	--prefix=$(INSTALLPATH) \
 	--libexecdir=/usr/sbin \
+   --sbindir=/usr/sbin \
 	--sysconfdir=/etc/ssh \
 	--with-privsep-path=/var/run/sshd \
 	--without-pam \
