@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.30 2007-05-11 19:33:31 ericn Exp $
+# $Id: bdScript.make,v 1.31 2007-07-03 16:20:49 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -149,6 +149,7 @@ $(STATEDIR)/bdScript.compile: $(bdScript_compile_deps)
 	@$(call targetinfo, $@)
 	echo "install root is $(INSTALLPATH)"
 	$(CROSS_ENV) \
+        CROSS_COMPILE=$(CONFIG_GNU_TARGET)- \
    INSTALL_ROOT=$(INSTALLPATH) TOOLCHAINROOT=$(CROSS_LIB_DIR) $(BDSCRIPT_PATH) make -C $(BDSCRIPT_DIR) all
 	touch $@
 
