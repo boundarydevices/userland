@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: busybox.make,v 1.5 2005-11-07 01:00:55 ericn Exp $
+# $Id: busybox.make,v 1.6 2007-07-03 22:15:32 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -59,6 +59,7 @@ $(STATEDIR)/busybox.extract: $(busybox_extract_deps)
 	rm -rf $(BUSYBOX_DIR)
 	cd $(BUILDDIR) && bzcat $(BUSYBOX_SOURCE) | tar -xvf -
 	cp -vf $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/.config
+	cd $(BUSYBOX_DIR) && yes "" | make oldconfig
 	touch $@
 
 # ----------------------------------------------------------------------------
