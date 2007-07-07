@@ -1,0 +1,2 @@
+KERNEL=="gen-timer", SUBSYSTEM=="misc", NAME="timer", OWNER="root", GROUP="root", MODE="0660"
+

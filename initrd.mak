@@ -89,6 +89,7 @@ $(INITRD_DIR)/sbin/udevstart: $(INITRD_DIR) $(ROOTDIR)/sbin/udevstart
 $(INITRD_DIR)/etc/udev: $(ROOTDIR)/etc/udev
 	mkdir -p $(INITRD_DIR)/etc/udev
 	cp -rvf $(ROOTDIR)/etc/udev/* $(INITRD_DIR)/etc/udev/
+	cp -f $(TOPDIR)/40-boundary.rules $(INITRD_DIR)/etc/udev/rules.d/
    UDEV_INSTALLED = $(INITRD_DIR)/sbin/udevstart $(INITRD_DIR)/etc/udev
 else
    UDEV_INSTALLED = 
@@ -100,9 +101,9 @@ else
         INITRCSFILE = initrd-2.6.19.rcs
 endif
 
-$(INITRD_START): $(INITRCSFILE)
+$(INITRD_START): $(INITRCSFILE) $(INITRD_DIR)
 	mkdir -p $(INITRD_DIR)/etc/init.d
-	cp -fv $? $@
+	cp -fv $< $@
 	chmod a+x $@
 
 $(STATEDIR)/initrd.built: $(INITRD_DIR) targetinstall $(INITRD_START) rootfs devices $(E2FSPROGS_INSTALLED) $(DOSFSPROGS_INSTALLED) $(UDEV_INSTALLED)
