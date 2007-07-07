@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: ffmpeg.make,v 1.3 2007-01-30 00:13:15 ericn Exp $
+# $Id: ffmpeg.make,v 1.4 2007-07-07 19:20:19 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -100,7 +100,7 @@ $(STATEDIR)/ffmpeg.prepare: $(ffmpeg_prepare_deps)
 	cd $(FFMPEG_DIR) && \
 		$(FFMPEG_PATH) $(FFMPEG_ENV) \
       $(CROSS_ENV_STRIP) \
-      CFLAGS="-I$(INSTALLPATH)/include" \
+      CFLAGS="-I$(INSTALLPATH)/include " \
 		LDFLAGS="-L$(INSTALLPATH)/lib" \
       ./configure $(FFMPEG_AUTOCONF)
 	touch $@
@@ -116,7 +116,7 @@ ffmpeg_compile_deps = $(STATEDIR)/ffmpeg.prepare
 $(STATEDIR)/ffmpeg.compile: $(ffmpeg_compile_deps)
 	@$(call targetinfo, $@)
 	$(FFMPEG_PATH) make -C $(FFMPEG_DIR)
-	$(FFMPEG_PATH) make -C $(FFMPEG_DIR)/libavutil
+	$(FFMPEG_PATH) make -C lib
 	touch $@
 
 # ----------------------------------------------------------------------------

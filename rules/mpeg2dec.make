@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mpeg2dec.make,v 1.6 2007-05-11 19:26:32 ericn Exp $
+# $Id: mpeg2dec.make,v 1.7 2007-07-07 19:20:19 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -22,20 +22,23 @@ endif
 ifdef CONFIG_LIBMPEG2_OLD
 MPEG2DEC_VERSION	= 0.3.1
 else
-MPEG2DEC_VERSION	= 0.4.0
+MPEG2DEC_VERSION	= 0.4.1-20070707
 endif
 
 MPEG2DEC		         = mpeg2dec-$(MPEG2DEC_VERSION)
 MPEG2DEC_SUFFIX	   = tar.gz
-MPEG2DEC_URLDIR      = http://libmpeg2.sourceforge.net/files
+MPEG2DEC_URLDIR      = http://boundarydevices.com/archives
 MPEG2DEC_URL		   = $(MPEG2DEC_URLDIR)/$(MPEG2DEC).$(MPEG2DEC_SUFFIX)
 MPEG2DEC_SOURCE	   = $(CONFIG_ARCHIVEPATH)/$(MPEG2DEC).$(MPEG2DEC_SUFFIX)
 MPEG2DEC_DIR		   = $(BUILDDIR)/$(MPEG2DEC)
 ifdef CONFIG_LIBMPEG2_OLD
    MPEG2DEC_PATCH       = mpeg2dec-$(MPEG2DEC_VERSION)-2005-11-18.patch
-   MPEG2DEC_PATCH_SRC   = $(CONFIG_ARCHIVEPATH)/$(MPEG2DEC_PATCH)
    MPEG2DEC_PATCH_URL   = http://boundarydevices.com/$(MPEG2DEC_PATCH)
+else
+   MPEG2DEC_PATCH       = 01_zaurus_arm_iwmmxt_mpeg2dec.diff
+   MPEG2DEC_PATCH_URL   = http://boundarydevices.com/archives/$(MPEG2DEC_PATCH)
 endif
+MPEG2DEC_PATCH_SRC   = $(CONFIG_ARCHIVEPATH)/$(MPEG2DEC_PATCH)
 
 # ----------------------------------------------------------------------------
 # Get
@@ -45,9 +48,7 @@ mpeg2dec_get: $(STATEDIR)/mpeg2dec.get
 
 mpeg2dec_get_deps = $(MPEG2DEC_SOURCE) 
 
-ifdef CONFIG_LIBMPEG2_OLD
-   mpeg2dec_get_deps += $(MPEG2DEC_PATCH_SRC)
-endif
+mpeg2dec_get_deps += $(MPEG2DEC_PATCH_SRC)
 
 $(STATEDIR)/mpeg2dec.get: $(mpeg2dec_get_deps)
 	@$(call targetinfo, $@)
@@ -72,9 +73,11 @@ mpeg2dec_extract_deps = $(STATEDIR)/mpeg2dec.get
 $(STATEDIR)/mpeg2dec.extract: $(mpeg2dec_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(MPEG2DEC_DIR))
-	@cd $(BUILDDIR) && zcat $(MPEG2DEC_SOURCE) | tar -xvf -
+	cd $(BUILDDIR) && zcat $(MPEG2DEC_SOURCE) | tar -xvf -
 ifdef CONFIG_LIBMPEG2_OLD
 	cd $(BUILDDIR) && patch -p0 <$(MPEG2DEC_PATCH_SRC)
+else
+	cd $(MPEG2DEC_DIR) && patch -p0 <$(MPEG2DEC_PATCH_SRC)
 endif
 	touch $@
 
