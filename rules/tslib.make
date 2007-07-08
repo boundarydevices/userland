@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tslib.make,v 1.1 2007-07-08 18:09:12 ericn Exp $
+# $Id: tslib.make,v 1.2 2007-07-08 20:23:47 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -113,7 +113,7 @@ tslib_targetinstall: $(STATEDIR)/tslib.targetinstall
 $(STATEDIR)/tslib.targetinstall: $(STATEDIR)/tslib.install
 	@$(call targetinfo, $@)
 	@mkdir -p $(ROOTDIR)/sbin
-	cp -fv $(INSTALLPATH)/sbin/tslib $(ROOTDIR)/sbin && $(CROSSSTRIP) $(ROOTDIR)/sbin/tslib
+	#cp -fv $(INSTALLPATH)/sbin/tslib $(ROOTDIR)/sbin && $(CROSSSTRIP) $(ROOTDIR)/sbin/tslib
 	touch $@
 
 # ----------------------------------------------------------------------------
