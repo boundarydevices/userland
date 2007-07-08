@@ -1,0 +1,4 @@
+config TSLIB
+	bool
+   default n
+	prompt "Compile TSLIB touch-screen interface library"
