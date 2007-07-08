@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mpeg2dec.make,v 1.7 2007-07-07 19:20:19 ericn Exp $
+# $Id: mpeg2dec.make,v 1.8 2007-07-08 18:44:30 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -94,6 +94,7 @@ mpeg2dec_prepare_deps = \
 	$(STATEDIR)/mpeg2dec.extract 
 
 MPEG2DEC_PATH	=  PATH=$(CROSS_PATH)
+#MPEG2DEC_ENV 	=  $(CROSS_ENV) CFLAGS+="-DHAVE_IWMMXT=1 -mcpu=iwmmxt"
 MPEG2DEC_ENV 	=  $(CROSS_ENV)
 #MPEG2DEC_ENV	+=
 
