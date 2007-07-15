@@ -45,6 +45,7 @@ endif
 	@cp -rvd $(CROSS_LIB_DIR)/lib/libc-* $(INITRD_DIR)/lib
 	@cp -rvd $(CROSS_LIB_DIR)/lib/libc.so* $(INITRD_DIR)/lib
 	@cp -rvd $(CROSS_LIB_DIR)/lib/libcrypt*.so* $(INITRD_DIR)/lib
+	@cp -rvd $(CROSS_LIB_DIR)/lib/libgcc_s.so* $(INITRD_DIR)/lib
 	@mkdir -p $(INITRD_DIR)/proc
 	@mkdir -p $(INITRD_DIR)/tmp
 	@mkdir -p $(INITRD_DIR)/usr
@@ -70,11 +71,28 @@ else
    E2FSPROGS_INSTALLED =   
 endif
 
+$(INITRD_DIR)/bin/busybox: $(ROOTDIR)/bin/busybox $(INITRD_DIR) targetinstall 
+	cp -fv $(ROOTDIR)/bin/busybox $@
+
+$(INITRD_DIR)/bin/flashVar: $(ROOTDIR)/bin/flashVar $(INITRD_DIR) targetinstall 
+	cp -fv $(ROOTDIR)/bin/flashVar $@
+
+$(INITRD_DIR)/bin/dhcp: $(TOPDIR)/dhcp $(INITRD_DIR)
+	cp -fv $(TOPDIR)/dhcp $@
+
+$(INITRD_DIR)/lib/firmware:  $(INITRD_DIR)
+	mkdir -p $@
+	cp -rvf $(TOPDIR)/firmware/* $@/
+
+$(INITRD_DIR)/sbin/hotplug: $(TOPDIR)/hotplug $(INITRD_DIR)
+	cp -fv $(TOPDIR)/hotplug $(INITRD_DIR)/sbin/
+	chmod a+x $@
+
 ifdef CONFIG_DOSFSTOOLS
 $(INITRD_DIR)/bin/mkdosfs: $(INITRD_DIR)
 	@cp $(ROOTDIR)/bin/mkdosfs $(INITRD_DIR)/bin
 
-$(INITRD_DIR)/bin/dosfsck: $(INITRD_DIR)
+$(INITRD_DIR)/bin/dosfsck: $(INITRD_DIR) 
 	@cp $(ROOTDIR)/bin/dosfsck $(INITRD_DIR)/bin
 
    DOSFSPROGS_INSTALLED =  $(INITRD_DIR)/bin/mkdosfs $(INITRD_DIR)/bin/dosfsck
@@ -106,5 +124,17 @@ $(INITRD_START): $(INITRCSFILE) $(INITRD_DIR)
 	cp -fv $< $@
 	chmod a+x $@
 
-$(STATEDIR)/initrd.built: $(INITRD_DIR) targetinstall $(INITRD_START) rootfs devices $(E2FSPROGS_INSTALLED) $(DOSFSPROGS_INSTALLED) $(UDEV_INSTALLED)
+$(STATEDIR)/initrd.built: $(INITRD_DIR) \
+                          targetinstall \
+                          $(INITRD_DIR)/bin/busybox \
+                          $(INITRD_DIR)/bin/flashVar \
+                          $(INITRD_DIR)/bin/dhcp \
+                          $(INITRD_DIR)/lib/firmware \
+                          $(INITRD_DIR)/sbin/hotplug \
+                          $(INITRD_START) \
+                          rootfs \
+                          devices \
+                          $(E2FSPROGS_INSTALLED) \
+                          $(DOSFSPROGS_INSTALLED) \
+                          $(UDEV_INSTALLED)
 	touch $@
