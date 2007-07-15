@@ -4,7 +4,12 @@ mknod /dev/ram1 b 1 1
 mount -t ext2 -o loop dev/ram1 /tmp
 mount -t proc none /proc/ 
 mount -t usbfs none /proc/bus/usb
-mount -t devfs none /dev/ 
-mount -t sysfs none /sysfs
+if ! [ -d /sys ] ; then mkdir /sys ; fi
+mount -t sysfs /sys /sys
+if [ -d /dev ] ; then mv /dev /dev-old ; fi
+mkdir /dev
+mount -t ramfs /dev /dev
+/sbin/udevd --daemon
+time /sbin/udevstart
 echo -e -n '\033[?25l' >/dev/ttyFB0
 
