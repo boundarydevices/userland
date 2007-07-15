@@ -20,13 +20,17 @@ mount -t ext2 -o loop dev/ram1 /newrd
 mkdir /newrd/proc
 mount -t proc none /newrd/proc/ 
 mount -t usbfs none /newrd/proc/bus/usb
-if ! [ -f /dev/mmcblk0 ] ; then echo "Building mmc node!!!" && mknod /dev/mmcblk0 b 254 0 ; fi
-mkdir -p /mmc && mount -t vfat /dev/mmcblk0 /mmc
+mkdir -p /mmc
+if [ -e /dev/mmcblk0p1 ] ; then 
+        mount -t vfat /dev/mmcblk0p1 /mmc ;
+else
+        mount -t vfat /dev/mmcblk0 /mmc ;
+fi
 mkdir -p /cramfs && mount -t cramfs -o loop /mmc/cramfs.img /cramfs
 export LD_LIBRARY_PATH=/lib:/usr/lib:/mmc:/cramfs/lib:/cramfs/usr/lib
 export PATH=/cramfs/bin:/cramfs/sbin:/bin:/usr/bin:/usr/sbin:/bin:/sbin
 ifconfig eth0 up
-ifconfig eth0 192.168.1.110
+ifconfig eth0 192.168.1.111
 mkdir -p /home/ericn/userland/install/share/alsa/ && ln -s /mmc/alsa.conf /home/ericn/userland/install/share/alsa/alsa.conf
 # mknod /dev/timer c 253 0
 
