@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: wpa_supplicant.make,v 1.2 2007-07-03 17:17:01 ericn Exp $
+# $Id: wpa_supplicant.make,v 1.3 2007-07-16 19:14:32 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -64,7 +64,7 @@ $(STATEDIR)/wpa_supplicant.extract: $(STATEDIR)/wpa_supplicant.get # $(WPA_SUPPL
 # Prepare
 # ----------------------------------------------------------------------------
 
-wpa_supplicant_prepare: $(STATEDIR)/wpa_supplicant.prepare
+wpa_supplicant_prepare: $(STATEDIR)/wpa_supplicant.prepare openssl_install
 
 wpa_supplicant_prepare_deps = \
 	$(STATEDIR)/wpa_supplicant.extract

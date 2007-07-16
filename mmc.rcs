@@ -20,22 +20,28 @@ mount -t ext2 -o loop dev/ram1 /newrd
 mkdir /newrd/proc
 mount -t proc none /newrd/proc/ 
 mount -t usbfs none /newrd/proc/bus/usb
-mkdir -p /mmc
+
+mkdir /mmc
 if [ -e /dev/mmcblk0p1 ] ; then 
         mount -t vfat /dev/mmcblk0p1 /mmc ;
 else
         mount -t vfat /dev/mmcblk0 /mmc ;
 fi
-mkdir -p /cramfs && mount -t cramfs -o loop /mmc/cramfs.img /cramfs
-export LD_LIBRARY_PATH=/lib:/usr/lib:/mmc:/cramfs/lib:/cramfs/usr/lib
-export PATH=/cramfs/bin:/cramfs/sbin:/bin:/usr/bin:/usr/sbin:/bin:/sbin
-ifconfig eth0 up
-ifconfig eth0 192.168.1.111
-mkdir -p /home/ericn/userland/install/share/alsa/ && ln -s /mmc/alsa.conf /home/ericn/userland/install/share/alsa/alsa.conf
-# mknod /dev/timer c 253 0
+
+if [ -e /mmc/cramfs.img ]; then
+        mkdir -p /cramfs && mount -t cramfs -o loop /mmc/cramfs.img /cramfs
+        for d in lib usr/lib bin sbin usr/bin usr/sbin ; do
+                for f in /cramfs/$d/* ; do 
+                        ln -sf $f /$d/ ;
+                done
+        done
+fi
 
 # no blanking
 echo -e "\033[9;0]" > /dev/tty0
 # no blinking cursor
 echo -e -n '\033[?25l' >/dev/tty0
 
+if [ -e /mmc/linux_init ]; then
+        /mmc/linux_init 
+fi

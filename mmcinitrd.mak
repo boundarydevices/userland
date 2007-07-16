@@ -22,10 +22,23 @@ $(MMCDIR): $(STATEDIR)/initrd.built
 	@mkdir -p $(MMCDIR)
 	@cp -rfv $(INITRD_DIR)/* $(MMCDIR)
 	@rm -f $(STARTSCRIPT)
+	@mkdir -p $(MMCDIR)/usr/sbin
 
-$(STARTSCRIPT): $(MMCDIR) mmc.rcs
+ifeq (m,$(KERNEL_ZD1211RW))
+   ZD1211MODPROBE = echo "modprobe zd1211rw" >> $(STARTSCRIPT)
+else
+   ZD1211MODPROBE = 
+endif
+
+$(STARTSCRIPT): $(MMCDIR) $(TOPDIR)/mmc.rcs $(MMCDIR)/bin/netstart 
 	mkdir -p $(MMCDIR)/etc/init.d
-	cp -fv mmc.rcs $@
+	cp -fv $(TOPDIR)/mmc.rcs $@
+	$(ZD1211MODPROBE)
+	echo netstart >> $@
+	chmod a+x $@
+
+$(MMCDIR)/bin/netstart: $(MMCDIR) $(TOPDIR)/netstart
+	cp -fv $(TOPDIR)/netstart $@
 	chmod a+x $@
 
 $(STATEDIR)/mmcinitrd.built: $(MMCDIR) targetinstall $(STARTSCRIPT) rootfs devices

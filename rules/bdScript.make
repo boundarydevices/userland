@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.35 2007-07-07 02:50:21 ericn Exp $
+# $Id: bdScript.make,v 1.36 2007-07-16 19:14:32 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -177,6 +177,7 @@ $(STATEDIR)/bdScript.targetinstall: $(bdScript_targetinstall_deps)
 	mkdir -p $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/jsExec $(ROOTDIR)/bin
 	cp $(BDSCRIPT_DIR)/flashVar $(ROOTDIR)/bin
+	cp $(BDSCRIPT_DIR)/daemonize $(ROOTDIR)/bin
 	touch $@
 
 # ----------------------------------------------------------------------------

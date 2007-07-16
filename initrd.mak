@@ -17,15 +17,18 @@ include .config
 include .kernelconfig
 CROSS_LIB_LINK = $(subst //,/,$(INITRD_DIR)/$(CROSS_LIB_DIR))
 
+ifeq (y,$(KERNEL_MODULES))
+        MODULES_INSTALL=make -C $(CONFIG_KERNELPATH) INSTALL_MOD_PATH=$(INITRD_DIR) modules_install
+else
+        MODULES_INSTALL=echo "---------------- modules not configured\n"
+endif
+ 
 $(INITRD_DIR):
 	@echo "Building RAMDISK in $(INITRD_DIR)"
 	@rm -rf $(INITRD_DIR)
 	@mkdir -p $(INITRD_DIR)/bin
 	@mkdir -p $(INITRD_DIR)/lib
-ifdef MODULES   
-	make -C ~/cvs/linux-2.6.11.11 INSTALL_MOD_PATH=$(INITRD_DIR) modules_install
-	cp ~/zd1211.cvs/src/modules-2.6.11.11/zd1211_mod.ko $(INITRD_DIR)   
-endif   
+	$(MODULES_INSTALL)
 	echo "CROSS_LIB_DIR == " $(CROSS_LIB_DIR)
 	echo "ROOTDIR == " $(ROOTDIR)
 	@cd $(INITRD_DIR) && ln -s bin sbin
@@ -80,14 +83,6 @@ $(INITRD_DIR)/bin/flashVar: $(ROOTDIR)/bin/flashVar $(INITRD_DIR) targetinstall
 $(INITRD_DIR)/bin/dhcp: $(TOPDIR)/dhcp $(INITRD_DIR)
 	cp -fv $(TOPDIR)/dhcp $@
 
-$(INITRD_DIR)/lib/firmware:  $(INITRD_DIR)
-	mkdir -p $@
-	cp -rvf $(TOPDIR)/firmware/* $@/
-
-$(INITRD_DIR)/sbin/hotplug: $(TOPDIR)/hotplug $(INITRD_DIR)
-	cp -fv $(TOPDIR)/hotplug $(INITRD_DIR)/sbin/
-	chmod a+x $@
-
 ifdef CONFIG_DOSFSTOOLS
 $(INITRD_DIR)/bin/mkdosfs: $(INITRD_DIR)
 	@cp $(ROOTDIR)/bin/mkdosfs $(INITRD_DIR)/bin
@@ -113,6 +108,35 @@ else
    UDEV_INSTALLED = 
 endif
 
+ZD1211_FIRMWARE=$(shell ls $(CONFIG_ARCHIVEPATH)/zd1211-firmware1.3.tar.bz2)
+
+$(ZD1211_FIRMWARE):
+	cd $(CONFIG_ARCHIVEPATH) && wget http://easynews.dl.sourceforge.net/sourceforge/zd1211/zd1211-firmware1.3.tar.bz2
+
+$(INITRD_DIR)/lib/firmware: $(ZD1211_FIRMWARE)
+	mkdir -p $@
+	cd $@ && tar jxvf $(ZD1211_FIRMWARE)
+	cd $@ && mv zd1211-firmware zd1211
+
+$(INITRD_DIR)/usr/local/lib/firmware:
+	mkdir -p $@
+$(INITRD_DIR)/lib/udev: 
+	mkdir -p $@
+
+$(INITRD_DIR)/lib/udev/firmware.sh: $(UDEV_DIR)/extras/firmware/firmware.sh 
+	cp -fv $< $@
+
+$(INITRD_DIR)/bin/wpa_supplicant: $(ROOTDIR)/bin/wpa_supplicant
+	cp -fv $< $@
+
+WPA_SUPPLICANT_INSTALLED=$(INITRD_DIR)/bin/wpa_supplicant
+
+ifeq (m,$(KERNEL_ZD1211RW))
+   UDEV_INSTALLED += $(INITRD_DIR)/lib/udev $(INITRD_DIR)/lib/udev/firmware.sh \
+                     $(INITRD_DIR)/lib/firmware $(INITRD_DIR)/usr/local/lib/firmware \
+                     $(WPA_SUPPLICANT_INSTALLED)
+endif
+
 ifeq (,$(findstring 2.6.19,$(CONFIG_KERNELPATH)))
         INITRCSFILE = initrd.rcs
 else
@@ -130,7 +154,6 @@ $(STATEDIR)/initrd.built: $(INITRD_DIR) \
                           $(INITRD_DIR)/bin/flashVar \
                           $(INITRD_DIR)/bin/dhcp \
                           $(INITRD_DIR)/lib/firmware \
-                          $(INITRD_DIR)/sbin/hotplug \
                           $(INITRD_START) \
                           rootfs \
                           devices \
