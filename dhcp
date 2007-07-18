@@ -1,0 +1,36 @@
+#!/bin/sh
+
+setFlashVar () {
+   if ! [ -z "$1" ] ; then
+      old=`flashVar $1` ;
+      if [ "$old" != "$2" ]; then
+         echo "change flashVar $1 from .$old. to .$2."
+         flashVar $1 $2
+      fi
+   fi
+}
+
+if [ "$1" = "deconfig" ] ; then
+   echo "deconfig here" ; 
+elif [ "$1" = "bound" ] ; then
+   if (! [ -z $interface ]) && (! [ -z $ip ]) && (! [ -z $subnet ]) ; then
+      setFlashVar $interface.dns $dns ;
+      setFlashVar $interface.domain $domain ;
+      setFlashVar $interface.boot_file $boot_file ;
+      setFlashVar $interface.router $router ;
+      setFlashVar $interface.siaddr $siaddr ;
+      setFlashVar $interface.ip "$ip" ;
+      setFlashVar $interface.subnet "$subnet" ;
+      ifconfig $interface $ip netmask $subnet ;
+      if [ -e /mmc/$interface.up ]; then /mmc/$interface.up $interface ; fi
+   fi
+   if ! [ -z "$dns" ]; then
+      echo "nameserver $dns" >> /etc/resolv.conf ;
+   fi
+   if ! [ -z "$router" ]; then
+      route add default gw $router ;
+   fi
+else
+   echo "probably renew" ;
+fi
+

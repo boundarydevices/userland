@@ -1,0 +1,39 @@
+#!/bin/sh
+echo "---------- starting network devices -------------"
+interfaces=`ifconfig -a | grep Link | sed "s/[\\t ]*Link.*//g"` ;
+for i in $interfaces ; do
+        echo "start interface $i" ;
+        if [ "lo" != "$i" ]; then
+                echo -e "\tNot Loopback" ;
+                static=`flashVar $i.static` ;
+                if [ "x1" != "x$static" ] ; then
+                        echo -e "\tUse DHCP" ;
+                        ifconfig $i up ;
+                        if iwgetid $i ; then
+                                ssid=`flashVar $i.ssid` ;
+                                if [ "x" != "x$ssid" ] ; then
+                                        proto=`flashVar $i.proto` ;
+                                        if [ "wpa" = "$proto" ] ; then
+                                                psk=`flashVar $i.psk` ;
+                                                tmpfile=/tmp/wpa-psk-tkip.conf
+                                                echo -e "network={\n  scan_ssid=1\n ssid=\"$ssid\"\n psk=$psk\n group=TKIP\n key_mgmt=WPA-PSK\n proto=WPA\n}" > $tmpfile ;
+                                                wpa_supplicant -Dwext -c $tmpfile -i $i -B ;
+                                        else
+                                                echo -e "\t----------- Unsupported protocol" ;
+                                                continue ;
+                                        fi
+                                else
+                                        echo -e "\t-----------No SSID" ;
+                                        continue ;
+                                fi
+                        fi
+                        udhcpc -b -s /mmc/dhcp -i $i ;
+                else
+                        echo -e "\tUse static ip" ;
+                fi
+        else
+                echo -e "\tLoopback" ;
+                ifconfig $i 127.0.0.1 ;
+                echo -e "127.0.0.1\tlocalhost" >> /etc/hosts ;
+        fi 
+done
