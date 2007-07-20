@@ -2,3 +2,4 @@ config WPA_SUPPLICANT
 	bool
    default y
 	prompt "Compile WPA Supplicant"
+

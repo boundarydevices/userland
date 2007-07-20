@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: wpa_supplicant.make,v 1.3 2007-07-16 19:14:32 ericn Exp $
+# $Id: wpa_supplicant.make,v 1.4 2007-07-20 23:56:37 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -15,6 +15,8 @@ ifeq (y, $(CONFIG_WPA_SUPPLICANT))
 PACKAGES += wpa_supplicant
 endif
 
+ECHO?=`which echo`
+
 #
 # Paths and names 
 #
@@ -23,8 +25,8 @@ WPA_SUPPLICANT			= wpa_supplicant-0.5.8
 WPA_SUPPLICANT_URL 	= http://hostap.epitest.fi/releases/$(WPA_SUPPLICANT).tar.gz
 WPA_SUPPLICANT_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(WPA_SUPPLICANT).tar.gz
 WPA_SUPPLICANT_DIR		= $(BUILDDIR)/$(WPA_SUPPLICANT)
-WPA_SUPPLICANT_CONFIG_PATCH = $(CONFIG_ARCHIVEPATH)/wpas_config_20070128.diff
-WPA_SUPPLICANT_CONFIG_PATCH_URL = http://boundarydevices.com/wpas_config_20070128.diff
+WPA_SUPPLICANT_CONFIG = $(CONFIG_ARCHIVEPATH)/wpas_config_20070128
+WPA_SUPPLICANT_CONFIG_URL = http://boundarydevices.com/wpas_config_20070128
 
 # ----------------------------------------------------------------------------
 # Get
@@ -46,18 +48,18 @@ $(WPA_SUPPLICANT_SOURCE):
 
 wpa_supplicant_extract: $(STATEDIR)/wpa_supplicant.extract
 
-$(WPA_SUPPLICANT_CONFIG_PATCH):
-	@cd $(CONFIG_ARCHIVEPATH) && wget $(WPA_SUPPLICANT_CONFIG_PATCH_URL)
+$(WPA_SUPPLICANT_CONFIG):
+	@cd $(CONFIG_ARCHIVEPATH) && wget $(WPA_SUPPLICANT_CONFIG_URL)
 
-$(STATEDIR)/wpa_supplicant.extract: $(STATEDIR)/wpa_supplicant.get # $(WPA_SUPPLICANT_CONFIG_PATCH)
+$(STATEDIR)/wpa_supplicant.extract: $(STATEDIR)/wpa_supplicant.get $(WPA_SUPPLICANT_CONFIG)
 	@$(call targetinfo, $@)
 	@$(call clean, $(WPA_SUPPLICANT_DIR))
 	@cd $(BUILDDIR) && zcat $(WPA_SUPPLICANT_SOURCE) | tar -xvf -
-	#	@cd $(WPA_SUPPLICANT_DIR) && cp -fv defconfig .config && patch < $(WPA_SUPPLICANT_CONFIG_PATCH)
-	@echo -e "\nCC=arm-linux-gcc" >> $(WPA_SUPPLICANT_DIR)/.config
-	@echo -e CFLAGS += -Os -I$(INSTALLPATH)/include/openssl -I$(INSTALLPATH)/include >> $(WPA_SUPPLICANT_DIR)/.config
-	@echo -e LIBS += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
-	@echo -e LIBS_p += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
+	@cd $(WPA_SUPPLICANT_DIR) && cp -fv $(WPA_SUPPLICANT_CONFIG) .config
+	@$(ECHO) -e "\nCC=arm-linux-gcc" >> $(WPA_SUPPLICANT_DIR)/.config
+	@$(ECHO) -e CFLAGS += -Os -I$(INSTALLPATH)/include/openssl -I$(INSTALLPATH)/include >> $(WPA_SUPPLICANT_DIR)/.config
+	@$(ECHO) -e LIBS += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
+	@$(ECHO) -e LIBS_p += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
 	touch $@
 
 # ----------------------------------------------------------------------------
