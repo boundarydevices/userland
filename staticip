@@ -21,4 +21,4 @@ fi
 if ! [ -z "$dns" ]; then
    echo "nameserver $dns" >> /etc/resolv.conf ;
 fi
-
+if [ -e /mmc/$interface.up ]; then /mmc/$interface.up $interface ; fi
