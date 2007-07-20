@@ -30,6 +30,7 @@ for i in $interfaces ; do
                         udhcpc -b -s /mmc/dhcp -i $i ;
                 else
                         echo -e "\tUse static ip" ;
+                        staticip $i
                 fi
         else
                 echo -e "\tLoopback" ;

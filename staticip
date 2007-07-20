@@ -1,0 +1,24 @@
+#!/bin/sh
+if [ 1 -gt $# ]; then
+   echo "Usage: $0 interface(eth0)" ;
+   exit 1 ;
+fi
+
+interface=$1 ;
+ip=`flashVar $1.ip` ;
+subnet=`flashVar $1.subnet` ;
+router=`flashVar $1.router` ;
+dns=`flashVar $1.dns` ;
+
+if (! [ -z $ip ]) && (! [ -z $subnet ]) ; then
+   ifconfig $interface $ip netmask $subnet ;
+fi
+
+if ! [ -z "$router" ]; then
+   route add default gw $router ;
+fi
+
+if ! [ -z "$dns" ]; then
+   echo "nameserver $dns" >> /etc/resolv.conf ;
+fi
+

@@ -37,7 +37,11 @@ $(STARTSCRIPT): $(MMCDIR) $(TOPDIR)/mmc.rcs $(MMCDIR)/bin/netstart
 	echo netstart >> $@
 	chmod a+x $@
 
-$(MMCDIR)/bin/netstart: $(MMCDIR) $(TOPDIR)/netstart
+$(MMCDIR)/bin/staticip: $(MMCDIR) $(TOPDIR)/staticip
+	cp -fv $(TOPDIR)/staticip $@
+	chmod a+x $@
+
+$(MMCDIR)/bin/netstart: $(MMCDIR) $(TOPDIR)/netstart $(MMCDIR)/bin/staticip
 	cp -fv $(TOPDIR)/netstart $@
 	chmod a+x $@
 
