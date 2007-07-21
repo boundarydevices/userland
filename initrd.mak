@@ -133,8 +133,11 @@ WPA_SUPPLICANT_INSTALLED=$(INITRD_DIR)/bin/wpa_supplicant
 
 ifeq (m,$(KERNEL_ZD1211RW))
    UDEV_INSTALLED += $(INITRD_DIR)/lib/udev $(INITRD_DIR)/lib/udev/firmware.sh \
-                     $(INITRD_DIR)/lib/firmware $(INITRD_DIR)/usr/local/lib/firmware \
-                     $(WPA_SUPPLICANT_INSTALLED)
+                     $(INITRD_DIR)/lib/firmware $(INITRD_DIR)/usr/local/lib/firmware 
+endif
+
+ifdef CONFIG_WPA_SUPPLICANT
+   UDEV_INSTALLED += $(WPA_SUPPLICANT_INSTALLED)
 endif
 
 ifeq (,$(findstring 2.6.19,$(CONFIG_KERNELPATH)))
