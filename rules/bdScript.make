@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.38 2007-07-20 23:58:54 ericn Exp $
+# $Id: bdScript.make,v 1.39 2007-07-22 18:43:40 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -19,7 +19,7 @@ endif
 #
 # Paths and names
 #
-BDSCRIPT_VERSION	= 20070720
+BDSCRIPT_VERSION	= 20070722
 
 ifdef CONFIG_BDSCRIPT_CVS
    BDSCRIPT		= bdScript
