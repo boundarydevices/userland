@@ -1,6 +1,5 @@
 #!/bin/sh
 #!/bin/sh
-echo "This is kernel 2.6.19"
 mkdir -p /proc
 mount -t proc none /proc/ 
 mkdir -p /proc/bus
