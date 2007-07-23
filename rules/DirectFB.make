@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB.make,v 1.5 2005-12-01 04:09:39 ericn Exp $
+# $Id: DirectFB.make,v 1.6 2007-07-23 02:36:41 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-DIRECTFB = DirectFB-0.9.22
+DIRECTFB = DirectFB-1.0.0
 DIRECTFB_URL = http://www.directfb.org/downloads/Core/$(DIRECTFB).tar.gz
 DIRECTFB_SOURCE = $(CONFIG_ARCHIVEPATH)/$(DIRECTFB).tar.gz
 DIRECTFB_DIR = $(BUILDDIR)/$(DIRECTFB)
@@ -78,6 +78,7 @@ DIRECTFB_AUTOCONF 	+=  --enable-sse=no
 DIRECTFB_AUTOCONF 	+=  --enable-sdl=no
 DIRECTFB_AUTOCONF 	+=  --enable-sysfs=no
 DIRECTFB_AUTOCONF 	+=  --enable-png=yes
+DIRECTFB_AUTOCONF 	+=  --enable-zlib=yes
 DIRECTFB_AUTOCONF 	+=  --enable-video4linux=no
 DIRECTFB_AUTOCONF 	+=  --with-gfxdrivers=none
 DIRECTFB_AUTOCONF 	+=  --with-inputdrivers=none
@@ -91,6 +92,7 @@ $(STATEDIR)/directfb.prepare: $(directfb_prepare_deps)
       CFLAGS=-I$(INSTALLPATH)/include \
       CPPFLAGS=-I$(INSTALLPATH)/include \
       LDFLAGS=-L$(INSTALLPATH)/lib \
+      LIBS=" -lz -lm " \
       ./configure $(DIRECTFB_AUTOCONF)
 	touch $@
 

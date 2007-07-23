@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libpng.make,v 1.8 2006-02-26 15:14:16 ericn Exp $
+# $Id: libpng.make,v 1.9 2007-07-23 02:36:41 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #                       Pengutronix <info@pengutronix.de>, Germany
@@ -20,12 +20,12 @@ endif
 #
 # Paths and names
 #
-LIBPNG_VERSION	= 1.2.8
+LIBPNG_VERSION	= 1.2.18
 LIBPNG		= libpng-$(LIBPNG_VERSION)
 LIBPNG_SUFFIX	= tar.gz
-LIBPNG_URL		= http://download.sourceforge.net/libpng/$(LIBPNG).$(LIBPNG_SUFFIX)
+LIBPNG_URL	= http://download.sourceforge.net/libpng/$(LIBPNG).$(LIBPNG_SUFFIX)
 LIBPNG_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(LIBPNG).$(LIBPNG_SUFFIX)
-LIBPNG_DIR		= $(BUILDDIR)/$(LIBPNG)
+LIBPNG_DIR	= $(BUILDDIR)/$(LIBPNG)
 
 # ----------------------------------------------------------------------------
 # Get
