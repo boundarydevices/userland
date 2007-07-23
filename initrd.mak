@@ -18,12 +18,13 @@ include .kernelconfig
 CROSS_LIB_LINK = $(subst //,/,$(INITRD_DIR)/$(CROSS_LIB_DIR))
 
 ifeq (y,$(KERNEL_MODULES))
-        MODULES_INSTALL=make -C $(CONFIG_KERNELPATH) INSTALL_MOD_PATH=$(INITRD_DIR) modules_install
+        MODULES_INSTALL=make -C $(CONFIG_KERNELPATH) DEPMOD=$(TOPDIR)/tools/depmod INSTALL_MOD_PATH=$(INITRD_DIR) modules_install
+        MODULES_DEP=module_init_tools_install
 else
         MODULES_INSTALL=echo "---------------- modules not configured\n"
 endif
  
-$(INITRD_DIR):
+$(INITRD_DIR): $(MODULES_DEP)
 	@echo "Building RAMDISK in $(INITRD_DIR)"
 	@rm -rf $(INITRD_DIR)
 	@mkdir -p $(INITRD_DIR)/bin

@@ -1,0 +1,4 @@
+config MODULE_INIT_TOOLS
+        bool
+        default y
+	prompt "Compile module-init-tools"

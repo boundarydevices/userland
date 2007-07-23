@@ -146,5 +146,6 @@ source "rules/xorg.in"
 source "rules/gtk.in"
 source "rules/strace.in"
 source "rules/tslib.in"
+source "rules/module-init-tools.in"
 source "rules/wpa_supplicant.in"
 
