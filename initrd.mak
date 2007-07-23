@@ -109,7 +109,7 @@ else
    UDEV_INSTALLED = 
 endif
 
-ZD1211_FIRMWARE=$(shell ls $(CONFIG_ARCHIVEPATH)/zd1211-firmware1.3.tar.bz2)
+ZD1211_FIRMWARE=$(CONFIG_ARCHIVEPATH)/zd1211-firmware1.3.tar.bz2
 
 $(ZD1211_FIRMWARE):
 	cd $(CONFIG_ARCHIVEPATH) && wget http://easynews.dl.sourceforge.net/sourceforge/zd1211/zd1211-firmware1.3.tar.bz2
