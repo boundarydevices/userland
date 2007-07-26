@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB.make,v 1.6 2007-07-23 02:36:41 ericn Exp $
+# $Id: DirectFB.make,v 1.7 2007-07-26 19:52:54 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -71,7 +71,7 @@ else
 endif
 
 DIRECTFB_AUTOCONF 	+=  --without-x
-DIRECTFB_AUTOCONF 	+=  --enable-text=no
+DIRECTFB_AUTOCONF 	+=  --enable-text=yes
 DIRECTFB_AUTOCONF 	+=  --enable-sdl=no
 DIRECTFB_AUTOCONF 	+=  --enable-mmx=no
 DIRECTFB_AUTOCONF 	+=  --enable-sse=no
@@ -81,7 +81,7 @@ DIRECTFB_AUTOCONF 	+=  --enable-png=yes
 DIRECTFB_AUTOCONF 	+=  --enable-zlib=yes
 DIRECTFB_AUTOCONF 	+=  --enable-video4linux=no
 DIRECTFB_AUTOCONF 	+=  --with-gfxdrivers=none
-DIRECTFB_AUTOCONF 	+=  --with-inputdrivers=none
+DIRECTFB_AUTOCONF 	+=  --with-inputdrivers=linuxinput
 
 
 $(STATEDIR)/directfb.prepare: $(directfb_prepare_deps)
