@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: cairo.make,v 1.7 2006-07-26 22:49:26 ericn Exp $
+# $Id: cairo.make,v 1.8 2007-07-26 04:14:06 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-CAIRO = cairo-1.0.2
+CAIRO = cairo-1.4.10
 CAIRO_URL = http://cairographics.org/releases/$(CAIRO).tar.gz
 CAIRO_SOURCE = $(CONFIG_ARCHIVEPATH)/$(CAIRO).tar.gz
 CAIRO_DIR = $(BUILDDIR)/$(CAIRO)
@@ -61,9 +61,7 @@ cairo_prepare_deps = \
 
 CAIRO_PATH	=  PATH=$(CROSS_PATH)
 CAIRO_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(INSTALLPATH) \
-        --x-includes=$(INSTALLPATH)/include \
-        --x-libraries=$(INSTALLPATH)/lib
+	--prefix=$(INSTALLPATH)
 
 CONFIG_CAIRO_SHARED = 1
 ifdef CONFIG_CAIRO_SHARED
@@ -73,7 +71,8 @@ else
    CAIRO_AUTOCONF 	+=  --enable-static=yes
 endif
 
-# CAIRO_AUTOCONF += --without-x
+CAIRO_AUTOCONF += --without-x
+CAIRO_AUTOCONF += --enable-xlib=no
 # CAIRO_AUTOCONF += --enable-pdf=no
 CAIRO_AUTOCONF += --with-png=$(INSTALLPATH)
 
