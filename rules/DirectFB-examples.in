@@ -1,0 +1,4 @@
+config DIRECTFB_EXAMPLES
+	bool
+   default n
+	prompt "Compile Direct-FB Examples"

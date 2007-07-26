@@ -148,4 +148,4 @@ source "rules/strace.in"
 source "rules/tslib.in"
 source "rules/module-init-tools.in"
 source "rules/wpa_supplicant.in"
-
+source "rules/DirectFB-examples.in"
