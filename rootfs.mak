@@ -8,7 +8,13 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.30  2006-09-21 23:44:42  ericn
+# Revision 1.32  2007-07-27 21:49:42  ericn
+# -.profile, not etc/bashrc. Include /usr/local/lib and /usr/local/bin
+#
+# Revision 1.31  2006/02/05 18:56:48  ericn
+# -pull password handling here (from tinylogin)
+#
+# Revision 1.30  2006/09/21 23:44:42  ericn
 # -add /proc/bus/usb to fstab
 #
 # Revision 1.29  2006/09/21 22:37:56  ericn
@@ -115,8 +121,9 @@ CROSS_PATH := $(CONFIG_TOOLCHAINPATH)/bin:$$PATH
 
 DIRS := $(ROOTDIR)/bin $(ROOTDIR)/etc $(ROOTDIR)/lib $(ROOTDIR)/proc $(ROOTDIR)/sysfs $(ROOTDIR)/tmp $(ROOTDIR)/tmp/mmc
 
-TARGETS := $(ROOTDIR)/etc/bashrc \
+TARGETS := $(ROOTDIR)/.profile \
            $(ROOTDIR)/etc/fstab \
+           $(ROOTDIR)/etc/group \
            $(ROOTDIR)/etc/hosts \
            $(ROOTDIR)/etc/inittab \
            $(ROOTDIR)/etc/modules.conf \
@@ -175,52 +182,67 @@ $(CROSS_LIB_LINK)/etc:
 	mkdir -p $(CROSS_LIB_LINK)
 	cd $(CROSS_LIB_LINK) && ln -sf /etc
 
-$(ROOTDIR)/etc/bashrc:
+$(ROOTDIR)/.profile:  $(ROOTDIR)
 	echo "#!/bin/sh" > $@
 	echo "# CURLTMPSIZE should be smaller than sizeof ramdisk from " >> $@
 	echo "# mke2fs call by size of the largest file to be downloaded" >> $@
 	echo "export CURLTMPSIZE=4000000" >> $@
-	echo "export LD_LIBRARY_PATH=/lib:/usr/lib" >> $@
+	echo "export LD_LIBRARY_PATH=/mmc:/lib:/usr/lib:/usr/local/lib" >> $@
+	echo "export PATH=/mmc:/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin" >> $@
 
 $(ROOTDIR)/etc/hosts: /etc/hosts
 	cp -f $< $@ 
 
-$(ROOTDIR)/etc/inittab:
-	echo "::sysinit:/etc/init.d/rcS" >> $@
-	echo "::wait:/bin/echo Welcome" >> $@
-	echo "tty2::askfirst:-/bin/sh" >> $@
-	echo "tty3::askfirst:-/bin/sh" >> $@
-	echo "tty4::askfirst:-/bin/sh" >> $@
-	echo "::respawn:/bin/sh" >> $@
+$(ROOTDIR)/etc/inittab: $(ROOTDIR)/etc
+	echo "::sysinit:/etc/init.d/rcS" > $@
+	echo "tty0::respawn:/sbin/getty 115200 /dev/ttyS0" >> $@
+	echo "tty1::askfirst:-/sbin/getty 115200 /dev/ttyS1" >> $@
+	echo "tty2::askfirst:-/sbin/getty 115200 /dev/ttyS2" >> $@
+	echo "::respawn:/sbin/getty 115200 /dev/ttyS0" >> $@
 	echo "::ctrlaltdel:/sbin/reboot" >> $@
 	echo "::shutdown:/sbin/swapoff -a" >> $@
 	echo "::shutdown:/bin/umount -a -r" >> $@
 	echo "::restart:/sbin/init" >> $@
 	chmod a+x $@
 
-$(ROOTDIR)/etc/modules.conf:
+$(ROOTDIR)/etc/modules.conf: $(ROOTDIR)/etc
 	echo "alias wlan0 prism2_cs" > $@
 
-$(ROOTDIR)/etc/nsswitch.conf:
+$(ROOTDIR)/etc/nsswitch.conf: $(ROOTDIR)/etc
 	echo "hosts:      files dns" > $@
 	echo "passwd:     files" >> $@
 	echo "group:      files" >> $@
 
-$(ROOTDIR)/etc/resolv.conf:
+$(ROOTDIR)/etc/resolv.conf: $(ROOTDIR)/etc
 	echo "# name servers go here" >$@
 
-$(ROOTDIR)/etc/ld.so.conf:
+CRYPT_SALT = dP
+PASSWORD_STRING = $(shell perl -e 'print crypt($(CONFIG_ROOTPASSWORD), "$(CRYPT_SALT)"),"\n"')
+
+$(ROOTDIR)/etc/passwd: $(ROOTDIR)/etc
+	@echo "root:$(PASSWORD_STRING):0:0:Linux User,,,:/:/bin/sh" > $@
+ifdef CONFIG_OPENSSH
+	@echo "sshd:x:1:1:sshd:/:/bin/false" >> $(ROOTDIR)/etc/passwd
+endif
+
+$(ROOTDIR)/etc/group: $(ROOTDIR)/etc
+	@echo "0:x:0:root" > $@
+ifdef CONFIG_OPENSSH
+	@echo "1:x:1:sshd" >> $@
+endif
+
+$(ROOTDIR)/etc/ld.so.conf: $(ROOTDIR)/etc
 	echo -e "" > $@
 
 $(ROOTDIR)/linuxrc: $(ROOTDIR)/bin/busybox
 	cd $(ROOTDIR) && ln -s ./bin/busybox linuxrc
 
-$(ROOTDIR)/etc/ld.so.cache: $(ROOTDIR)/etc/modules.conf $(ROOTDIR)/etc/ld.so.conf
+$(ROOTDIR)/etc/ld.so.cache: $(ROOTDIR)/etc $(ROOTDIR)/etc/modules.conf $(ROOTDIR)/etc/ld.so.conf
 	mkdir -p $(ROOTDIR)/lib
 	mkdir -p $(ROOTDIR)/usr/lib
 	cd $(ROOTDIR)/etc && /sbin/ldconfig -r ../ -v
 
-$(ROOTDIR)/etc/fstab:
+$(ROOTDIR)/etc/fstab: $(ROOTDIR)/etc
 ifdef KERNEL_DEVPTS_FS
 	echo "none /dev/pts devpts gid=5,mode=0620 0 0" > $@
 endif  
@@ -254,7 +276,7 @@ $(ROOTDIR)/bin/jsMenu:
 #
 # startup script
 #
-$(ROOTDIR)/etc/init.d:
+$(ROOTDIR)/etc/init.d: $(ROOTDIR)/etc
 	mkdir -p $@
 
 $(ROOTDIR)/etc/init.d/rcS: $(ROOTDIR)/bin/jsMenu $(ROOTDIR)/etc/init.d
