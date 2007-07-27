@@ -34,7 +34,6 @@ $(INITRD_DIR): $(MODULES_DEP)
 	echo "ROOTDIR == " $(ROOTDIR)
 	@cd $(INITRD_DIR) && ln -s bin sbin
 	@cp $(ROOTDIR)/bin/busybox $(INITRD_DIR)/bin
-	@echo "Hello\n"
 	@cd $(INITRD_DIR) && ln -s bin/busybox linuxrc
 	@find $(ROOTDIR)/bin/ -type l -exec cp -rd {} $(INITRD_DIR)/bin/ \;
 	@find $(ROOTDIR)/sbin/ -type l -exec cp -rd {} $(INITRD_DIR)/sbin/ \;
@@ -43,6 +42,7 @@ $(INITRD_DIR): $(MODULES_DEP)
 	@cp $(ROOTDIR)/etc/group $(INITRD_DIR)/etc
 	@cp $(ROOTDIR)/etc/fstab $(INITRD_DIR)/etc
 	@cp $(ROOTDIR)/etc/inittab $(INITRD_DIR)/etc
+	@cp $(ROOTDIR)/.profile $(INITRD_DIR)/
 	@mkdir -p $(INITRD_DIR)/etc/init.d
 	@mkdir -p $(INITRD_DIR)/lib
 	@cp -rvd $(CROSS_LIB_DIR)/lib/ld-* $(INITRD_DIR)/lib
@@ -147,6 +147,14 @@ else
         INITRCSFILE = initrd-2.6.19.rcs
 endif
 
+$(INITRD_DIR)/etc/directfbrc: $(INITRD_DIR)/etc
+        echo "INITRD dir == $(INITRD_DIR)"
+	echo "system=fbdev" > $@
+
+ifdef CONFIG_DIRECTFB
+        DIRECTFBRC=$(INITRD_DIR)/etc/directfbrc
+endif
+
 $(INITRD_START): $(INITRCSFILE) $(INITRD_DIR)
 	mkdir -p $(INITRD_DIR)/etc/init.d
 	cp -fv $< $@
@@ -159,6 +167,7 @@ $(STATEDIR)/initrd.built: $(INITRD_DIR) \
                           $(INITRD_DIR)/bin/dhcp \
                           $(INITRD_DIR)/lib/firmware \
                           $(INITRD_START) \
+                          $(DIRECTFBRC) \
                           rootfs \
                           devices \
                           $(E2FSPROGS_INSTALLED) \
