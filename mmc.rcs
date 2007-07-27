@@ -29,7 +29,8 @@ fi
 
 if [ -e /mmc/cramfs.img ]; then
         mkdir -p /cramfs && mount -t cramfs -o loop /mmc/cramfs.img /cramfs
-        for d in lib usr/lib bin sbin usr/bin usr/sbin ; do
+        for d in lib usr/lib usr/local/lib bin sbin usr/bin usr/sbin usr/local/bin ; do
+                mkdir -p /$d
                 for f in /cramfs/$d/* ; do 
                         ln -sf $f /$d/ ;
                 done
