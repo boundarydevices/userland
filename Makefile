@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.22  2006-06-22 13:49:28  ericn
+# Revision 1.23  2007-07-27 21:45:54  ericn
+# -make sure ROOTDIR is built in targetinstall
+#
+# Revision 1.22  2006/06/22 13:49:28  ericn
 # -add initrd build (not auto-mount mmc)
 #
 # Revision 1.21  2005/12/28 00:32:41  ericn
@@ -277,7 +280,7 @@ extract: get     $(DIRS) $(PACKAGES_EXTRACT)
 prepare: extract $(DIRS) $(PACKAGES_PREPARE)
 compile: prepare $(DIRS) $(PACKAGES_COMPILE)
 install: compile $(DIRS)  $(PACKAGES_INSTALL)
-targetinstall: install $(DIRS) $(PACKAGES_TARGETINSTALL)
+targetinstall: install $(DIRS) $(ROOTDIR) $(PACKAGES_TARGETINSTALL)
 
 
 $(ROOTDIR)/etc/init.d/rcS: targetinstall
