@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB.make,v 1.7 2007-07-26 19:52:54 ericn Exp $
+# $Id: DirectFB.make,v 1.8 2007-07-27 22:10:48 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -14,6 +14,8 @@
 ifeq (y, $(CONFIG_DIRECTFB))
 PACKAGES += directfb
 endif
+
+ECHO?=`which echo`
 
 #
 # Paths and names 
@@ -59,8 +61,7 @@ directfb_prepare_deps = \
 	$(STATEDIR)/directfb.extract
 
 DIRECTFB_PATH	=  PATH=$(CROSS_PATH)
-DIRECTFB_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(INSTALLPATH)
+DIRECTFB_AUTOCONF = --host=$(CONFIG_GNU_TARGET)
 
 CONFIG_DIRECTFB_SHARED = 1
 ifdef CONFIG_DIRECTFB_SHARED
@@ -81,8 +82,7 @@ DIRECTFB_AUTOCONF 	+=  --enable-png=yes
 DIRECTFB_AUTOCONF 	+=  --enable-zlib=yes
 DIRECTFB_AUTOCONF 	+=  --enable-video4linux=no
 DIRECTFB_AUTOCONF 	+=  --with-gfxdrivers=none
-DIRECTFB_AUTOCONF 	+=  --with-inputdrivers=linuxinput
-
+DIRECTFB_AUTOCONF 	+=  --with-inputdrivers=linuxinput,tslib
 
 $(STATEDIR)/directfb.prepare: $(directfb_prepare_deps)
 	@$(call targetinfo, $@)
@@ -115,9 +115,8 @@ directfb_install: $(STATEDIR)/directfb.install
 
 $(STATEDIR)/directfb.install: $(STATEDIR)/directfb.compile
 	@$(call targetinfo, $@)
-	install -d $(INSTALLPATH)/include
 	cd $(DIRECTFB_DIR) && \
-        $(CROSS_ENV) \
+        DESTDIR=$(INSTALLPATH) \
         $(DIRECTFB_PATH) make install
 	touch $@
 
@@ -127,8 +126,12 @@ $(STATEDIR)/directfb.install: $(STATEDIR)/directfb.compile
 
 directfb_targetinstall: $(STATEDIR)/directfb.targetinstall
 
-$(STATEDIR)/directfb.targetinstall: $(STATEDIR)/directfb.install
+$(STATEDIR)/directfb.targetinstall: $(STATEDIR)/directfb.install $(ROOTDIR)/etc
 	@$(call targetinfo, $@)
+	cd $(DIRECTFB_DIR) && \
+        DESTDIR=$(ROOTDIR) \
+        $(DIRECTFB_PATH) make install
+	$(ECHO) -e "system=fbdev" > $(ROOTDIR)/etc/directfbrc
 	touch $@
 
 # ----------------------------------------------------------------------------
