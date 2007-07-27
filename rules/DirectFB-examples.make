@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB-examples.make,v 1.1 2007-07-26 19:53:27 ericn Exp $
+# $Id: DirectFB-examples.make,v 1.2 2007-07-27 22:10:28 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -59,8 +59,7 @@ directfb_examples_prepare_deps = \
 	$(STATEDIR)/directfb_examples.extract
 
 DIRECTFB_EXAMPLES_PATH	=  PATH=$(CROSS_PATH)
-DIRECTFB_EXAMPLES_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(INSTALLPATH)
+DIRECTFB_EXAMPLES_AUTOCONF = --host=$(CONFIG_GNU_TARGET)
 
 CONFIG_DIRECTFB_EXAMPLES_SHARED = 1
 ifdef CONFIG_DIRECTFB_EXAMPLES_SHARED
@@ -103,10 +102,9 @@ directfb_examples_install: $(STATEDIR)/directfb_examples.install
 
 $(STATEDIR)/directfb_examples.install: $(STATEDIR)/directfb_examples.compile
 	@$(call targetinfo, $@)
-	install -d $(INSTALLPATH)/include
 	cd $(DIRECTFB_EXAMPLES_DIR) && \
-        $(CROSS_ENV) \
-        $(DIRECTFB_EXAMPLES_PATH) make install
+        DESTDIR=$(INSTALLPATH) \
+        make install
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -117,6 +115,9 @@ directfb_examples_targetinstall: $(STATEDIR)/directfb_examples.targetinstall
 
 $(STATEDIR)/directfb_examples.targetinstall: $(STATEDIR)/directfb_examples.install
 	@$(call targetinfo, $@)
+	cd $(DIRECTFB_EXAMPLES_DIR) && \
+        DESTDIR=$(ROOTDIR) \
+        make install
 	touch $@
 
 # ----------------------------------------------------------------------------
