@@ -21,6 +21,7 @@ $(MMCDIR): $(STATEDIR)/initrd.built
 	@rm -rf $(MMCDIR)
 	@mkdir -p $(MMCDIR)
 	@cp -rfv $(INITRD_DIR)/* $(MMCDIR)
+	@cp -fv $(INITRD_DIR)/.profile $(MMCDIR)
 	@rm -f $(STARTSCRIPT)
 	@mkdir -p $(MMCDIR)/usr/sbin
 
