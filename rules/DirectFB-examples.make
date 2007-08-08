@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB-examples.make,v 1.2 2007-07-27 22:10:28 ericn Exp $
+# $Id: DirectFB-examples.make,v 1.3 2007-08-08 21:22:51 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -59,7 +59,8 @@ directfb_examples_prepare_deps = \
 	$(STATEDIR)/directfb_examples.extract
 
 DIRECTFB_EXAMPLES_PATH	=  PATH=$(CROSS_PATH)
-DIRECTFB_EXAMPLES_AUTOCONF = --host=$(CONFIG_GNU_TARGET)
+DIRECTFB_EXAMPLES_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+                             --datarootdir=/usr/local/share/directfb-examples
 
 CONFIG_DIRECTFB_EXAMPLES_SHARED = 1
 ifdef CONFIG_DIRECTFB_EXAMPLES_SHARED
