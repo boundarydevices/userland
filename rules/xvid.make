@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xvid.make,v 1.2 2007-01-30 00:12:37 ericn Exp $
+# $Id: xvid.make,v 1.3 2007-08-09 18:49:27 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -118,7 +118,7 @@ xvid_install: $(STATEDIR)/xvid.install
 
 $(STATEDIR)/xvid.install: $(STATEDIR)/xvid.compile
 	@$(call targetinfo, $@)
-	$(XVID_PATH) make -C $(XVID_DIR) install
+	$(XVID_PATH) make -C $(XVID_DIR)/build/generic install
 	touch $@
 
 # ----------------------------------------------------------------------------
