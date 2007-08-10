@@ -155,6 +155,9 @@ ifdef CONFIG_DIRECTFB
         DIRECTFBRC=$(INITRD_DIR)/etc/directfbrc
 endif
 
+$(INITRD_DIR)/etc/alsa.conf: $(INITRD_DIR)
+	cp -fv $(TOPDIR)/alsa.conf $@
+
 $(INITRD_START): $(INITRCSFILE) $(INITRD_DIR)
 	mkdir -p $(INITRD_DIR)/etc/init.d
 	cp -fv $< $@
@@ -166,6 +169,7 @@ $(STATEDIR)/initrd.built: $(INITRD_DIR) \
                           $(INITRD_DIR)/bin/flashVar \
                           $(INITRD_DIR)/bin/dhcp \
                           $(INITRD_DIR)/lib/firmware \
+                          $(INITRD_DIR)/etc/alsa.conf \
                           $(INITRD_START) \
                           $(DIRECTFBRC) \
                           rootfs \
