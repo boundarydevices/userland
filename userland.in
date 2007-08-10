@@ -157,3 +157,5 @@ source "rules/tslib.in"
 source "rules/module-init-tools.in"
 source "rules/wpa_supplicant.in"
 source "rules/DirectFB-examples.in"
+source "rules/mplayer.in"
+
