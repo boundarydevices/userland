@@ -91,6 +91,14 @@ choice
       bool
       prompt "Halogen"
 
+      config ARGON
+      bool
+      prompt "Argon"
+
+      config NEON270
+      bool
+      prompt "Neon-270"
+
 endchoice
 
 source "rules/udev.in"
