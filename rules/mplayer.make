@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.1 2007-08-10 00:16:21 ericn Exp $
+# $Id: mplayer.make,v 1.2 2007-08-10 18:55:06 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -38,7 +38,8 @@ MPLAYER_PATCH_FILES=Makefile.patch \
         powerpc-is-ppc.diff \
         pxa_configure.patch \
         pxa-video_out.patch \
-	mplayer_noopt.diff
+	mplayer_noopt.diff \
+        vo_sm501.diff
 
 # ----------------------------------------------------------------------------
 # Get
@@ -96,11 +97,13 @@ MPLAYER_AUTOCONF = \
         --prefix=$(INSTALLPATH) \
         --enable-cross-compile \
         --cc=arm-linux-gcc \
-        --with-extraincdir="$(INSTALLPATH)/include -I$(INSTALLPATH)/include/directfb" \
+        --with-extraincdir="$(INSTALLPATH)/include -I$(INSTALLPATH)/include/directfb -I$(CONFIG_KERNELPATH)/include" \
         --with-extralibdir=$(INSTALLPATH)/lib \
         --host-cc=gcc \
         --target=arm-linux \
         --as=arm-linux-as \
+        --enable-sm501_bd \
+        --enable-fbdev \
 	--disable-gui \
 	--disable-linux-devfs \
 	--disable-lirc \
@@ -190,7 +193,7 @@ MPLAYER_AUTOCONF = \
         --disable-sunaudio \
         --disable-win32waveout \
         --disable-runtime-cpudetection \
-                        --disable-tga
+        --disable-tga
 
 $(STATEDIR)/mplayer.prepare: $(mplayer_prepare_deps)
 	@$(call targetinfo, $@)
@@ -231,8 +234,8 @@ mplayer_targetinstall: $(STATEDIR)/mplayer.targetinstall
 
 $(STATEDIR)/mplayer.targetinstall: $(STATEDIR)/mplayer.install
 	@$(call targetinfo, $@)
-	@mkdir -p $(ROOTDIR)/sbin
-	cp -fv $(INSTALLPATH)/sbin/mplayer $(ROOTDIR)/sbin && $(CROSSSTRIP) $(ROOTDIR)/sbin/mplayer
+	@mkdir -p $(ROOTDIR)/bin
+	cp -fv $(INSTALLPATH)/bin/mplayer $(ROOTDIR)/bin && $(CROSSSTRIP) $(ROOTDIR)/bin/mplayer
 	touch $@
 
 # ----------------------------------------------------------------------------
