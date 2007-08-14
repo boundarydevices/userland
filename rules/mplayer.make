@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.2 2007-08-10 18:55:06 ericn Exp $
+# $Id: mplayer.make,v 1.3 2007-08-14 15:41:45 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -22,7 +22,7 @@ MPLAYER	        = MPlayer-1.0rc1
 MPLAYER_URL 	= http://www3.mplayerhq.hu/MPlayer/releases/$(MPLAYER).tar.bz2
 MPLAYER_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(MPLAYER).tar.bz2
 MPLAYER_DIR	= $(BUILDDIR)/$(MPLAYER)
-MPLAYER_PATCHES = mplayer_patches_20070809.tar.gz
+MPLAYER_PATCHES = mplayer_patches_20070813.tar.gz
 MPLAYER_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/$(MPLAYER_PATCHES)
 MPLAYER_PATCH_URL = http://boundarydevices.com/archives/$(MPLAYER_PATCHES)
 
@@ -94,7 +94,6 @@ mplayer_prepare_deps = \
 
 MPLAYER_PATH            = PATH=$(CROSS_PATH)
 MPLAYER_AUTOCONF = \
-        --prefix=$(INSTALLPATH) \
         --enable-cross-compile \
         --cc=arm-linux-gcc \
         --with-extraincdir="$(INSTALLPATH)/include -I$(INSTALLPATH)/include/directfb -I$(CONFIG_KERNELPATH)/include" \
@@ -223,7 +222,7 @@ mplayer_install: $(STATEDIR)/mplayer.install
 $(STATEDIR)/mplayer.install: $(STATEDIR)/mplayer.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
-	cd $(MPLAYER_DIR) && $(MPLAYER_PATH) make install
+	cd $(MPLAYER_DIR) && DESTDIR=$(INSTALLPATH) make install
 	touch $@
 
 # ----------------------------------------------------------------------------

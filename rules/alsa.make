@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: alsa.make,v 1.4 2007-05-11 19:26:12 ericn Exp $
+# $Id: alsa.make,v 1.5 2007-08-14 15:41:45 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -62,14 +62,10 @@ ALSA_PATH = PATH=$(CROSS_PATH)
 
 ALSA_AUTOCONF = \
 	--host=$(CONFIG_GNU_TARGET) \
-	--prefix=$(INSTALLPATH) \
    --enable-shared=yes \
    --enable-static=yes \
    --disable-sdl \
-   --exec-prefix=$(INSTALLPATH) \
-   --includedir=$(INSTALLPATH)/include \
-   --mandir=$(INSTALLPATH)/man \
-   --infodir=$(INSTALLPATH)/info
+   --includedir=$(INSTALLPATH)/include
 
 $(STATEDIR)/alsa.prepare: $(alsa_prepare_deps)
 	@$(call targetinfo, $@)
@@ -100,7 +96,7 @@ alsa_install: $(STATEDIR)/alsa.install
 $(STATEDIR)/alsa.install: $(STATEDIR)/alsa.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
-	cd $(ALSA_DIR) && $(ALSA_PATH) make install
+	cd $(ALSA_DIR) && $(ALSA_PATH) && DESTDIR=$(INSTALLPATH) make install
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -111,6 +107,8 @@ alsa_targetinstall: $(STATEDIR)/alsa.targetinstall
 
 $(STATEDIR)/alsa.targetinstall: $(STATEDIR)/alsa.install
 	@$(call targetinfo, $@)
+	install -d $(INSTALLPATH)/include
+	cd $(ALSA_DIR) && $(ALSA_PATH) && DESTDIR=$(ROOTDIR) make install-strip
 	touch $@
 
 # ----------------------------------------------------------------------------
