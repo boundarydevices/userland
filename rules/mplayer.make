@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.4 2007-08-14 22:18:16 ericn Exp $
+# $Id: mplayer.make,v 1.5 2007-08-19 15:34:59 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -22,41 +22,36 @@ MPLAYER	        = MPlayer-1.0rc1
 MPLAYER_URL 	= http://www3.mplayerhq.hu/MPlayer/releases/$(MPLAYER).tar.bz2
 MPLAYER_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(MPLAYER).tar.bz2
 MPLAYER_DIR	= $(BUILDDIR)/$(MPLAYER)
-MPLAYER_PATCHES = mplayer_patches_20070813.tar.gz
+MPLAYER_PATCH_DATE = 20070819
+MPLAYER_PATCHES = $(MPLAYER)-patches-$(MPLAYER_PATCH_DATE).tar.bz2
 MPLAYER_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/$(MPLAYER_PATCHES)
-MPLAYER_PATCH_URL = http://boundarydevices.com/archives/$(MPLAYER_PATCHES)
+MPLAYER_PATCH_URL = http://boundarydevices.com/$(MPLAYER_PATCHES)
 
-MPLAYER_PATCH_FILES=Makefile.patch \
-        w100-configure.patch \
-        w100-Makefile.patch \
-        w100-video_out.patch \
-        w100-mplayer.patch \
-        pld-onlyarm5.patch \
-        makefile-nostrip.patch \
-        mplayer-imageon-svn.patch \
-        imageon-video_out.patch \
-        powerpc-is-ppc.diff \
-        pxa_configure.patch \
-        pxa-video_out.patch \
-	mplayer_noopt.diff \
-        vo_sm501.diff
+MPLAYER_PATCH_FILES=$(MPLAYER)-oe.patch \
+        $(MPLAYER)-boundary-$(MPLAYER_PATCH_DATE).patch
 
 # ----------------------------------------------------------------------------
 # Get
 # ----------------------------------------------------------------------------
 mplayer_get: $(STATEDIR)/mplayer.get
 
-$(STATEDIR)/mplayer.get: $(MPLAYER_SOURCE) $(MPLAYER_PATCH_SOURCE)
-	@$(call targetinfo, $@)
-	touch $@
-
-$(MPLAYER_SOURCE):
-	@$(call targetinfo, $@)
-	@cd $(CONFIG_ARCHIVEPATH) && wget $(MPLAYER_URL)
-
-$(MPLAYER_PATCH_SOURCE):
-	@$(call targetinfo, $@)
-	@cd $(CONFIG_ARCHIVEPATH) && wget $(MPLAYER_PATCH_URL)
+ifneq (y, $(CONFIG_MPLAYER_GIT))
+        $(STATEDIR)/mplayer.get: $(MPLAYER_SOURCE) $(MPLAYER_PATCH_SOURCE)
+		@$(call targetinfo, $@)
+		touch $@
+        
+        $(MPLAYER_SOURCE):
+		@$(call targetinfo, $@)
+		@cd $(CONFIG_ARCHIVEPATH) && wget $(MPLAYER_URL)
+        
+        $(MPLAYER_PATCH_SOURCE):
+		@$(call targetinfo, $@)
+		@cd $(CONFIG_ARCHIVEPATH) && wget $(MPLAYER_PATCH_URL)
+else
+        $(STATEDIR)/mplayer.get:
+		@$(call targetinfo, $@)
+		touch $@
+endif
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -64,20 +59,28 @@ $(MPLAYER_PATCH_SOURCE):
 
 mplayer_extract: $(STATEDIR)/mplayer.extract
 
-$(STATEDIR)/mplayer.extract: $(STATEDIR)/mplayer.get
-	@$(call targetinfo, $@)
-	@$(call clean, $(MPLAYER_DIR))
-	@cd $(BUILDDIR) && bzcat $(MPLAYER_SOURCE) | tar -xvf -
-	sed -i 's|/usr/include|$(INSTALLPATH)/include|g' $(MPLAYER_DIR)/configure
-	sed -i 's|/usr/lib|$(INSTALLPATH)/lib|g' $(MPLAYER_DIR)/configure
-	sed -i 's|/usr/\S*include[\w/]*||g' $(MPLAYER_DIR)/configure
-	sed -i 's|/usr/\S*lib[\w/]*||g' $(MPLAYER_DIR)/configure
-	cd $(MPLAYER_DIR) && tar zxvf $(MPLAYER_PATCH_SOURCE)
-	for f in $(MPLAYER_PATCH_FILES); do \
-		echo "patchfile $$f" ; \
-		cd $(MPLAYER_DIR) && patch -p1 < $$f ; \
-	done
-	touch $@
+ifneq (y, $(CONFIG_MPLAYER_GIT))
+        $(STATEDIR)/mplayer.extract: $(STATEDIR)/mplayer.get
+		@$(call targetinfo, $@)
+		@$(call clean, $(MPLAYER_DIR))
+		@cd $(BUILDDIR) && bzcat $(MPLAYER_SOURCE) | tar -xvf -
+		sed -i 's|/usr/include|$(INSTALLPATH)/include|g' $(MPLAYER_DIR)/configure
+		sed -i 's|/usr/lib|$(INSTALLPATH)/lib|g' $(MPLAYER_DIR)/configure
+		sed -i 's|/usr/\S*include[\w/]*||g' $(MPLAYER_DIR)/configure
+		sed -i 's|/usr/\S*lib[\w/]*||g' $(MPLAYER_DIR)/configure
+		cd $(MPLAYER_DIR) && tar jxvf $(MPLAYER_PATCH_SOURCE)
+		for f in $(MPLAYER_PATCH_FILES); do \
+			echo "patchfile $$f" ; \
+			cd $(MPLAYER_DIR) && patch -p1 < $$f ; \
+		done
+		touch $@
+else
+        $(STATEDIR)/mplayer.extract:
+		@$(call targetinfo, $@)
+		@$(call clean, $(MPLAYER_DIR))
+		rm -rf $(MPLAYER_DIR)
+		@cd $(BUILDDIR) && git-clone office:/repository/$(MPLAYER)
+endif
 
 # ----------------------------------------------------------------------------
 # Prepare
@@ -222,7 +225,7 @@ mplayer_install: $(STATEDIR)/mplayer.install
 $(STATEDIR)/mplayer.install: $(STATEDIR)/mplayer.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
-	cd $(MPLAYER_DIR) && DESTDIR=$(INSTALLPATH) make install
+	cd $(MPLAYER_DIR) && make DESTDIR=$(INSTALLPATH) install
 	touch $@
 
 # ----------------------------------------------------------------------------

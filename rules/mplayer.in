@@ -2,3 +2,12 @@ config MPLAYER
 	bool
    default n
 	prompt "Compile mplayer"
+
+config MPLAYER_GIT
+	bool
+	prompt "MPlayer from GIT repository"
+	default n
+	requires MPLAYER
+	help 
+	Use this to access the latest from Boundary Devices
+
