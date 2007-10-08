@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pixman.make,v 1.6 2005-11-23 14:49:43 ericn Exp $
+# $Id: pixman.make,v 1.7 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -59,7 +59,7 @@ pixman_prepare_deps = \
 	$(STATEDIR)/pixman.extract
 
 PIXMAN_PATH	=  PATH=$(CROSS_PATH)
-PIXMAN_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+PIXMAN_AUTOCONF = --host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH)
 
 ifdef CONFIG_PIXMAN_SHARED

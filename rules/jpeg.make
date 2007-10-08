@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: jpeg.make,v 1.6 2005-11-06 17:52:34 ericn Exp $
+# $Id: jpeg.make,v 1.7 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2004 by Boundary Devices
 #          
@@ -70,7 +70,7 @@ JPEG_prepare_deps = \
 JPEG_PATH	=  PATH=$(CROSS_PATH)
 JPEG_AUTOCONF 	=  --enable-shared
 JPEG_AUTOCONF 	+= --prefix=$(INSTALLPATH)
-JPEG_AUTOCONF	+= --host=$(CONFIG_GNU_TARGET)
+JPEG_AUTOCONF	+= --host=$(CONFIG_GNU_HOST)
 JPEG_AUTOCONF	+= --target=$(CONFIG_GNU_TARGET)
 JPEG_AUTOCONF	+= --exec-prefix=$(INSTALLPATH) \
                   --includedir=$(INSTALLPATH)/include \

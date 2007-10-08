@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gtk.make,v 1.1 2006-07-30 15:07:58 ericn Exp $
+# $Id: gtk.make,v 1.2 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ gtk_prepare_deps = \
    $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config
 
 GTK_PATH	   =  PATH=$(CROSS_PATH)
-GTK_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+GTK_AUTOCONF = --host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
    --without-libtiff \
    --with-jpeg=$(INSTALLPATH) \

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: DirectFB.make,v 1.8 2007-07-27 22:10:48 ericn Exp $
+# $Id: DirectFB.make,v 1.9 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ directfb_prepare_deps = \
 	$(STATEDIR)/directfb.extract
 
 DIRECTFB_PATH	=  PATH=$(CROSS_PATH)
-DIRECTFB_AUTOCONF = --host=$(CONFIG_GNU_TARGET)
+DIRECTFB_AUTOCONF = --host=$(CONFIG_GNU_HOST)
 
 CONFIG_DIRECTFB_SHARED = 1
 ifdef CONFIG_DIRECTFB_SHARED

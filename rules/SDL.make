@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: SDL.make,v 1.5 2005-12-01 05:16:21 ericn Exp $
+# $Id: SDL.make,v 1.6 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -59,7 +59,7 @@ sdl_prepare_deps = \
 	$(STATEDIR)/sdl.extract
 
 SDL_PATH	=  PATH=$(CROSS_PATH)
-SDL_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+SDL_AUTOCONF = --host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH)
 
 CONFIG_SDL_SHARED=1 

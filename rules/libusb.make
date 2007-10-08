@@ -1,6 +1,6 @@
 
 # -*-makefile-*-
-# $Id: libusb.make,v 1.4 2006-03-26 14:49:35 ericn Exp $
+# $Id: libusb.make,v 1.5 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -83,7 +83,7 @@ LIBUSB_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 LIBUSB_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(CROSS_LIB_DIR) \
    --enable-shared=no \
    --enable-static=yes \

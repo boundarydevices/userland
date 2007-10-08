@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: tslib.make,v 1.2 2007-07-08 20:23:47 ericn Exp $
+# $Id: tslib.make,v 1.3 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -60,7 +60,7 @@ tslib_prepare_deps = \
 
 TSLIB_PATH	=  PATH=$(CROSS_PATH)
 TSLIB_AUTOCONF 	= --prefix=$(INSTALLPATH) \
-                  --host=$(CONFIG_GNU_TARGET)
+                  --host=$(CONFIG_GNU_HOST)
 TSLIB_INCLDIRS = $(subst ",,-I$(INSTALLPATH)/include -I$(CONFIG_TOOLCHAINPATH)$(CONFIG_CROSSPREFIX)/include)
 TSLIB_ENV += CFLAGS='$(CFLAGS) $(TSLIB_INCLDIRS) ' ac_cv_func_malloc_0_nonnull=yes
 TSLIB_LIBDIRS = $(subst ",,-L$(CONFIG_TOOLCHAINPATH)$(CONFIG_CROSSPREFIX)/lib -L$(INSTALLPATH)/lib)

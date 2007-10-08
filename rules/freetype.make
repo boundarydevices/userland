@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: freetype.make,v 1.3 2005-11-23 14:49:43 ericn Exp $
+# $Id: freetype.make,v 1.4 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -76,7 +76,7 @@ FREETYPE_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 FREETYPE_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(CROSS_LIB_DIR) \
    --enable-shared=no \
    --enable-static=yes \

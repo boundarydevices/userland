@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: pango.make,v 1.7 2006-07-26 22:49:31 ericn Exp $
+# $Id: pango.make,v 1.8 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -60,7 +60,7 @@ pango_prepare_deps = \
    $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config
 
 PANGO_PATH	   =  PATH=$(CROSS_PATH):$(INSTALLPATH)/bin
-PANGO_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+PANGO_AUTOCONF = --host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
    --without-libtiff \
    --disable-modules \

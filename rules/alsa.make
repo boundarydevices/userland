@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: alsa.make,v 1.5 2007-08-14 15:41:45 ericn Exp $
+# $Id: alsa.make,v 1.6 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ alsa_prepare_deps = \
 ALSA_PATH = PATH=$(CROSS_PATH)
 
 ALSA_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
    --enable-shared=yes \
    --enable-static=yes \
    --disable-sdl \

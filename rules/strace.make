@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: strace.make,v 1.2 2007-07-03 22:15:01 ericn Exp $
+# $Id: strace.make,v 1.3 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ strace_prepare_deps = \
 STRACE_PATH = PATH=$(CROSS_PATH)
 
 STRACE_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
    --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.13 2005-12-03 03:30:20 ericn Exp $
+# $Id: mad.make,v 1.14 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -100,7 +100,7 @@ MAD_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 MAD_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
 	--enable-shared=no \
    --exec-prefix=$(INSTALLPATH) \

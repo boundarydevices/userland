@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libungif.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
+# $Id: libungif.make,v 1.3 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -77,7 +77,7 @@ LIBUNGIF_ENV 	=  $(CROSS_ENV)
 #
 LIBUNGIF_AUTOCONF = \
 	--build=$(GNU_HOST) \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(CROSS_LIB_DIR) \
    --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \

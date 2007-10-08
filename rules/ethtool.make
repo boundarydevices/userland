@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: ethtool.make,v 1.1 2006-09-17 02:32:19 ericn Exp $
+# $Id: ethtool.make,v 1.2 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -60,7 +60,7 @@ ethtool_prepare_deps = \
 
 ETHTOOL_PATH	=  PATH=$(CROSS_PATH)
 ETHTOOL_AUTOCONF 	= --prefix=$(INSTALLPATH) \
-                    --host=$(CONFIG_GNU_TARGET)
+                    --host=$(CONFIG_GNU_HOST)
 
 $(STATEDIR)/ethtool.prepare: $(ethtool_prepare_deps)
 	@$(call targetinfo, $@)

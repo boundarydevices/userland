@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: ogg.make,v 1.1 2006-07-30 15:07:24 ericn Exp $
+# $Id: ogg.make,v 1.2 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -77,7 +77,7 @@ OGG_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 OGG_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(CROSS_LIB_DIR) \
    --enable-shared=no \
    --enable-static=yes \

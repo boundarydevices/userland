@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: ncurses.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
+# $Id: ncurses.make,v 1.3 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -73,7 +73,7 @@ NCURSES_ENV 	= $(CROSS_ENV)
 
 NCURSES_AUTOCONF =  $(CROSS_AUTOCONF)
 NCURSES_AUTOCONF += \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
 	--exec-prefix=$(INSTALLPATH) \
 	--sysconfdir=$(INSTALLPATH)/etc \

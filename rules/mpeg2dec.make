@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mpeg2dec.make,v 1.8 2007-07-08 18:44:30 ericn Exp $
+# $Id: mpeg2dec.make,v 1.9 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -102,7 +102,7 @@ MPEG2DEC_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 MPEG2DEC_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(CROSS_LIB_DIR) \
    --enable-shared=no \
    --enable-static=yes \
@@ -117,7 +117,7 @@ $(STATEDIR)/mpeg2dec.prepare: $(mpeg2dec_prepare_deps)
 	cd $(MPEG2DEC_DIR) && ./bootstrap
 	@$(call clean, $(MPEG2DEC_DIR)/config.cache)
 	cd $(MPEG2DEC_DIR) && \
-		$(MPEG2DEC_PATH) $(MPEG2DEC_ENV) ARCH_ARM=1 \
+		$(MPEG2DEC_PATH) $(MPEG2DEC_ENV) \
 		./configure $(MPEG2DEC_AUTOCONF)
 	touch $@
 

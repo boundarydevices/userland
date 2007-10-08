@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glib.make,v 1.8 2006-06-22 13:49:59 ericn Exp $
+# $Id: glib.make,v 1.9 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -64,7 +64,7 @@ glib_prepare_deps = \
 	$(STATEDIR)/glib.extract
 
 GLIB_PATH	  =  PATH=$(CROSS_PATH)
-GLIB_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+GLIB_AUTOCONF = --host=$(CONFIG_GNU_HOST) \
                 --prefix=$(INSTALLPATH) \
                 --cache-file=$(GLIB_DIR)/$(CONFIG_GNU_TARGET).cache
 

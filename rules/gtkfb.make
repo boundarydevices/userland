@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gtkfb.make,v 1.3 2005-12-04 21:14:31 ericn Exp $
+# $Id: gtkfb.make,v 1.4 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ gtkfb_prepare_deps = \
    $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config
 
 GTKFB_PATH	   =  PATH=$(CROSS_PATH)
-GTKFB_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+GTKFB_AUTOCONF = --host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
    --without-libtiff \
    --with-gdktarget=linux-fb  \

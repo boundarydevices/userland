@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gdb.make,v 1.4 2007-05-11 19:25:23 ericn Exp $
+# $Id: gdb.make,v 1.5 2007-10-08 21:07:21 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -70,7 +70,7 @@ GDB_TARGET_CONFIGURE_VARS:= \
 
 gdb_PATH	=  PATH=$(CROSS_PATH)
 gdb_AUTOCONF 	= \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--target=$(CONFIG_GNU_TARGET) \
 	--prefix=$(INSTALLPATH) \
    --exec-prefix=$(INSTALLPATH) \
@@ -91,7 +91,7 @@ gdb_AUTOCONF 	= \
 	--without-included-gettext
       
 gdbserver_AUTOCONF 	= \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
    --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \

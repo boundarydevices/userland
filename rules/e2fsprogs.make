@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: e2fsprogs.make,v 1.4 2005-11-23 14:49:43 ericn Exp $
+# $Id: e2fsprogs.make,v 1.5 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -64,7 +64,7 @@ e2fsprogs_prepare: $(STATEDIR)/e2fsprogs.prepare
 
 E2FSPROGS_AUTOCONF	=  --prefix=/usr
 E2FSPROGS_AUTOCONF	+= --enable-fsck
-E2FSPROGS_AUTOCONF	+= --host=$(CONFIG_GNU_TARGET)
+E2FSPROGS_AUTOCONF	+= --host=$(CONFIG_GNU_HOST)
 E2FSPROGS_AUTOCONF	+= --with-cc=$(CONFIG_GNU_TARGET)-gcc
 E2FSPROGS_AUTOCONF	+= --with-ccopts=-msoft-float
 E2FSPROGS_AUTOCONF	+= --with-linker=$(CONFIG_GNU_TARGET)-ld

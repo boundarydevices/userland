@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: jack.make,v 1.2 2005-11-23 14:49:43 ericn Exp $
+# $Id: jack.make,v 1.3 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ jack_prepare_deps = \
 JACK_PATH = PATH=$(CROSS_PATH)
 
 JACK_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
 	--enable-shared=no \
    --exec-prefix=$(INSTALLPATH) \

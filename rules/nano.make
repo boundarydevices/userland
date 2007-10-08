@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: nano.make,v 1.1 2007-01-30 00:13:33 ericn Exp $
+# $Id: nano.make,v 1.2 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ nano_prepare_deps = \
 NANO_PATH = PATH=$(CROSS_PATH)
 
 NANO_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
    --enable-shared=yes \
    --enable-static=yes \

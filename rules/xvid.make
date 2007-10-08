@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xvid.make,v 1.3 2007-08-09 18:49:27 ericn Exp $
+# $Id: xvid.make,v 1.4 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -78,7 +78,7 @@ XVID_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 XVID_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(CROSS_LIB_DIR) \
    --enable-shared=no \
    --enable-static=yes \

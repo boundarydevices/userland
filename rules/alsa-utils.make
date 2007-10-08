@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: alsa-utils.make,v 1.2 2007-08-14 15:41:45 ericn Exp $
+# $Id: alsa-utils.make,v 1.3 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ alsa-utils_prepare_deps = \
 ALSA_UTILS_PATH = PATH=$(CROSS_PATH)
 
 ALSA_UTILS_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
    --disable-sdl \
    --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \

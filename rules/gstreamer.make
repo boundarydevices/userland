@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gstreamer.make,v 1.3 2007-05-11 19:24:48 ericn Exp $
+# $Id: gstreamer.make,v 1.4 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -59,7 +59,7 @@ gstreamer_prepare_deps = \
 	$(STATEDIR)/gstreamer.extract
 
 GSTREAMER_PATH	  =  PATH=$(CROSS_PATH)
-GSTREAMER_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+GSTREAMER_AUTOCONF = --host=$(CONFIG_GNU_HOST) \
                 --prefix=$(INSTALLPATH) \
                 --without-libxml2 \
                 --cache-file=$(GSTREAMER_DIR)/$(CONFIG_GNU_TARGET).cache

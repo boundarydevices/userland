@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: cairo.make,v 1.8 2007-07-26 04:14:06 ericn Exp $
+# $Id: cairo.make,v 1.9 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -60,7 +60,7 @@ cairo_prepare_deps = \
    $(TOPDIR)/$(CONFIG_GNU_TARGET)-pkg-config
 
 CAIRO_PATH	=  PATH=$(CROSS_PATH)
-CAIRO_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+CAIRO_AUTOCONF = --host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH)
 
 CONFIG_CAIRO_SHARED = 1

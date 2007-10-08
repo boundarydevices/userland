@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: udhcp.make,v 1.7 2006-06-24 23:09:24 tkisky Exp $
+# $Id: udhcp.make,v 1.8 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -85,7 +85,7 @@ UDHCP_ENV	+= CROSS_COMPILE=$(CONFIG_CROSSPREFIX)-
 #
 UDHCP_AUTOCONF = \
 	--build=$(GNU_HOST) \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(CROSS_LIB_DIR)
 
 $(STATEDIR)/udhcp.prepare: $(udhcp_prepare_deps)

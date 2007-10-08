@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: expat.make,v 1.4 2005-12-04 17:22:42 ericn Exp $
+# $Id: expat.make,v 1.5 2007-10-08 21:06:10 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -59,7 +59,7 @@ expat_prepare_deps = \
 	$(STATEDIR)/expat.extract
 
 EXPAT_PATH	=  PATH=$(CROSS_PATH)
-EXPAT_AUTOCONF = --host=$(CONFIG_GNU_TARGET) \
+EXPAT_AUTOCONF = --host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH)
 
 ifdef CONFIG_EXPAT_SHARED
