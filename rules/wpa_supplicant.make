@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: wpa_supplicant.make,v 1.4 2007-07-20 23:56:37 ericn Exp $
+# $Id: wpa_supplicant.make,v 1.5 2007-10-08 21:08:08 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -56,7 +56,7 @@ $(STATEDIR)/wpa_supplicant.extract: $(STATEDIR)/wpa_supplicant.get $(WPA_SUPPLIC
 	@$(call clean, $(WPA_SUPPLICANT_DIR))
 	@cd $(BUILDDIR) && zcat $(WPA_SUPPLICANT_SOURCE) | tar -xvf -
 	@cd $(WPA_SUPPLICANT_DIR) && cp -fv $(WPA_SUPPLICANT_CONFIG) .config
-	@$(ECHO) -e "\nCC=arm-linux-gcc" >> $(WPA_SUPPLICANT_DIR)/.config
+	@$(ECHO) -e "\nCC=$(CONFIG_CROSSPREFIX)-gcc" >> $(WPA_SUPPLICANT_DIR)/.config
 	@$(ECHO) -e CFLAGS += -Os -I$(INSTALLPATH)/include/openssl -I$(INSTALLPATH)/include >> $(WPA_SUPPLICANT_DIR)/.config
 	@$(ECHO) -e LIBS += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
 	@$(ECHO) -e LIBS_p += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
