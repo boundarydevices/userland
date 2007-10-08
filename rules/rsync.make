@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: rsync.make,v 1.1 2006-02-02 16:29:38 ericn Exp $
+# $Id: rsync.make,v 1.2 2007-10-08 21:08:32 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -58,22 +58,11 @@ rsync_prepare: $(STATEDIR)/rsync.prepare
 rsync_prepare_deps = \
 	$(STATEDIR)/rsync.extract
 
-RSYNC_ENV	= \
-	$(CROSS_ENV_AR) \
-	$(CORSS_ENV_AS) \
-	$(CROSS_ENV_CXX) \
-	$(CROSS_ENV_CC) \
-	$(CROSS_ENV_NM) \
-	$(CROSS_ENV_OBJCOPY) \
-	$(CROSS_ENV_RANLIB) \
-	$(CROSS_ENV_STRIP) \
-	LD=$(CONFIG_GNU_TARGET)-gcc
-
 #
 # autoconf
 #
 RSYNC_AUTOCONF = \
-	--host=$(CONFIG_GNU_TARGET) \
+	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(INSTALLPATH) \
 	--libexecdir=/usr/sbin \
 	--sysconfdir=/etc/ssh \
@@ -91,7 +80,7 @@ $(STATEDIR)/rsync.prepare: $(rsync_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(RSYNC_DIR) && \
 		$(RSYNC_ENV ) \
-		./configure $(RSYNC_AUTOCONF)
+		$(CROSS_ENV) ./configure $(RSYNC_AUTOCONF)
 	touch $@
 
 # ----------------------------------------------------------------------------
