@@ -6,7 +6,10 @@
 # 
 # History:
 # $Log: Makefile,v $
-# Revision 1.23  2007-07-27 21:45:54  ericn
+# Revision 1.24  2007-10-09 00:51:50  ericn
+# -Allow overrides of CROSS_LIB_DIR and CONFIG_GNU_HOST
+#
+# Revision 1.23  2007/07/27 21:45:54  ericn
 # -make sure ROOTDIR is built in targetinstall
 #
 # Revision 1.22  2006/06/22 13:49:28  ericn
@@ -67,12 +70,25 @@
 #
 .PHONY: clean dist-clean config menuconfig userlandconfig userland rootfs
 
-TOPDIR			   := $(shell pwd)
+-include .config 
+
+TOPDIR		              := $(shell pwd)
 BASENAME		      := $(shell basename $(TOPDIR))
 BUILDDIR		      := $(TOPDIR)/build
 STATEDIR		      := $(TOPDIR)/state
+
+ifndef CONFIG_GNU_TARGET
+        CONFIG_GNU_TARGET := $(CONFIG_CROSSPREFIX)
+endif
+
 CONFIG_GNU_TARGET ?= arm-linux
-GNU_HOST          := $(CONFIG_GNU_TARGET)
+
+ifeq (,$(findstring linux,$(CONFIG_GNU_TARGET)))
+        CONFIG_GNU_HOST := arm-linux
+else
+        CONFIG_GNU_HOST := $(CONFIG_GNU_TARGET)
+endif
+
 DEP_OUTPUT = depend.out
 WGET := wget
 HOSTCC := gcc
@@ -128,8 +144,6 @@ CROSS_ENV := \
 
 export TAR TOPDIR BUILDDIR SRCDIR STATEDIR PACKAGES CONFIG_GNU_TARGET 
 
--include .config 
-
 INSTALLPATH=$(subst ",,$(CONFIG_INSTALLPATH))
 ifeq ("", $(CONFIG_INSTALLPATH))
    INSTALLPATH=$(TOPDIR)/install
@@ -157,7 +171,10 @@ $(ROOTDIR)/etc:
 CONFIG_KERNELPATH := $(subst ",,$(CONFIG_KERNELPATH))
 CONFIG_ARCH :=$(subst ",,$(CONFIG_ARCH))
 CONFIG_TOOLCHAINPATH := $(subst ",,$(CONFIG_TOOLCHAINPATH))
-CROSS_LIB_DIR := $(subst ",,$(CONFIG_TOOLCHAINPATH)/$(CONFIG_GNU_TARGET))
+
+ifndef CROSS_LIB_DIR
+        CROSS_LIB_DIR := $(subst ",,$(CONFIG_TOOLCHAINPATH)/$(CONFIG_GNU_TARGET))
+endif
 
 export ROOTDIR INSTALLPATH CONFIG_ARCH CONFIG_KERNELPATH CONFIG_TOOLCHAINPATH CROSS_LIB_DIR
 
