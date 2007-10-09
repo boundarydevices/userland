@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glibc.make,v 1.7 2007-10-09 00:52:26 ericn Exp $
+# $Id: glibc.make,v 1.8 2007-10-09 00:56:51 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -11,7 +11,7 @@
 
 GLIBC_VER=2.3.3
 STDCPP_PATH=usr/lib
-LD_LINUX=ld-linux.so.3
+LD_LINUX=ld-linux.so.2
 
 $(ROOTDIR)/lib/ld-$(GLIBC_VER).so: $(CROSS_LIB_DIR)/lib/ld-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
