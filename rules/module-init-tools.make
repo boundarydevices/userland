@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: module-init-tools.make,v 1.2 2007-10-08 21:06:10 ericn Exp $
+# $Id: module-init-tools.make,v 1.3 2007-10-09 00:53:15 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ module_init_tools_prepare_deps = \
 $(STATEDIR)/module_init_tools.prepare: $(module_init_tools_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(MODULE_INIT_TOOLS_DIR) && \
-		$(CROSS_ENV) ./configure --target=$(CONFIG_GNU_HOST) --host=$(CONFIG_GNU_HOST)
+		./configure --target=$(CONFIG_GNU_HOST) --host=$(CONFIG_GNU_HOST)
 	touch $@
 
 # ----------------------------------------------------------------------------
