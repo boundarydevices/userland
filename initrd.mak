@@ -60,6 +60,7 @@ $(INITRD_DIR): $(MODULES_DEP)
 	@cd $(CROSS_LIB_LINK) && ln -sf /lib
 	@cd $(CROSS_LIB_LINK) && ln -sf /bin
 	mkdir $(INITRD_DIR)/lib64 && mkdir $(INITRD_DIR)/usr/lib64
+	$(CROSSSTRIP) $(INITRD_DIR)/lib/*
 	cd $(INITRD_DIR)/etc && /sbin/ldconfig -r ../ -v
 	@touch $@
 
@@ -163,10 +164,16 @@ $(INITRD_START): $(INITRCSFILE) $(INITRD_DIR)
 	cp -fv $< $@
 	chmod a+x $@
 
+ifdef CONFIG_BDSCRIPT
+        BDSCRIPT_INSTALLED=$(INITRD_DIR)/bin/flashVar
+else
+        BDSCRIPT_INSTALLED=
+endif
+
 $(STATEDIR)/initrd.built: $(INITRD_DIR) \
                           targetinstall \
                           $(INITRD_DIR)/bin/busybox \
-                          $(INITRD_DIR)/bin/flashVar \
+                          $(BDSCRIPT_INSTALLED) \
                           $(INITRD_DIR)/bin/dhcp \
                           $(INITRD_DIR)/lib/firmware \
                           $(INITRD_DIR)/etc/alsa.conf \
