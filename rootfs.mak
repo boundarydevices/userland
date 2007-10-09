@@ -8,7 +8,10 @@
 #
 # History:
 # $Log: rootfs.mak,v $
-# Revision 1.32  2007-07-27 21:49:42  ericn
+# Revision 1.33  2007-10-09 00:56:16  ericn
+# -defer name of ld-linux file to rules/glibc.make (it's cross-compiler-specific)
+#
+# Revision 1.32  2007/07/27 21:49:42  ericn
 # -.profile, not etc/bashrc. Include /usr/local/lib and /usr/local/bin
 #
 # Revision 1.31  2006/02/05 18:56:48  ericn
@@ -152,7 +155,7 @@ TARGETS := $(ROOTDIR)/.profile \
            $(ROOTDIR)/lib/libpthread-0.10.so \
            $(ROOTDIR)/lib/libpthread.so.0 \
            $(ROOTDIR)/lib/ld-$(GLIBC_VER).so \
-           $(ROOTDIR)/lib/ld-linux.so.2 \
+           $(ROOTDIR)/lib/$(LD_LINUX) \
            $(ROOTDIR)/lib/libdl.so.2 \
            $(ROOTDIR)/lib/libdl-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/modules \
