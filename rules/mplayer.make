@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.5 2007-08-19 15:34:59 ericn Exp $
+# $Id: mplayer.make,v 1.6 2007-12-17 21:41:22 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -98,15 +98,16 @@ mplayer_prepare_deps = \
 MPLAYER_PATH            = PATH=$(CROSS_PATH)
 MPLAYER_AUTOCONF = \
         --enable-cross-compile \
-        --cc=arm-linux-gcc \
+        --cc=$(CONFIG_CROSSPREFIX)-gcc \
         --with-extraincdir="$(INSTALLPATH)/include -I$(INSTALLPATH)/include/directfb -I$(CONFIG_KERNELPATH)/include" \
         --with-extralibdir=$(INSTALLPATH)/lib \
         --host-cc=gcc \
         --target=arm-linux \
-        --as=arm-linux-as \
+        --as=$(CONFIG_CROSSPREFIX)-as \
         --enable-sm501_bd \
         --enable-fbdev \
 	--disable-gui \
+	--disable-alsa \
 	--disable-linux-devfs \
 	--disable-lirc \
 	--disable-lircc \
