@@ -39,7 +39,17 @@ config TOOLCHAINPATH
    default '/opt/crosstool/gcc-3.4.3-glibc-2.3.5/arm-linux/'
    help
      This path defines where the cross-toolchain will be installed.
-     (generally /usr/local/arm)
+     (generally /opt/crosstool/gcc-ver-glibc-ver/arm-linux/)
+
+config GLIBC_PATH
+        string
+        prompt "glibc path"
+        default '/opt/crosstool/gcc-3.4.3-glibc-2.3.5/arm-linux/lib'
+        help
+                This path is used to specify the toolchain (glibc)
+                library directory. This is "toolchainpath/lib" for
+                crosstool-generated toolchains, but may differ for
+                MontaVista or OE toolchains.
 
 config INSTALLPATH
 	string
@@ -49,6 +59,15 @@ config INSTALLPATH
      This path defines where userland includes and binaries will be 
      installed.
      (defaults to ./install)
+
+config GLIBC_VER
+        string
+        prompt "glibc version"
+        default 2.3.3
+        help
+                This variable sets the glibc version number for building
+                the root filesystem. It is used to produce .so filenames
+                of the form "libc-2.3.3.so", and "libnsl-2.3.3.so".
 
 config ROOT
 	string
