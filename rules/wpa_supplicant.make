@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: wpa_supplicant.make,v 1.5 2007-10-08 21:08:08 ericn Exp $
+# $Id: wpa_supplicant.make,v 1.6 2008-01-02 19:56:34 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -83,7 +83,7 @@ wpa_supplicant_compile: $(STATEDIR)/wpa_supplicant.compile
 
 $(STATEDIR)/wpa_supplicant.compile: $(STATEDIR)/wpa_supplicant.prepare 
 	@$(call targetinfo, $@)
-	cd $(WPA_SUPPLICANT_DIR) && $(WPA_SUPPLICANT_PATH) make
+	cd $(WPA_SUPPLICANT_DIR) && $(WPA_SUPPLICANT_PATH) PATH=$(CROSS_PATH) make
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -95,7 +95,9 @@ wpa_supplicant_install: $(STATEDIR)/wpa_supplicant.install
 $(STATEDIR)/wpa_supplicant.install: $(STATEDIR)/wpa_supplicant.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
-	for f in wpa_supplicant wpa_passphrase ; do cp -fv $(WPA_SUPPLICANT_DIR)/$$f $(INSTALLPATH)/bin && $(CROSSSTRIP) $(INSTALLPATH)/bin/$$f ; done
+	for f in wpa_supplicant wpa_passphrase ; do \
+                cp -fv $(WPA_SUPPLICANT_DIR)/$$f $(INSTALLPATH)/bin && \
+                PATH=$(CROSS_PATH) $(CROSSSTRIP) $(INSTALLPATH)/bin/$$f ; done
 	touch $@
 
 # ----------------------------------------------------------------------------

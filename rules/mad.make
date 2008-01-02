@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.14 2007-10-08 21:06:10 ericn Exp $
+# $Id: mad.make,v 1.15 2008-01-02 19:56:34 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -224,7 +224,7 @@ madplay_targetinstall: $(STATEDIR)/madplay.targetinstall
 $(STATEDIR)/madplay.targetinstall: $(STATEDIR)/madplay.install
 	@$(call targetinfo, $@)
 	cp $(INSTALLPATH)/bin/madplay $(ROOTDIR)/bin
-	$(CROSSSTRIP) $(ROOTDIR)/bin/madplay
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $(ROOTDIR)/bin/madplay
 	touch $@
 
 madplay_clean: $(STATEDIR)/madplay.clean

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: dosfstools.make,v 1.3 2008-01-02 18:01:35 ericn Exp $
+# $Id: dosfstools.make,v 1.4 2008-01-02 19:56:34 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -109,8 +109,8 @@ dosfstools_targetinstall: $(STATEDIR)/dosfstools.targetinstall
 $(STATEDIR)/dosfstools.targetinstall: $(STATEDIR)/dosfstools.install
 	@$(call targetinfo, $@)
 	@mkdir -p $(ROOTDIR)/bin
-	cp -fv $(INSTALLPATH)/bin/dosfsck $(ROOTDIR)/bin && $(CROSSSTRIP) $(ROOTDIR)/bin/dosfsck
-	cp -fv $(INSTALLPATH)/bin/mkdosfs $(ROOTDIR)/bin && $(CROSSSTRIP) $(ROOTDIR)/bin/mkdosfs
+	cp -fv $(INSTALLPATH)/bin/dosfsck $(ROOTDIR)/bin && PATH=$(CROSS_PATH) $(CROSSSTRIP) $(ROOTDIR)/bin/dosfsck
+	cp -fv $(INSTALLPATH)/bin/mkdosfs $(ROOTDIR)/bin && PATH=$(CROSS_PATH) $(CROSSSTRIP) $(ROOTDIR)/bin/mkdosfs
 	touch $@
 
 # ----------------------------------------------------------------------------

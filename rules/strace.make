@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: strace.make,v 1.3 2007-10-08 21:06:10 ericn Exp $
+# $Id: strace.make,v 1.4 2008-01-02 19:56:34 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -106,7 +106,7 @@ $(STATEDIR)/strace.install: $(STATEDIR)/strace.compile
 	@$(call targetinfo, $@)
 	mkdir -p $(INSTALLPATH)/usr/bin/
 	install -c $(STRACE_DIR)/strace $(INSTALLPATH)/usr/bin/strace
-	$(CROSSSTRIP) $(INSTALLPATH)/usr/bin/strace > /dev/null 2>&1   
+	PATH=$(CROSS_PATH) $(CROSSSTRIP) $(INSTALLPATH)/usr/bin/strace > /dev/null 2>&1   
 	touch $@
 
 # ----------------------------------------------------------------------------

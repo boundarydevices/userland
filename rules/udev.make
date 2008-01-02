@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: udev.make,v 1.4 2008-01-02 18:23:59 ericn Exp $
+# $Id: udev.make,v 1.5 2008-01-02 19:56:34 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -73,7 +73,7 @@ endif
 $(STATEDIR)/udev.compile: $(STATEDIR)/udev.prepare 
 	@$(call targetinfo, $@)
 	cd $(UDEV_DIR) && \
-		make CROSS_COMPILE=$(CONFIG_GNU_TARGET)- $(CROSS_ENV_CC) LD=$(CONFIG_GNU_TARGET)-gcc \
+		PATH=$(CROSS_PATH) make CROSS_COMPILE=$(CONFIG_GNU_TARGET)- $(CROSS_ENV_CC) LD=$(CONFIG_GNU_TARGET)-gcc \
 		CFLAGS="$(BR2_UDEV_CFLAGS)" \
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) V=1 -C $(UDEV_DIR) 
