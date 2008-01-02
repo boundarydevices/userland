@@ -60,6 +60,8 @@ all:
 	@$(ECHO) -e "/dev\t\t\td\t666\t0\t0\t-\t-\t-\t-\t-" >> devices.txt
 ifdef KERNEL_ARCH_PXA
 	@$(ECHO) "#KERNEL_ARCH_PXA" >> devices.txt
+else
+endif
 	@$(ECHO) -e "/dev/input\t\td\t666\t0\t0\t-\t-\t-\t-\t-" >> devices.txt
 	@$(ECHO) -e "/dev/pts\t\td\t666\t0\t0\t-\t-\t-\t-\t-" >> devices.txt
 	@$(ECHO) -e "/dev/ram\t\tb\t666\t0\t0\t1\t0\t0\t1\t4" >> devices.txt
@@ -81,9 +83,6 @@ ifdef KERNEL_ARCH_PXA
 	@$(ECHO) -e "/dev/raw\t\td\t777\t0\t0\t-\t-\t-\t-\t-" >> devices.txt                               
 	@$(ECHO) -e "/dev/raw/raw1\t\tc\t666\t0\t0\t162\t1\t0\t0\t-" >> devices.txt
 # I'm skipping /dev/vcs0-12
-else
-	$(error "??? KERNEL_ARCH_PXA is not set ???" )
-endif
 ifdef KERNEL_PCMCIA_PXA
 	@$(ECHO) "#KERNEL_PCMCIA_PXA" >> devices.txt
 else
