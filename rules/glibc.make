@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glibc.make,v 1.9 2008-01-02 18:23:34 ericn Exp $
+# $Id: glibc.make,v 1.10 2008-01-02 18:36:04 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -9,10 +9,10 @@
 # see the README file.
 #
 
-STDCPP_PATH=usr/lib
 LD_LINUX=ld-linux.so.2
 GLIBC_VER=$(subst ",,$(CONFIG_GLIBC_VER))
 GLIBC_PATH=$(subst ",,$(CONFIG_GLIBC_PATH))
+STDCPP_PATH=$(subst /lib,/usr/lib,$(GLIBC_PATH))
 
 $(ROOTDIR)/lib/ld-$(GLIBC_VER).so: $(GLIBC_PATH)/ld-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
@@ -30,15 +30,15 @@ $(ROOTDIR)/lib/libgcc_s.so.1: $(GLIBC_PATH)/libgcc_s.so.1
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
 
-$(ROOTDIR)/lib/libstdc++.so: $(CROSS_LIB_DIR)/$(STDCPP_PATH)/libstdc++.so
+$(ROOTDIR)/lib/libstdc++.so: $(STDCPP_PATH)/libstdc++.so
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
                 
-$(ROOTDIR)/lib/libstdc++.so.6: $(CROSS_LIB_DIR)/$(STDCPP_PATH)/libstdc++.so.6
+$(ROOTDIR)/lib/libstdc++.so.6: $(STDCPP_PATH)/libstdc++.so.6
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
                 
-$(ROOTDIR)/lib/libstdc++.so.6.0.3: $(CROSS_LIB_DIR)/$(STDCPP_PATH)/libstdc++.so.6.0.3
+$(ROOTDIR)/lib/libstdc++.so.6.0.3: $(STDCPP_PATH)/libstdc++.so.6.0.3
 	mkdir -p $(ROOTDIR)/lib
 	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
                 
