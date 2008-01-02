@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: module-init-tools.make,v 1.3 2007-10-09 00:53:15 ericn Exp $
+# $Id: module-init-tools.make,v 1.4 2008-01-02 18:02:25 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -61,7 +61,7 @@ module_init_tools_prepare_deps = \
 $(STATEDIR)/module_init_tools.prepare: $(module_init_tools_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(MODULE_INIT_TOOLS_DIR) && \
-		./configure --target=$(CONFIG_GNU_HOST) --host=$(CONFIG_GNU_HOST)
+		CROSS_COMPILE=$(CONFIG_CROSSPREFIX) ./configure --target=$(CONFIG_GNU_HOST) --host=$(CONFIG_GNU_HOST)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -80,8 +80,10 @@ $(STATEDIR)/module_init_tools.compile: $(STATEDIR)/module_init_tools.prepare
 # ----------------------------------------------------------------------------
 
 module_init_tools_install: $(STATEDIR)/module_init_tools.install
+$(TOPDIR)/tools:
+	mkdir -p $@
 
-$(STATEDIR)/module_init_tools.install: $(STATEDIR)/module_init_tools.compile
+$(STATEDIR)/module_init_tools.install: $(STATEDIR)/module_init_tools.compile $(TOPDIR)/tools
 	@$(call targetinfo, $@)
 	cp -fv $(MODULE_INIT_TOOLS_DIR)/depmod $(TOPDIR)/tools
 	touch $@
