@@ -1,0 +1,142 @@
+#
+# Automatically generated make config: don't edit
+#
+CONFIG_ARCH="arm"
+CONFIG_CROSSPREFIX="arm_v5t_le"
+CONFIG_ARCHIVEPATH="/armArchives"
+CONFIG_KERNELPATH="/home/ericn/linux-davinci"
+CONFIG_TOOLCHAINPATH="/opt/mv_pro_4.0/montavista/pro/devkit/arm/v5t_le/"
+CONFIG_GLIBC_PATH="/opt/mv_pro_4.0/montavista/pro/devkit/arm/v5t_le/target/lib"
+CONFIG_LD_LINUX_VER="3"
+CONFIG_INSTALLPATH=""
+CONFIG_GLIBC_VER="2.3.3"
+CONFIG_ROOT=""
+# CONFIG_SCANPASS is not set
+# CONFIG_SCANCRAM is not set
+# CONFIG_BD2004JF is not set
+# CONFIG_BD2004CRAM is not set
+# CONFIG_NEONJF is not set
+CONFIG_NEONCRAM=y
+# CONFIG_HALOGEN is not set
+# CONFIG_ARGON is not set
+# CONFIG_NEON270 is not set
+CONFIG_UDEV=y
+# CONFIG_TINYLOGIN is not set
+CONFIG_ROOTPASSWORD="BoundaryDevices"
+
+#
+# e2fsprogs           
+#
+CONFIG_E2FSPROGS=y
+CONFIG_E2FSPROGS_MKFS=y
+CONFIG_E2FSPROGS_E2FSCK=y
+CONFIG_BUSYBOX=y
+
+#
+# UDHCP - DHCP client and server
+#
+# CONFIG_UDHCP is not set
+# CONFIG_UDHCP_CLIENT is not set
+# CONFIG_UDHCP_SERVER is not set
+CONFIG_ZLIB=y
+CONFIG_DOSFSTOOLS=y
+CONFIG_LIBUSB=y
+CONFIG_JS=y
+CONFIG_FREETYPE=y
+
+#
+# OpenSSH             
+#
+CONFIG_OPENSSH=y
+CONFIG_OPENSSH_SSH=y
+CONFIG_OPENSSH_SSHD=y
+CONFIG_OPENSSH_SCP=y
+# CONFIG_OPENSSH_SFTP_SERVER is not set
+CONFIG_OPENSSH_KEYGEN=y
+
+#
+# OpenSSL             
+#
+CONFIG_OPENSSL=y
+CONFIG_OPENSSL_SHARED=y
+# CONFIG_RSYNC is not set
+
+#
+# MAD - MPEG audio decoder
+#
+CONFIG_MAD=y
+CONFIG_MADPLAY=y
+# CONFIG_PCMCIA_TOOLS is not set
+# CONFIG_ETHTOOL is not set
+CONFIG_WIRELESS_TOOLS=y
+CONFIG_JPEG=y
+
+#
+# libflash depends on JPEG and ZLIB
+#
+CONFIG_LIBFLASH=y
+CONFIG_LIBUNGIF=y
+CONFIG_LIBPNG125=y
+
+#
+# libmpeg2            
+#
+# CONFIG_LIBMPEG2 is not set
+# CONFIG_OGG is not set
+# CONFIG_VORBIS is not set
+# CONFIG_THEORA is not set
+# CONFIG_XINE is not set
+# CONFIG_XVID is not set
+
+#
+# ffmpeg              
+#
+# CONFIG_FFMPEG is not set
+CONFIG_FFMPEG_CPU="armv4l"
+
+#
+# Boundary Devices Stuff
+#
+# CONFIG_BDSCRIPT is not set
+# CONFIG_BDSCRIPT_CVS is not set
+# CONFIG_JSBARCODE is not set
+CONFIG_JSCAMERA=y
+# CONFIG_JSDHCP is not set
+CONFIG_JSSTARUSB=y
+# CONFIG_JSCBM is not set
+CONFIG_JSGPIO=y
+# CONFIG_JSMPEG is not set
+# CONFIG_JSMONITORWLAN is not set
+# CONFIG_JSCAIRO is not set
+# CONFIG_GDB is not set
+# CONFIG_DIRECTFB is not set
+# CONFIG_SDL is not set
+# CONFIG_PIXMAN is not set
+# CONFIG_EXPAT is not set
+# CONFIG_GLIB is not set
+# CONFIG_ATK is not set
+# CONFIG_PANGO is not set
+# CONFIG_GTKFB is not set
+# CONFIG_ALSA is not set
+
+#
+# ncurses          
+#
+# CONFIG_NCURSES is not set
+# CONFIG_LIBEVENT is not set
+# CONFIG_LIBJACK is not set
+# CONFIG_GSTREAMER is not set
+CONFIG_CROSSCOMPILE_ALIAS=y
+
+#
+# XFree86-4.5.0         
+#
+# CONFIG_XFREE450 is not set
+# CONFIG_XORG is not set
+# CONFIG_GTK is not set
+CONFIG_STRACE=y
+# CONFIG_TSLIB is not set
+CONFIG_MODULE_INIT_TOOLS=y
+CONFIG_WPA_SUPPLICANT=y
+# CONFIG_DIRECTFB_EXAMPLES is not set
+# CONFIG_MPLAYER is not set
