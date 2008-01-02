@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glibc.make,v 1.10 2008-01-02 18:36:04 ericn Exp $
+# $Id: glibc.make,v 1.11 2008-01-02 18:41:14 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -9,7 +9,7 @@
 # see the README file.
 #
 
-LD_LINUX=ld-linux.so.2
+LD_LINUX=ld-linux.so.$(subst ",,$(CONFIG_LD_LINUX_VER))
 GLIBC_VER=$(subst ",,$(CONFIG_GLIBC_VER))
 GLIBC_PATH=$(subst ",,$(CONFIG_GLIBC_PATH))
 STDCPP_PATH=$(subst /lib,/usr/lib,$(GLIBC_PATH))

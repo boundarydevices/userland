@@ -51,6 +51,13 @@ config GLIBC_PATH
                 crosstool-generated toolchains, but may differ for
                 MontaVista or OE toolchains.
 
+config LD_LINUX_VER
+        string
+        prompt "ld-linux version"
+        default 2
+        help
+                This is used to specify the version of ld-linux.so
+
 config INSTALLPATH
 	string
 	prompt "Userland Install path"
