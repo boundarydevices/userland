@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: curl.make,v 1.7 2007-10-08 21:06:10 ericn Exp $
+# $Id: curl.make,v 1.8 2008-01-04 22:04:34 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -87,6 +87,7 @@ CURL_AUTOCONF = \
    --includedir=$(INSTALLPATH)/include \
    --mandir=$(INSTALLPATH)/man \
    --infodir=$(INSTALLPATH)/info \
+   --without-zlib \
     CFLAGS="-I$(CROSS_LIB_DIR)/include -I$(INSTALLPATH)/include -g -O2" \
     CPPFLAGS="-I$(CROSS_LIB_DIR)/include -I$(INSTALLPATH)/include -g -O2" \
     LDFLAGS=-L$(INSTALLPATH)/lib
