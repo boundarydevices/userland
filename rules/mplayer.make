@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.6 2007-12-17 21:41:22 ericn Exp $
+# $Id: mplayer.make,v 1.7 2008-01-05 18:45:38 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -73,7 +73,6 @@ ifneq (y, $(CONFIG_MPLAYER_GIT))
 			echo "patchfile $$f" ; \
 			cd $(MPLAYER_DIR) && patch -p1 < $$f ; \
 		done
-		touch $@
 else
         $(STATEDIR)/mplayer.extract:
 		@$(call targetinfo, $@)
@@ -81,6 +80,7 @@ else
 		rm -rf $(MPLAYER_DIR)
 		@cd $(BUILDDIR) && git-clone office:/repository/$(MPLAYER)
 endif
+		touch $@
 
 # ----------------------------------------------------------------------------
 # Prepare
@@ -104,7 +104,6 @@ MPLAYER_AUTOCONF = \
         --host-cc=gcc \
         --target=arm-linux \
         --as=$(CONFIG_CROSSPREFIX)-as \
-        --enable-sm501_bd \
         --enable-fbdev \
 	--disable-gui \
 	--disable-alsa \
@@ -196,7 +195,12 @@ MPLAYER_AUTOCONF = \
         --disable-sunaudio \
         --disable-win32waveout \
         --disable-runtime-cpudetection \
-        --disable-tga
+        --disable-tga \
+        --disable-x11
+
+ifeq (y,$(KERNEL_FB_SM501))
+MPLAYER_AUTOCONF += --enable-sm501_bd
+endif
 
 $(STATEDIR)/mplayer.prepare: $(mplayer_prepare_deps)
 	@$(call targetinfo, $@)
