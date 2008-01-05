@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.7 2008-01-05 18:45:38 ericn Exp $
+# $Id: mplayer.make,v 1.8 2008-01-05 22:37:21 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -105,6 +105,7 @@ MPLAYER_AUTOCONF = \
         --target=arm-linux \
         --as=$(CONFIG_CROSSPREFIX)-as \
         --enable-fbdev \
+        --enable-static="-lncurses" \
 	--disable-gui \
 	--disable-alsa \
 	--disable-linux-devfs \
