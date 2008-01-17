@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.8 2008-01-05 22:37:21 ericn Exp $
+# $Id: mplayer.make,v 1.9 2008-01-17 00:05:50 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -14,6 +14,8 @@
 ifeq (y, $(CONFIG_MPLAYER))
 PACKAGES += mplayer
 endif
+
+include $(TOPDIR)/.kernelconfig
 
 #
 # Paths and names 
@@ -105,7 +107,6 @@ MPLAYER_AUTOCONF = \
         --target=arm-linux \
         --as=$(CONFIG_CROSSPREFIX)-as \
         --enable-fbdev \
-        --enable-static="-lncurses" \
 	--disable-gui \
 	--disable-alsa \
 	--disable-linux-devfs \
@@ -201,6 +202,9 @@ MPLAYER_AUTOCONF = \
 
 ifeq (y,$(KERNEL_FB_SM501))
 MPLAYER_AUTOCONF += --enable-sm501_bd
+endif
+ifeq (y,$(KERNEL_FB_DAVINCI))
+MPLAYER_AUTOCONF += --enable-davinci
 endif
 
 $(STATEDIR)/mplayer.prepare: $(mplayer_prepare_deps)
