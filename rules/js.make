@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: js.make,v 1.3 2005-11-23 14:49:43 ericn Exp $
+# $Id: js.make,v 1.4 2008-02-01 16:29:20 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -27,6 +27,8 @@ JS_SOURCE		= $(CONFIG_ARCHIVEPATH)/js-1.5-rc6.tar.gz
 JS_DIR		= $(BUILDDIR)/js
 JS_AUTOCFG_PATCH = $(CONFIG_ARCHIVEPATH)/js-1.5-rc6-autocfg.patch
 JS_AUTOCFG_PATCH_URL = http://boundarydevices.com/js-1.5-rc6-autocfg.patch
+JS_EABI_PATCH = $(CONFIG_ARCHIVEPATH)/js-1.5-rc6-eabi.patch
+JS_EABI_PATCH_URL = http://boundarydevices.com/js-1.5-rc6-eabi.patch
 
 # ----------------------------------------------------------------------------
 # Get
@@ -34,7 +36,7 @@ JS_AUTOCFG_PATCH_URL = http://boundarydevices.com/js-1.5-rc6-autocfg.patch
 
 js_get: $(STATEDIR)/js.get
 
-js_get_deps = $(JS_SOURCE) $(JS_AUTOCFG_PATCH)
+js_get_deps = $(JS_SOURCE) $(JS_AUTOCFG_PATCH) $(JS_EABI_PATCH)
 
 $(STATEDIR)/js.get: $(js_get_deps)
 	@$(call targetinfo, $@)
@@ -47,6 +49,10 @@ $(JS_SOURCE):
 $(JS_AUTOCFG_PATCH):
 	@$(call targetinfo, $@)
 	cd $(CONFIG_ARCHIVEPATH) && wget $(JS_AUTOCFG_PATCH_URL)
+
+$(JS_EABI_PATCH):
+	@$(call targetinfo, $@)
+	cd $(CONFIG_ARCHIVEPATH) && wget $(JS_EABI_PATCH_URL)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -61,6 +67,7 @@ $(STATEDIR)/js.extract: $(js_extract_deps)
 	rm -rf $(JS_DIR)
 	@cd $(BUILDDIR) && zcat $(JS_SOURCE) | tar -xvf -
 	@patch -d $(BUILDDIR) -p0 < $(JS_AUTOCFG_PATCH)
+	@patch -d $(BUILDDIR) -p0 < $(JS_EABI_PATCH)
 	touch $@
 
 # ----------------------------------------------------------------------------
