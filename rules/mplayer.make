@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.9 2008-01-17 00:05:50 ericn Exp $
+# $Id: mplayer.make,v 1.10 2008-02-18 01:12:34 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -134,6 +134,7 @@ MPLAYER_AUTOCONF = \
         --disable-ftp \
         --disable-vstream \
         --disable-gif \
+        --disable-ivtv \
         --disable-libcdio \
 	--disable-win32 \
         --disable-qtx \
