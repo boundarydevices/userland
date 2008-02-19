@@ -1,0 +1,4 @@
+config AUDIOFILE
+	bool
+   default n
+	prompt "Compile audiofile library"

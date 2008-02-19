@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.10 2008-02-18 01:12:34 ericn Exp $
+# $Id: mplayer.make,v 1.11 2008-02-19 20:32:44 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -20,11 +20,11 @@ include $(TOPDIR)/.kernelconfig
 #
 # Paths and names 
 #
-MPLAYER	        = MPlayer-1.0rc1
+MPLAYER	        = mplayer-export-2008-02-17
 MPLAYER_URL 	= http://www3.mplayerhq.hu/MPlayer/releases/$(MPLAYER).tar.bz2
 MPLAYER_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(MPLAYER).tar.bz2
-MPLAYER_DIR	= $(BUILDDIR)/$(MPLAYER)
-MPLAYER_PATCH_DATE = 20070819
+MPLAYER_DIR	= $(BUILDDIR)/mplayer-export-2008-02-17
+MPLAYER_PATCH_DATE = 20080217
 MPLAYER_PATCHES = $(MPLAYER)-patches-$(MPLAYER_PATCH_DATE).tar.bz2
 MPLAYER_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/$(MPLAYER_PATCHES)
 MPLAYER_PATCH_URL = http://boundarydevices.com/$(MPLAYER_PATCHES)
@@ -38,7 +38,7 @@ MPLAYER_PATCH_FILES=$(MPLAYER)-oe.patch \
 mplayer_get: $(STATEDIR)/mplayer.get
 
 ifneq (y, $(CONFIG_MPLAYER_GIT))
-        $(STATEDIR)/mplayer.get: $(MPLAYER_SOURCE) $(MPLAYER_PATCH_SOURCE)
+        $(STATEDIR)/mplayer.get: $(MPLAYER_SOURCE) # $(MPLAYER_PATCH_SOURCE)
 		@$(call targetinfo, $@)
 		touch $@
         
@@ -46,9 +46,9 @@ ifneq (y, $(CONFIG_MPLAYER_GIT))
 		@$(call targetinfo, $@)
 		@cd $(CONFIG_ARCHIVEPATH) && wget $(MPLAYER_URL)
         
-        $(MPLAYER_PATCH_SOURCE):
-		@$(call targetinfo, $@)
-		@cd $(CONFIG_ARCHIVEPATH) && wget $(MPLAYER_PATCH_URL)
+#        $(MPLAYER_PATCH_SOURCE):
+#		@$(call targetinfo, $@)
+#		@cd $(CONFIG_ARCHIVEPATH) && wget $(MPLAYER_PATCH_URL)
 else
         $(STATEDIR)/mplayer.get:
 		@$(call targetinfo, $@)
@@ -70,11 +70,11 @@ ifneq (y, $(CONFIG_MPLAYER_GIT))
 		sed -i 's|/usr/lib|$(INSTALLPATH)/lib|g' $(MPLAYER_DIR)/configure
 		sed -i 's|/usr/\S*include[\w/]*||g' $(MPLAYER_DIR)/configure
 		sed -i 's|/usr/\S*lib[\w/]*||g' $(MPLAYER_DIR)/configure
-		cd $(MPLAYER_DIR) && tar jxvf $(MPLAYER_PATCH_SOURCE)
-		for f in $(MPLAYER_PATCH_FILES); do \
-			echo "patchfile $$f" ; \
-			cd $(MPLAYER_DIR) && patch -p1 < $$f ; \
-		done
+#		cd $(MPLAYER_DIR) && tar jxvf $(MPLAYER_PATCH_SOURCE)
+#		for f in $(MPLAYER_PATCH_FILES); do \
+#			echo "patchfile $$f" ; \
+#			cd $(MPLAYER_DIR) && patch -p1 < $$f ; \
+#		done
 else
         $(STATEDIR)/mplayer.extract:
 		@$(call targetinfo, $@)
@@ -108,7 +108,7 @@ MPLAYER_AUTOCONF = \
         --as=$(CONFIG_CROSSPREFIX)-as \
         --enable-fbdev \
 	--disable-gui \
-	--disable-alsa \
+	--enable-alsa \
 	--disable-linux-devfs \
 	--disable-lirc \
 	--disable-lircc \
@@ -117,14 +117,13 @@ MPLAYER_AUTOCONF = \
         --disable-xf86keysym \
 	--disable-tv \
         --disable-tv-v4l2 \
+        --disable-v4l2 \
         --disable-tv-bsdbt848 \
         --disable-winsock2 \
 	--disable-smb \
         --disable-live \
         --disable-dvdread \
-        --disable-mpdvdkit \
         --disable-cdparanoia \
-        --disable-unrarlib \
         --disable-menu \
         --disable-fribidi \
         --disable-enca \
@@ -136,7 +135,6 @@ MPLAYER_AUTOCONF = \
         --disable-gif \
         --disable-ivtv \
         --disable-libcdio \
-	--disable-win32 \
         --disable-qtx \
         --disable-xanim \
         --disable-real \
@@ -144,7 +142,6 @@ MPLAYER_AUTOCONF = \
         --disable-libavcodec_so \
         --disable-libavformat_so \
         --disable-libpostproc_so \
-        --disable-libfame \
         --disable-speex \
         --disable-theora \
         --disable-faac \
@@ -154,13 +151,8 @@ MPLAYER_AUTOCONF = \
         --disable-twolame \
         --disable-xmms \
 	--disable-mp3lib \
-        --disable-libdts \
         --disable-musepack \
-        --disable-amr_nb \
-        --disable-amr_nb-fixed \
-        --disable-amr_wb \
         --disable-gl \
-        --disable-dga \
         --disable-vesa \
         --disable-svga \
         --disable-aa \
@@ -189,8 +181,7 @@ MPLAYER_AUTOCONF = \
         --disable-pnm \
         --disable-md5sum \
         --disable-arts \
-        --disable-esd \
-        --disable-polyp \
+        --enable-esd \
         --disable-jack \
         --disable-openal \
         --disable-nas \
@@ -199,7 +190,8 @@ MPLAYER_AUTOCONF = \
         --disable-win32waveout \
         --disable-runtime-cpudetection \
         --disable-tga \
-        --disable-x11
+        --disable-x11 \
+        --extra-libs="-laudiofile -lesd"
 
 ifeq (y,$(KERNEL_FB_SM501))
 MPLAYER_AUTOCONF += --enable-sm501_bd
@@ -236,7 +228,8 @@ mplayer_install: $(STATEDIR)/mplayer.install
 $(STATEDIR)/mplayer.install: $(STATEDIR)/mplayer.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
-	cd $(MPLAYER_DIR) && make DESTDIR=$(INSTALLPATH) install
+	cp -fv $(MPLAYER_DIR)/mplayer $(INSTALLPATH)/bin
+	$(CROSSSTRIP) $(INSTALLPATH)/bin/mplayer
 	touch $@
 
 # ----------------------------------------------------------------------------

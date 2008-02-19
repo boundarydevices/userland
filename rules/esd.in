@@ -1,0 +1,4 @@
+config ESOUND
+	bool
+   default n
+	prompt "Compile EsounD"
