@@ -18,7 +18,7 @@ include .kernelconfig
 CROSS_LIB_LINK = $(subst //,/,$(INITRD_DIR)/$(CROSS_LIB_DIR))
 
 ifeq (y,$(KERNEL_MODULES))
-        MODULES_INSTALL=make -C $(CONFIG_KERNELPATH) DEPMOD=$(TOPDIR)/tools/depmod INSTALL_MOD_PATH=$(INITRD_DIR) modules_install
+        MODULES_INSTALL=make -C $(CONFIG_KERNELPATH) INSTALL_MOD_PATH=$(INITRD_DIR) modules_install
         MODULES_DEP=module_init_tools_install
 else
         MODULES_INSTALL=echo "---------------- modules not configured\n"
@@ -45,11 +45,11 @@ $(INITRD_DIR): $(MODULES_DEP)
 	@cp $(ROOTDIR)/.profile $(INITRD_DIR)/
 	@mkdir -p $(INITRD_DIR)/etc/init.d
 	@mkdir -p $(INITRD_DIR)/lib
-	@cp -rvd $(CROSS_LIB_DIR)/lib/ld-* $(INITRD_DIR)/lib
-	@cp -rvd $(CROSS_LIB_DIR)/lib/libc-* $(INITRD_DIR)/lib
-	@cp -rvd $(CROSS_LIB_DIR)/lib/libc.so* $(INITRD_DIR)/lib
-	@cp -rvd $(CROSS_LIB_DIR)/lib/libcrypt*.so* $(INITRD_DIR)/lib
-	@cp -rvd $(CROSS_LIB_DIR)/lib/libgcc_s.so* $(INITRD_DIR)/lib
+	@cp -rvd $(ROOTDIR)/lib/ld-* $(INITRD_DIR)/lib
+	@cp -rvd $(ROOTDIR)/lib/libc-* $(INITRD_DIR)/lib
+	@cp -rvd $(ROOTDIR)/lib/libc.so* $(INITRD_DIR)/lib
+	@cp -rvd $(ROOTDIR)/lib/libcrypt*.so* $(INITRD_DIR)/lib
+	@cp -rvd $(ROOTDIR)/lib/libgcc_s.so* $(INITRD_DIR)/lib
 	@mkdir -p $(INITRD_DIR)/proc
 	@mkdir -p $(INITRD_DIR)/tmp
 	@mkdir -p $(INITRD_DIR)/usr
@@ -60,7 +60,7 @@ $(INITRD_DIR): $(MODULES_DEP)
 	@cd $(CROSS_LIB_LINK) && ln -sf /lib
 	@cd $(CROSS_LIB_LINK) && ln -sf /bin
 	mkdir $(INITRD_DIR)/lib64 && mkdir $(INITRD_DIR)/usr/lib64
-	$(CROSSSTRIP) $(INITRD_DIR)/lib/*
+	@$(CROSSSTRIP) $(INITRD_DIR)/lib/*
 	cd $(INITRD_DIR)/etc && /sbin/ldconfig -r ../ -v
 	@touch $@
 
