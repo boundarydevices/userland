@@ -1,0 +1,4 @@
+config DDCONTROL
+	bool
+   default n
+	prompt "Compile ddcontrol"

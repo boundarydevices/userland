@@ -1,0 +1,4 @@
+config LIBXML
+	bool
+   default n
+	prompt "Compile libxml2"
