@@ -1,0 +1,4 @@
+config DROPBEAR
+	bool
+   default n
+	prompt "Compile DropBear SSH client/server"
