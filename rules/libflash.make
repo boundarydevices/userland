@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libflash.make,v 1.5 2005-11-23 14:49:43 ericn Exp $
+# $Id: libflash.make,v 1.6 2008-04-01 20:27:10 ericn Exp $
 #
 # Copyright (C) 2004 by Boundary Devices
 #          
@@ -23,8 +23,8 @@ LIBFLASH_VERSION	= 0.4.10
 LIBFLASH_URL		= http://www.boundarydevices.com/flash-0.4.10.tgz
 LIBFLASH_SOURCE		= $(CONFIG_ARCHIVEPATH)/flash-0.4.10.tgz
 LIBFLASH_DIR		= $(BUILDDIR)/flash-0.4.10
-LIBFLASH_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/flash.patch
-LIBFLASH_PATCH_URL = http://www.boundarydevices.com/flash.patch
+LIBFLASH_PATCH_SOURCE = $(CONFIG_ARCHIVEPATH)/libflash_20080401.patch
+LIBFLASH_PATCH_URL = http://www.boundarydevices.com/libflash_20080401.patch
 
 # ----------------------------------------------------------------------------
 # Get
