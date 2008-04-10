@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: wpa_supplicant.make,v 1.6 2008-01-02 19:56:34 ericn Exp $
+# $Id: wpa_supplicant.make,v 1.7 2008-04-10 23:52:49 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -20,7 +20,7 @@ ECHO?=`which echo`
 #
 # Paths and names 
 #
-#WPA_SUPPLICANT			= wpa_supplicant-0.5.7
+#WPA_SUPPLICANT			= wpa_supplicant-0.5.8
 WPA_SUPPLICANT			= wpa_supplicant-0.5.8
 WPA_SUPPLICANT_URL 	= http://hostap.epitest.fi/releases/$(WPA_SUPPLICANT).tar.gz
 WPA_SUPPLICANT_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(WPA_SUPPLICANT).tar.gz
@@ -58,8 +58,8 @@ $(STATEDIR)/wpa_supplicant.extract: $(STATEDIR)/wpa_supplicant.get $(WPA_SUPPLIC
 	@cd $(WPA_SUPPLICANT_DIR) && cp -fv $(WPA_SUPPLICANT_CONFIG) .config
 	@$(ECHO) -e "\nCC=$(CONFIG_CROSSPREFIX)-gcc" >> $(WPA_SUPPLICANT_DIR)/.config
 	@$(ECHO) -e CFLAGS += -Os -I$(INSTALLPATH)/include/openssl -I$(INSTALLPATH)/include >> $(WPA_SUPPLICANT_DIR)/.config
-	@$(ECHO) -e LIBS += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
-	@$(ECHO) -e LIBS_p += -L$(INSTALLPATH)/lib -lssl >> $(WPA_SUPPLICANT_DIR)/.config
+	@$(ECHO) -e LIBS += -L$(INSTALLPATH)/lib -lssl -ldl >> $(WPA_SUPPLICANT_DIR)/.config
+	@$(ECHO) -e LIBS_p += -L$(INSTALLPATH)/lib -lssl -ldl >> $(WPA_SUPPLICANT_DIR)/.config
 	touch $@
 
 # ----------------------------------------------------------------------------
