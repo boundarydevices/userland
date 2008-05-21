@@ -1,0 +1,208 @@
+#!/bin/sh
+BUSYBOX_SRC=/home/ericn/busybox-1.10.0
+CROSS_COMPILE=arm-angstrom-linux-gnueabi-
+UDEV_DIR=/home/ericn/userland/build/udev-105
+LIBCSO=libc.so.6
+LDLINUX=ld-linux.\*
+LIBCRYPT=libcrypt.so
+LIBGCC=libgcc_s.so
+LIBM=libm.so.6
+
+COMPILER=`which ${CROSS_COMPILE}gcc`
+CROSSPATH=`dirname $COMPILER`
+CROSSPATH=`realpath ${CROSSPATH}/../`
+
+#
+# Find library LIB, set full path
+#
+findLib() {
+   if ! [ -z "$1" ] ; then
+        found=`find ${CROSSPATH} -name $1`
+        if [ -z $found ]; then
+                echo "Error: library $1 not found in $CROSSPATH" ;
+                exit 1 ;
+        fi
+        echo "library $1 found at $found"
+        LIB=$found ;
+        SRCPATH=`dirname $LIB` ;
+   else
+        LIB="" ;
+   fi
+}
+
+#
+# Copy a library, if sym-link, set LIB to target
+#
+copyLib () {
+   echo "Copying $1"
+   findLib $1
+   while ! [ -z "$LIB" ] ; do
+      link=`readlink $LIB` ;
+      cp -rfvd ${LIB} initrd/lib
+      if ! [ -z "$link" ] ; then
+         echo "$1 is a link to $link" ;
+         LIB=${SRCPATH}/${link}
+      else
+         LIB=""
+      fi
+   done
+}
+
+countDirs () {
+        NUMDIRS=0 ;
+        P=$1 ;
+        while ! [ -z "$P" ] && ! [ "/" == "$P" ] ; do
+           NUMDIRS=$[$NUMDIRS+1];
+           echo NUMDIRS==$NUMDIRS ;
+           P=`dirname $P` ;
+           echo "P=$P" ;
+        done
+}
+
+makeDots () {
+        DIRSTRING="" ;
+        while [ $NUMDIRS -gt 0 ]; do
+                DIRSTRING="../${DIRSTRING}" ;
+                NUMDIRS=$[$NUMDIRS-1];
+        done
+}
+
+[ -d initrd ] || mkdir initrd || exit 1
+REALINITRD=`realpath initrd`
+for d in bin etc etc/init.d etc/udev/rules.d lib lib/modules lib/firmware lib64 opt proc tmp usr usr/bin usr/lib usr/lib64 usr/sbin var ; do 
+        [ -d initrd/$d ] || mkdir -p initrd/$d ; 
+done
+
+make -C $BUSYBOX_SRC CROSS_COMPILE=$CROSS_COMPILE CONFIG_PREFIX=$REALINITRD install
+for f in udevcontrol udevd udevsettle udevstart udevtrigger ; do
+	cp -fv $UDEV_DIR/$f initrd/bin/ ;
+done
+
+copyLib $LIBCSO
+copyLib $LDLINUX
+copyLib $LIBCRYPT
+copyLib $LIBGCC
+copyLib $LIBM
+
+#
+# ---------------------- create files in etc/
+# 
+cat > initrd/etc/nsswitch.conf << EOF
+hosts:      files dns
+passwd:     files
+group:      files
+# name servers go here
+EOF
+
+
+PASSWORD_STRING=`perl -e 'print crypt("BoundaryDevices", "dP")'`
+OUTFILE=initrd/etc/passwd
+echo "root:$PASSWORD_STRING:0:0:Linux User,,,:/:/bin/sh" > $OUTFILE
+
+cat > initrd/etc/group << EOF
+0:x:0:root
+EOF
+
+cat > initrd/etc/inittab << EOF
+::sysinit:/etc/init.d/rcS
+#tty0::respawn:/sbin/getty 115200 /dev/ttyS0
+#tty1::askfirst:-/sbin/getty 115200 /dev/ttyS1
+#tty2::askfirst:-/sbin/getty 115200 /dev/ttyS2
+::respawn:/sbin/getty 115200 /dev/ttyS0
+::ctrlaltdel:/sbin/reboot
+::shutdown:/sbin/swapoff -a
+::shutdown:/bin/umount -a -r
+::restart:/sbin/init
+EOF
+
+cat > initrd/.profile << EOF
+export PATH=/mmc:\$PATH
+export TSLIB_TSDEVICE=/dev/pic16f616_ts
+export TSLIB_CONFFILE=/mmc/ts.conf
+export TSLIB_CALIBFILE=/mmc/pointercal
+export TSDEV=/dev/pic16f616_ts
+EOF
+
+cat > initrd/etc/fstab << EOF
+none /proc/bus/usb usbdevfs noauto 0 0
+EOF
+
+
+cat > initrd/etc/init.d/rcS << EOF
+#!/bin/sh
+mknod /dev/ram1 b 1 1
+mount -t proc none /proc/ 
+mount -t usbfs none /proc/bus/usb
+if ! [ -d /sys ] ; then mkdir /sys ; fi
+mount -t sysfs /sys /sys
+if [ -d /dev ] ; then mv /dev /dev-old && echo moved dev to dev-old ; fi
+mkdir /dev
+if mount -t ramfs /dev /dev ; then echo new dev mounted ; else mv /dev-old /dev && echo failure mounting dev ; fi
+/bin/udevd --daemon
+time /bin/udevstart
+echo -e -n '\033[?25l' >/dev/ttyFB0
+if [ -e /dev/mmcblk0p1 ] ; then
+        mkdir -p /mmc 
+        mount -t vfat /dev/mmcblk0p1 /mmc
+        if [ -f /mmc/cramfs.img ] ; then
+                mkdir -p /cramfs && mount -t cramfs -o loop /mmc/cramfs.img /cramfs
+                for d in bin etc lib usr/bin usr/lib usr/lib64 usr/sbin .profile ; do
+                        if [ -d /cramfs/\$d ] ; then
+                                for f in /cramfs/\$d/* ; do 
+                                        if [ -f \$f ] || [ -l \$f ]; then 
+                                                ln -sf \$f /\$d/
+                                        fi
+                                done
+                        elif [ -f /cramfs/\$d ] ; then
+                                ln -sf /cramfs/\$d /\$d/
+                        fi
+                done
+        fi
+        if [ -f /mmc/linux_init ]; then
+                /mmc/linux_init
+        fi
+fi
+EOF
+chmod a+x initrd/etc/init.d/rcS
+
+#
+# copy and create udev rules
+#
+cat > initrd/etc/udev/rules.d/40-boundary.rules << EOF
+KERNEL=="gen-timer", SUBSYSTEM=="misc", NAME="timer", OWNER="root", GROUP="root", MODE="0660"
+EOF
+
+cp -fv ${UDEV_DIR}/etc/udev/frugalware/* initrd/etc/udev/rules.d
+
+#
+# build ld cache
+#
+touch initrd/etc/ld.so.conf
+pushd initrd/etc
+ldconfig -r ../ -v 
+popd
+
+#
+# build host reference to ld-linux.so
+#
+findLib $LDLINUX
+LDLINUXPATH=`dirname $LIB`
+LDLINUXPATH=`realpath ${LDLINUXPATH}/../`
+echo "LDLINUXPATH==$LDLINUXPATH"
+countDirs $LDLINUXPATH
+makeDots ;
+echo "dirstring = $DIRSTRING" ;
+
+mkdir -p initrd/$LDLINUXPATH && \
+        pushd initrd/$LDLINUXPATH && 
+        ln -sf ${DIRSTRING}lib ./ &&
+        popd
+
+#
+# Now make the image
+#
+pwd
+genext2fs initrd.img -d $REALINITRD/ -U -D ./devices.txt -b 8192
+gzip -f -v9 initrd.img
+mkimage -A arm -O linux -T ramdisk -n "Initial Ram Disk" -d initrd.img.gz initrd.u-boot
+

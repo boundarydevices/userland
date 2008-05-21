@@ -1,0 +1,106 @@
+#!/bin/sh
+CROSS_COMPILE=arm-angstrom-linux-gnueabi-
+COMPILER=`which ${CROSS_COMPILE}gcc`
+if [ -z "$COMPILER" ]; then
+        echo "Set PATH to include ${CROSS_COMPILE}gcc first" ;
+        exit 1 ;
+fi
+CROSSPATH=`dirname $COMPILER`
+CROSSPATH=`realpath ${CROSSPATH}/../`
+
+#
+# Find library LIB, set full path
+#
+findLib() {
+   if ! [ -z "$1" ] ; then
+        found=`find ${CROSSPATH} -name $1`
+        if [ -z $found ]; then
+                echo "Error: library $1 not found in $CROSSPATH" ;
+                exit 1 ;
+        fi
+        echo "found $1 at $found" ;
+        LIB=$found ;
+        SRCPATH=`dirname $LIB` ;
+   else
+        LIB="" ;
+   fi
+}
+
+#
+# Copy a library, if sym-link, set LIB to target
+#
+copyLib () {
+   echo "Copying $1"
+   findLib $1
+   while ! [ -z "$LIB" ] ; do
+      link=`readlink $LIB` ;
+      libtail=${LIB#$LIBBASE*};
+      echo "tail == $libtail"
+      taildir=`dirname $libtail` ;
+      mkdir -p cramfs/$taildir ;
+      cp -rfvd ${LIB} cramfs$libtail
+      if ! [ -z "$link" ] ; then
+         echo "$1 is a link to $link" ;
+         LIB=${SRCPATH}/${link}
+      else
+         echo "$1 is not a link" ;
+         LIB=""
+      fi
+   done
+}
+
+
+if [ -z $PACKAGES ]; then 
+        echo "Set PACKAGES to list of directories to overlay, not $PACKAGES"
+        exit 1 ;
+fi
+
+[ -d initrd ] || ./makeInitrd || ( echo "Error building initrd" && exit 1 ) ;
+
+echo "initrd found or built" ;
+
+findLib libc.so
+if [ -z "$LIB" ]; then
+        echo "No libraries in tree: ${CROSSPATH}" ;
+        exit 1 ;
+fi
+
+echo "libc.so found at $LIB" ;
+LIBBASE=`dirname $LIB`
+LIBBASE=`realpath ${LIBBASE}/../`
+
+#
+# Now only search here...
+#
+CROSSPATH=${LIBBASE}
+
+echo "library base ${LIBBASE}" 
+
+mkdir -p cramfs 
+cp -rf initrd/* cramfs/
+
+echo "shell of cramfs built" 
+
+cat > cramfs/etc/init.d/rcS << EOF
+#!/bin/sh
+echo "running cramfs/etc/init.d/rcS
+EOF
+chmod a+x cramfs/etc/init.d/rcS
+
+packages=`echo "$PACKAGES" | tr -s ':' '\n'` ;
+for p in $packages ; do 
+        echo "install package $p here" ;
+        dpkg --extract $p cramfs/
+done
+
+pushd cramfs/etc && /sbin/ldconfig -r ../ -v && popd
+
+libs=`echo "$LIBS" | tr -s ':' '\n'` ;
+for l in $libs ; do 
+        echo "install library $(basename $l) here"
+        copyLib $l
+done
+
+mkcramfs ./cramfs/ cramfs.img
+echo "cramfs image built"
+
