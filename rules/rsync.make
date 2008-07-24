@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: rsync.make,v 1.2 2007-10-08 21:08:32 ericn Exp $
+# $Id: rsync.make,v 1.3 2008-07-24 16:57:45 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -57,6 +57,7 @@ rsync_prepare: $(STATEDIR)/rsync.prepare
 
 rsync_prepare_deps = \
 	$(STATEDIR)/rsync.extract
+RSYNC_PATH	= PATH=$(CROSS_PATH)
 
 #
 # autoconf
@@ -80,7 +81,8 @@ $(STATEDIR)/rsync.prepare: $(rsync_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(RSYNC_DIR) && \
 		$(RSYNC_ENV ) \
-		$(CROSS_ENV) ./configure $(RSYNC_AUTOCONF)
+		$(CROSS_ENV) \
+                $(RSYNC_PATH) ./configure $(RSYNC_AUTOCONF)
 	touch $@
 
 # ----------------------------------------------------------------------------
