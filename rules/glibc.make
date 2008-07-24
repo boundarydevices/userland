@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glibc.make,v 1.12 2008-04-09 23:45:42 ericn Exp $
+# $Id: glibc.make,v 1.13 2008-07-24 16:51:29 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -13,96 +13,89 @@ LD_LINUX=ld-linux.so.$(subst ",,$(CONFIG_LD_LINUX_VER))
 GLIBC_VER=$(subst ",,$(CONFIG_GLIBC_VER))
 GLIBC_PATH=$(subst ",,$(CONFIG_GLIBC_PATH))
 
-ifneq (,$(findstring angstrom, $(CONFIG_CROSSPREFIX)))
-NSLPATH=$(subst ",,$(CONFIG_TOOLCHAINPATH))../rootfs
-else        
 NSLPATH=$(GLIBC_PATH)
-endif
-
-STDCPP_PATH=$(NSLPATH)/usr/lib
+STDCPP_PATH=$(NSLPATH)/lib
+SETGLIBCPATH=PATH=$(CROSS_PATH) 
+CPPLIBS:=$(shell ls $(STDCPP_PATH)/libstdc++*.so*)
 
 $(ROOTDIR)/lib/ld-$(GLIBC_VER).so: $(NSLPATH)/lib/ld-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
-$(ROOTDIR)/lib/libc-$(GLIBC_VER).so: $(NSLPATH)/lib/libc-$(GLIBC_VER).so
-	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
-
-$(ROOTDIR)/lib/libc.so.6: $(ROOTDIR)/lib/libc-$(GLIBC_VER).so
+$(ROOTDIR)/lib/libc.so.6: $(NSLPATH)/lib/libc-$(GLIBC_VER).so
 	cd $(ROOTDIR)/lib/ && ln -sf $< $@
                 
 $(ROOTDIR)/lib/libgcc_s.so.1: $(NSLPATH)/lib/libgcc_s.so.1
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
-$(ROOTDIR)/lib/libstdc++.so.6: $(STDCPP_PATH)/libstdc++.so.6
+$(ROOTDIR)/lib/libstdc++.so.6: 
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $(STDCPP_PATH)/\*.so\* $(ROOTDIR)/lib/ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
                 
 $(ROOTDIR)/lib/libstdc++.so: $(ROOTDIR)/lib/libstdc++.so.6
 	cd $(ROOTDIR)/lib/ && ln -sf $< $@
                 
 $(ROOTDIR)/lib/libutil-$(GLIBC_VER).so: $(NSLPATH)/lib/libutil-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
 $(ROOTDIR)/lib/libutil.so.1: $(ROOTDIR)/lib/libutil-$(GLIBC_VER).so
 	cd $(ROOTDIR)/lib && ln -sf libnsl-$(GLIBC_VER).so $@
 
 $(ROOTDIR)/lib/libresolv-$(GLIBC_VER).so: $(NSLPATH)/lib/libresolv-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
 $(ROOTDIR)/lib/libnss_dns-$(GLIBC_VER).so: $(NSLPATH)/lib/libnss_dns-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
 $(ROOTDIR)/lib/libnss_dns.so.2: $(ROOTDIR)/lib/libnss_dns-$(GLIBC_VER).so
 	cd $(ROOTDIR)/lib/ && ln -sf $< $@
                 
 $(ROOTDIR)/lib/libnss_files-$(GLIBC_VER).so: $(NSLPATH)/lib/libnss_files-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
 $(ROOTDIR)/lib/libnss_files-$(GLIBC_VER).so.2: $(ROOTDIR)/lib/libnss_files-$(GLIBC_VER).so
 	cd $(ROOTDIR)/lib/ && ln -sf $< $@
                 
 $(ROOTDIR)/lib/libcrypt-$(GLIBC_VER).so: $(NSLPATH)/lib/libcrypt-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
                 
 $(ROOTDIR)/lib/libcrypt.so.1: $(ROOTDIR)/lib/libcrypt-$(GLIBC_VER).so
 	cd $(ROOTDIR)/lib && ln -sf $< $@
                 
 $(ROOTDIR)/lib/libm-$(GLIBC_VER).so: $(NSLPATH)/lib/libm-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
                 
 $(ROOTDIR)/lib/libm.so.6: $(ROOTDIR)/lib/libm-$(GLIBC_VER).so
 	cd $(ROOTDIR)/lib/ && ln -sf $< $@
                 
 $(ROOTDIR)/lib/libpthread-$(GLIBC_VER).so: $(NSLPATH)/lib/libpthread-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
 $(ROOTDIR)/lib/libpthread.so.0: $(ROOTDIR)/lib/libpthread-$(GLIBC_VER).so
 	cd $(ROOTDIR)/lib/ && ln -sf $< $@
                 
 $(ROOTDIR)/lib/libdl-$(GLIBC_VER).so: $(NSLPATH)/lib/libdl-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
 $(ROOTDIR)/lib/libdl.so.2: $(ROOTDIR)/lib/libdl-$(GLIBC_VER).so
 	cd $(ROOTDIR)/lib/ && ln -sf $< $@
                 
-$(ROOTDIR)/lib/$(LD_LINUX): $(NSLPATH)/lib/$(LD_LINUX)
+$(ROOTDIR)/lib/$(LD_LINUX): $(NSLPATH)/$(LD_LINUX)
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
 $(ROOTDIR)/lib/libnsl-$(GLIBC_VER).so: $(NSLPATH)/lib/libnsl-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
 $(ROOTDIR)/lib/libnsl.so.1: $(ROOTDIR)/lib/libnsl-$(GLIBC_VER).so
 	mkdir -p $(ROOTDIR)/lib
@@ -113,7 +106,7 @@ $(ROOTDIR)/lib/libnsl.so: $(ROOTDIR)/lib/libnsl.so.1
 
 $(ROOTDIR)/lib/libthread_db-1.0.so: $(GLIBC_PATH)/libthread_db-1.0.so
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $< $@ && PATH=$(CROSS_PATH) $(CROSSSTRIP) $@
+	cp -fvd $< $@ && $(SETGLIBCPATH) $(CROSSSTRIP) $@
 
 $(ROOTDIR)/lib/libthread_db.so: $(ROOTDIR)/lib/libthread_db-1.0.so
 	cd $(ROOTDIR)/lib && ln -s $(notdir $<) $(notdir $@)
