@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xvid.make,v 1.4 2007-10-08 21:06:10 ericn Exp $
+# $Id: xvid.make,v 1.5 2008-07-24 21:32:25 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -20,13 +20,17 @@ endif
 # Paths and names
 #
 
-XVID_VERSION   = 1.1.2
+XVID_VERSION   = 1.1.3
 XVID	         = xvidcore-$(XVID_VERSION)
 XVID_SUFFIX	   = tar.gz
 XVID_URLDIR    = http://downloads.xvid.org/downloads
 XVID_URL		   = $(XVID_URLDIR)/$(XVID).$(XVID_SUFFIX)
 XVID_SOURCE	   = $(CONFIG_ARCHIVEPATH)/$(XVID).$(XVID_SUFFIX)
 XVID_DIR		   = $(BUILDDIR)/$(XVID)
+XVID_PATCH      = xvid_cross.patch
+XVID_PATCH_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(XVID_PATCH)
+XVID_PATCH_URL	= http://boundarydevices.com/$(XVID_PATCH)
+
 
 # ----------------------------------------------------------------------------
 # Get
@@ -34,7 +38,7 @@ XVID_DIR		   = $(BUILDDIR)/$(XVID)
 
 xvid_get: $(STATEDIR)/xvid.get
 
-xvid_get_deps = $(XVID_SOURCE) 
+xvid_get_deps = $(XVID_SOURCE) $(XVID_PATCH_SOURCE)
 
 $(STATEDIR)/xvid.get: $(xvid_get_deps)
 	@$(call targetinfo, $@)
@@ -43,6 +47,10 @@ $(STATEDIR)/xvid.get: $(xvid_get_deps)
 $(XVID_SOURCE):
 	@$(call targetinfo, $@)
 	cd $(CONFIG_ARCHIVEPATH) && wget $(XVID_URL)
+	
+$(XVID_PATCH_SOURCE):
+	@$(call targetinfo, $@)
+	cd $(CONFIG_ARCHIVEPATH) && wget $(XVID_PATCH_URL)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -56,6 +64,7 @@ $(STATEDIR)/xvid.extract: $(xvid_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(XVID_DIR))
 	@cd $(BUILDDIR) && zcat $(XVID_SOURCE) | tar -xvf -
+	@cd $(BUILDDIR) && patch -p0 < $(XVID_PATCH_SOURCE)
 	touch $@
 
 # ----------------------------------------------------------------------------
