@@ -17,8 +17,14 @@ include .config
 include .kernelconfig
 CROSS_LIB_LINK = $(subst //,/,$(INITRD_DIR)/$(CROSS_LIB_DIR))
 
+INITRD_PATH=PATH=$(CROSS_PATH) 
+
 ifeq (y,$(KERNEL_MODULES))
-        MODULES_INSTALL=make -C $(CONFIG_KERNELPATH) INSTALL_MOD_PATH=$(INITRD_DIR) modules_install
+        MODULES_INSTALL=$(INITRD_PATH) \
+                make -C $(CONFIG_KERNELPATH) \
+                INSTALL_MOD_PATH=$(INITRD_DIR) \
+                CROSS_COMPILE=$(CONFIG_CROSSPREFIX)- \
+                modules_install
         MODULES_DEP=module_init_tools_install
 else
         MODULES_INSTALL=echo "---------------- modules not configured\n"
@@ -60,7 +66,7 @@ $(INITRD_DIR): $(MODULES_DEP)
 	@cd $(CROSS_LIB_LINK) && ln -sf /lib
 	@cd $(CROSS_LIB_LINK) && ln -sf /bin
 	mkdir $(INITRD_DIR)/lib64 && mkdir $(INITRD_DIR)/usr/lib64
-	@$(CROSSSTRIP) $(INITRD_DIR)/lib/*
+	@$(INITRD_PATH) find $(INITRD_DIR)/lib/* -type f -exec $(CROSSSTRIP) {} \;
 	cd $(INITRD_DIR)/etc && /sbin/ldconfig -r ../ -v
 	@touch $@
 
