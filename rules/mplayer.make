@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.11 2008-02-19 20:32:44 ericn Exp $
+# $Id: mplayer.make,v 1.12 2008-07-24 16:58:08 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -181,7 +181,7 @@ MPLAYER_AUTOCONF = \
         --disable-pnm \
         --disable-md5sum \
         --disable-arts \
-        --enable-esd \
+        --disable-esd \
         --disable-jack \
         --disable-openal \
         --disable-nas \
@@ -191,6 +191,8 @@ MPLAYER_AUTOCONF = \
         --disable-runtime-cpudetection \
         --disable-tga \
         --disable-x11 \
+        --disable-sdl \
+        --disable-mencoder \
         --extra-libs="-laudiofile -lesd"
 
 ifeq (y,$(KERNEL_FB_SM501))
