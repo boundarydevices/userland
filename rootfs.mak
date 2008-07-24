@@ -8,6 +8,9 @@
 #
 # History:
 # $Log: rootfs.mak,v $
+# Revision 1.34  2008-07-24 16:59:35  ericn
+# deprecate libc-(version).so for libc.so.6
+#
 # Revision 1.33  2007-10-09 00:56:16  ericn
 # -defer name of ld-linux file to rules/glibc.make (it's cross-compiler-specific)
 #
@@ -137,7 +140,6 @@ TARGETS := $(ROOTDIR)/.profile \
            $(ROOTDIR)/etc/ld.so.cache \
            $(ROOTDIR)/bin/jsMenu \
            $(ROOTDIR)/etc/init.d/rcS \
-           $(ROOTDIR)/lib/libc-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libc.so.6 \
            $(ROOTDIR)/lib/libgcc_s.so.1 \
            $(ROOTDIR)/lib/libstdc++.so \
