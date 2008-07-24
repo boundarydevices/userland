@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libungif.make,v 1.3 2007-10-08 21:06:10 ericn Exp $
+# $Id: libungif.make,v 1.4 2008-07-24 16:49:25 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -82,7 +82,8 @@ LIBUNGIF_AUTOCONF = \
    --exec-prefix=$(INSTALLPATH) \
    --includedir=$(INSTALLPATH)/include \
    --mandir=$(INSTALLPATH)/man \
-   --infodir=$(INSTALLPATH)/info
+   --infodir=$(INSTALLPATH)/info \
+   --without-x
 
 $(STATEDIR)/libungif.prepare: $(libungif_prepare_deps)
 	@$(call targetinfo, $@)
