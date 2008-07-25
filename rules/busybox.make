@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: busybox.make,v 1.8 2008-04-01 22:31:20 ericn Exp $
+# $Id: busybox.make,v 1.9 2008-07-25 04:42:54 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -92,7 +92,7 @@ busybox_compile_deps =  $(STATEDIR)/busybox.prepare
 $(STATEDIR)/busybox.compile: $(busybox_compile_deps)
 	@$(call targetinfo, $@)
 	$(BUSYBOX_PATH) && $(BUSYBOX_ENV) \
-   && make -C $(BUSYBOX_DIR) all $(BUSYBOX_MAKEVARS)
+   && make CROSS_COMPILE=$(CONFIG_GNU_TARGET)- -C $(BUSYBOX_DIR) all $(BUSYBOX_MAKEVARS)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -103,6 +103,9 @@ busybox_install: $(STATEDIR)/busybox.install
 
 $(STATEDIR)/busybox.install: $(STATEDIR)/busybox.compile
 	@$(call targetinfo, $@)
+	cd $(BUSYBOX_DIR) &&					\
+		$(BUSYBOX_PATH) $(MAKE) install 		\
+		$(BUSYBOX_MAKEVARS)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -111,15 +114,12 @@ $(STATEDIR)/busybox.install: $(STATEDIR)/busybox.compile
 
 busybox_targetinstall: $(STATEDIR)/busybox.targetinstall
 
-busybox_targetinstall_deps	=  $(STATEDIR)/busybox.compile
+busybox_targetinstall_deps	=  $(STATEDIR)/busybox.install
 
 $(STATEDIR)/busybox.targetinstall: $(busybox_targetinstall_deps)
 	@$(call targetinfo, $@)
-	install -d $(ROOTDIR)
-	rm -f $(BUSYBOX_DIR)/busybox.links
-	cd $(BUSYBOX_DIR) &&					\
-		$(BUSYBOX_PATH) $(MAKE) install 		\
-		PREFIX=$(ROOTDIR) $(BUSYBOX_MAKEVARS)
+	mkdir -p $(ROOTDIR) $(ROOTDIR)/bin
+	cp -rvd $(BUSYBOX_DIR)/_install/* $(ROOTDIR)
 	$(BUSYBOX_PATH) $(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/bin/busybox
 	touch $@
 
