@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: module-init-tools.make,v 1.4 2008-01-02 18:02:25 ericn Exp $
+# $Id: module-init-tools.make,v 1.5 2008-07-25 03:32:21 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -72,7 +72,7 @@ module_init_tools_compile: $(STATEDIR)/module_init_tools.compile
 
 $(STATEDIR)/module_init_tools.compile: $(STATEDIR)/module_init_tools.prepare 
 	@$(call targetinfo, $@)
-	cd $(MODULE_INIT_TOOLS_DIR) && make depmod
+	cd $(MODULE_INIT_TOOLS_DIR) && PATH=$(CROSS_PATH) make depmod
 	touch $@
 
 # ----------------------------------------------------------------------------
