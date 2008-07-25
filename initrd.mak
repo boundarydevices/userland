@@ -52,7 +52,6 @@ $(INITRD_DIR): $(MODULES_DEP)
 	@mkdir -p $(INITRD_DIR)/etc/init.d
 	@mkdir -p $(INITRD_DIR)/lib
 	@cp -rvd $(ROOTDIR)/lib/ld-* $(INITRD_DIR)/lib
-	@cp -rvd $(ROOTDIR)/lib/libc-* $(INITRD_DIR)/lib
 	@cp -rvd $(ROOTDIR)/lib/libc.so* $(INITRD_DIR)/lib
 	@cp -rvd $(ROOTDIR)/lib/libcrypt*.so* $(INITRD_DIR)/lib
 	@cp -rvd $(ROOTDIR)/lib/libgcc_s.so* $(INITRD_DIR)/lib
