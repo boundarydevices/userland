@@ -8,6 +8,9 @@
 #
 # History:
 # $Log: rootfs.mak,v $
+# Revision 1.35  2008-07-25 04:50:48  ericn
+# updated libstdc++, libpthread, libnss references
+#
 # Revision 1.34  2008-07-24 16:59:35  ericn
 # deprecate libc-(version).so for libc.so.6
 #
@@ -144,17 +147,19 @@ TARGETS := $(ROOTDIR)/.profile \
            $(ROOTDIR)/lib/libgcc_s.so.1 \
            $(ROOTDIR)/lib/libstdc++.so \
            $(ROOTDIR)/lib/libstdc++.so.6 \
-           $(ROOTDIR)/lib/libstdc++.so.6.0.3 \
+           $(ROOTDIR)/lib/libstdc++.so.6.0.8 \
            $(ROOTDIR)/lib/libutil-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libutil.so.1 \
            $(ROOTDIR)/lib/libnsl.so.1 \
+           $(ROOTDIR)/lib/libnss_dns-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libnss_dns.so.2 \
+           $(ROOTDIR)/lib/libnss_files-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libnss_files.so.2 \
            $(ROOTDIR)/lib/libcrypt-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libcrypt.so.1 \
            $(ROOTDIR)/lib/libm-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libm.so.6 \
-           $(ROOTDIR)/lib/libpthread-0.10.so \
+           $(ROOTDIR)/lib/libpthread-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/libpthread.so.0 \
            $(ROOTDIR)/lib/ld-$(GLIBC_VER).so \
            $(ROOTDIR)/lib/$(LD_LINUX) \
@@ -177,7 +182,7 @@ $(DIRS):
 	mkdir -p $@
 
 $(ROOTDIR)/lib/modules:
-	make -C $(CONFIG_KERNELPATH) INSTALL_MOD_PATH=$(ROOTDIR) modules_install
+	PATH=$(CROSS_PATH) make -C $(CONFIG_KERNELPATH) INSTALL_MOD_PATH=$(ROOTDIR) ARCH=arm CROSS_COMPILE=$(CONFIG_CROSSPREFIX)- modules_install
 
 $(CROSS_LIB_LINK)/lib:
 	mkdir -p $(CROSS_LIB_LINK)
