@@ -125,6 +125,10 @@ choice
       bool
       prompt "Neon-270"
 
+      config XENON
+      bool
+      prompt "Xenon"
+
 endchoice
 
 source "rules/udev.in"
