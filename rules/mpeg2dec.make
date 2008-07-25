@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mpeg2dec.make,v 1.9 2007-10-08 21:06:10 ericn Exp $
+# $Id: mpeg2dec.make,v 1.10 2008-07-25 03:17:36 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -15,6 +15,8 @@
 ifdef CONFIG_LIBMPEG2
 PACKAGES += mpeg2dec
 endif
+
+include $(TOPDIR)/.kernelconfig
 
 #
 # Paths and names
@@ -94,9 +96,13 @@ mpeg2dec_prepare_deps = \
 	$(STATEDIR)/mpeg2dec.extract 
 
 MPEG2DEC_PATH	=  PATH=$(CROSS_PATH)
-#MPEG2DEC_ENV 	=  $(CROSS_ENV) CFLAGS+="-DHAVE_IWMMXT=1 -mcpu=iwmmxt"
-MPEG2DEC_ENV 	=  $(CROSS_ENV)
-#MPEG2DEC_ENV	+=
+MPEG2DEC_ENV =  $(CROSS_ENV) 
+ifeq (y,$(KERNEL_FB_SM501))
+        MPEG2DEC_ENV += CFLAGS+="-DHAVE_IWMMXT=1 -mcpu=iwmmxt"
+endif
+ifeq (y,$(KERNEL_FB_DAVINCI))
+        MPEG2DEC_ENV += $(CROSS_ENV) CFLAGS+="-mcpu=arm926ej-s"
+endif
 
 #
 # autoconf
