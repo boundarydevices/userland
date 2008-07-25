@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: rsync.make,v 1.3 2008-07-24 16:57:45 ericn Exp $
+# $Id: rsync.make,v 1.4 2008-07-25 03:40:23 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -105,7 +105,7 @@ rsync_install: $(STATEDIR)/rsync.install
 $(STATEDIR)/rsync.install: $(STATEDIR)/rsync.compile
 	@$(call targetinfo, $@)
 	cd $(RSYNC_DIR) && $(RSYNC_PATH) make install
-	$(CROSSSTRIP) $(INSTALLPATH)/bin/rsync
+	$(RSYNC_PATH) $(CROSSSTRIP) $(INSTALLPATH)/bin/rsync
 	touch $@
 
 # ----------------------------------------------------------------------------

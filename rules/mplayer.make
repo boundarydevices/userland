@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.14 2008-07-25 03:32:39 ericn Exp $
+# $Id: mplayer.make,v 1.15 2008-07-25 03:40:30 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -235,7 +235,7 @@ $(STATEDIR)/mplayer.install: $(STATEDIR)/mplayer.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
 	cp -fv $(MPLAYER_DIR)/mplayer $(INSTALLPATH)/bin
-	$(CROSSSTRIP) $(INSTALLPATH)/bin/mplayer
+	$(MPLAYER_PATH) $(CROSSSTRIP) $(INSTALLPATH)/bin/mplayer
 	touch $@
 
 # ----------------------------------------------------------------------------
