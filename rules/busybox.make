@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: busybox.make,v 1.9 2008-07-25 04:42:54 ericn Exp $
+# $Id: busybox.make,v 1.10 2008-07-25 04:50:16 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -104,7 +104,9 @@ busybox_install: $(STATEDIR)/busybox.install
 $(STATEDIR)/busybox.install: $(STATEDIR)/busybox.compile
 	@$(call targetinfo, $@)
 	cd $(BUSYBOX_DIR) &&					\
-		$(BUSYBOX_PATH) $(MAKE) install 		\
+		$(BUSYBOX_PATH)  \
+                CROSS_COMPILE=$(CONFIG_GNU_TARGET)- \
+                $(MAKE) install 		\
 		$(BUSYBOX_MAKEVARS)
 	touch $@
 
