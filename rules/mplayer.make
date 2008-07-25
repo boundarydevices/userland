@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.13 2008-07-24 21:32:50 ericn Exp $
+# $Id: mplayer.make,v 1.14 2008-07-25 03:32:39 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -196,10 +196,14 @@ MPLAYER_AUTOCONF = \
         --extra-libs="-laudiofile -lesd"
 
 ifeq (y,$(KERNEL_FB_SM501))
-MPLAYER_AUTOCONF += --enable-sm501_bd
+MPLAYER_AUTOCONF += --enable-sm501_bd \
+                    --enable-iwmmxt \
+                    --enable-armpld                    
 endif
 ifeq (y,$(KERNEL_FB_DAVINCI))
-MPLAYER_AUTOCONF += --enable-davinci
+MPLAYER_AUTOCONF += --enable-davinci \
+                    --enable-armv5te \
+                    --enable-armpld                    
 endif
 
 $(STATEDIR)/mplayer.prepare: $(mplayer_prepare_deps)
