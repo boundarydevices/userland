@@ -1,4 +1,4 @@
 config AUDIOFILE
 	bool
-   default n
+   default y
 	prompt "Compile audiofile library"
