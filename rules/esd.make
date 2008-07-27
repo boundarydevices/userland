@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: esd.make,v 1.2 2008-07-25 03:44:20 ericn Exp $
+# $Id: esd.make,v 1.3 2008-07-27 17:07:52 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -59,7 +59,7 @@ esound_prepare_deps = \
 	$(STATEDIR)/esound.extract
 
 ESOUND_PATH	=  PATH=$(CROSS_PATH)
-ESOUND_AUTOCONF 	= --host=$(CONFIG_GNU_HOST) --disable-arts --without-glib
+ESOUND_AUTOCONF = --host=$(CONFIG_GNU_HOST) --disable-arts --without-glib --prefix=/
                     
 
 $(STATEDIR)/esound.prepare: $(esound_prepare_deps)
@@ -94,7 +94,6 @@ esound_install: $(STATEDIR)/esound.install
 
 $(STATEDIR)/esound.install: $(STATEDIR)/esound.compile
 	@$(call targetinfo, $@)
-	install -d $(INSTALLPATH)
 	cd $(ESOUND_DIR) && $(ESOUND_PATH) DESTDIR=$(INSTALLPATH) make install
 	touch $@
 
