@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: glibc.make,v 1.14 2008-07-25 04:43:38 ericn Exp $
+# $Id: glibc.make,v 1.15 2008-07-27 15:45:38 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -32,7 +32,7 @@ $(ROOTDIR)/lib/libgcc_s.so.1: $(GCC_PATH)/lib/libgcc_s.so.1
 
 $(ROOTDIR)/lib/libstdc++.so.6: 
 	mkdir -p $(ROOTDIR)/lib
-	cp -fvd $(STDCPP_PATH)/libstdc++\*.so\* $(ROOTDIR)/lib/
+	cp -fvd $(STDCPP_PATH)/libstdc++*.so* $(ROOTDIR)/lib/
 	$(SETGLIBCPATH) $(CROSSSTRIP) $@
                 
 $(ROOTDIR)/lib/libstdc++.so: $(ROOTDIR)/lib/libstdc++.so.6
