@@ -51,6 +51,13 @@ config GLIBC_PATH
                 crosstool-generated toolchains, but may differ for
                 MontaVista or OE toolchains.
 
+config GCC_PATH
+        string
+        prompt "gcc path"
+        default '/opt/crosstool/gcc-3.4.3-glibc-2.3.5/arm-linux/'
+        help
+                Location of libgcc_s.so
+
 config LD_LINUX_VER
         string
         prompt "ld-linux version"
