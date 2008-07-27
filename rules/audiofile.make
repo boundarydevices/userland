@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: audiofile.make,v 1.1 2008-02-19 20:32:44 ericn Exp $
+# $Id: audiofile.make,v 1.2 2008-07-27 18:32:43 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -101,8 +101,9 @@ audiofile_targetinstall: $(STATEDIR)/audiofile.targetinstall
 
 $(STATEDIR)/audiofile.targetinstall: $(STATEDIR)/audiofile.install
 	@$(call targetinfo, $@)
-	@mkdir -p $(ROOTDIR)/sbin
-	cp -fv $(INSTALLPATH)/sbin/audiofile $(ROOTDIR)/sbin && $(CROSSSTRIP) $(ROOTDIR)/sbin/audiofile
+	mkdir -p $(ROOTDIR)/lib/
+	cp -fvd $(INSTALLPATH)/lib/libaudiofile*.so* $(ROOTDIR)/lib/
+	$(AUDIOFILE_PATH) $(CROSSSTRIP) $(ROOTDIR)/lib/libaudiofile*
 	touch $@
 
 # ----------------------------------------------------------------------------
