@@ -195,4 +195,5 @@ source "rules/module-init-tools.in"
 source "rules/wpa_supplicant.in"
 source "rules/DirectFB-examples.in"
 source "rules/mplayer.in"
-
+source "rules/audiofile.in"
+source "rules/esd.in"

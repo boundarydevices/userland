@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.16 2008-07-25 03:44:34 ericn Exp $
+# $Id: mplayer.make,v 1.17 2008-07-27 17:08:34 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -96,6 +96,19 @@ mplayer_prepare_deps = \
         $(STATEDIR)/mad.install \
         $(STATEDIR)/alsa.install
         
+MPLAYER_LIBS=
+ifeq (y, $(CONFIG_AUDIOFILE))
+MPLAYER_LIBS += -laudiofile
+mplayer_prepare_deps += $(STATEDIR)/audiofile.install
+endif
+
+ifeq (y, $(CONFIG_ESOUND))
+MPLAYER_LIBS += -lesd
+MPLAYER_ESD = --enable-esd
+mplayer_prepare_deps += $(STATEDIR)/esound.install
+else
+MPLAYER_ESD = --disable-esd
+endif
 
 MPLAYER_PATH            = PATH=$(CROSS_PATH)
 MPLAYER_AUTOCONF = \
@@ -181,7 +194,7 @@ MPLAYER_AUTOCONF = \
         --disable-pnm \
         --disable-md5sum \
         --disable-arts \
-        --disable-esd \
+        $(MPLAYER_ESD) \
         --disable-jack \
         --disable-openal \
         --disable-nas \
@@ -193,7 +206,7 @@ MPLAYER_AUTOCONF = \
         --disable-x11 \
         --disable-sdl \
         --disable-mencoder \
-        --extra-libs="-laudiofile -lesd"
+        --extra-libs="$(MPLAYER_LIBS)"
 
 ifeq (y,$(KERNEL_FB_SM501))
 MPLAYER_AUTOCONF += --enable-sm501_bd \
