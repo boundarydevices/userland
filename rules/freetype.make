@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: freetype.make,v 1.4 2007-10-08 21:06:10 ericn Exp $
+# $Id: freetype.make,v 1.5 2008-07-29 22:12:30 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -19,12 +19,13 @@ endif
 #
 # Paths and names
 #
-FREETYPE_VERSION	= 2.1.10
+FREETYPE_VERSION	= 2.3.7
 FREETYPE		= freetype-$(FREETYPE_VERSION)
 FREETYPE_SUFFIX		= tar.gz
 FREETYPE_URL		= http://umn.dl.sourceforge.net/sourceforge/freetype/$(FREETYPE).$(FREETYPE_SUFFIX)
 FREETYPE_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(FREETYPE).$(FREETYPE_SUFFIX)
 FREETYPE_DIR		= $(BUILDDIR)/$(FREETYPE)
+FREETYPE_SHARED=yes
 
 # ----------------------------------------------------------------------------
 # Get
@@ -76,15 +77,7 @@ FREETYPE_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 FREETYPE_AUTOCONF = \
-	--host=$(CONFIG_GNU_HOST) \
-	--prefix=$(CROSS_LIB_DIR) \
-   --enable-shared=no \
-   --enable-static=yes \
-   --exec-prefix=$(INSTALLPATH) \
-   --includedir=$(INSTALLPATH)/include \
-   --datadir=$(INSTALLPATH)/share \
-   --mandir=$(INSTALLPATH)/man \
-   --infodir=$(INSTALLPATH)/info
+	--host=$(CONFIG_GNU_HOST) --prefix=/
 
 ifdef FREETYPE_SHARED
    FREETYPE_AUTOCONF += --enable-shared=yes --enable-static=no
@@ -121,7 +114,7 @@ freetype_install: $(STATEDIR)/freetype.install
 
 $(STATEDIR)/freetype.install: $(STATEDIR)/freetype.compile
 	@$(call targetinfo, $@)
-	$(FREETYPE_PATH) make -C $(FREETYPE_DIR) install
+	$(FREETYPE_PATH) make -C $(FREETYPE_DIR) DESTDIR=$(INSTALLPATH) install
 	touch $@
 
 # ----------------------------------------------------------------------------
