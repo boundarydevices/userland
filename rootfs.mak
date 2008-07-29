@@ -8,6 +8,9 @@
 #
 # History:
 # $Log: rootfs.mak,v $
+# Revision 1.36  2008-07-29 00:14:03  ericn
+# only spawn /sbin/getty on ttyS0
+#
 # Revision 1.35  2008-07-25 04:50:48  ericn
 # updated libstdc++, libpthread, libnss references
 #
@@ -205,9 +208,8 @@ $(ROOTDIR)/etc/hosts: /etc/hosts
 
 $(ROOTDIR)/etc/inittab: $(ROOTDIR)/etc
 	echo "::sysinit:/etc/init.d/rcS" > $@
-	echo "tty0::respawn:/sbin/getty 115200 /dev/ttyS0" >> $@
-	echo "tty1::askfirst:-/sbin/getty 115200 /dev/ttyS1" >> $@
-	echo "tty2::askfirst:-/sbin/getty 115200 /dev/ttyS2" >> $@
+	echo "#tty1::askfirst:-/sbin/getty 115200 /dev/ttyS1" >> $@
+	echo "#tty2::askfirst:-/sbin/getty 115200 /dev/ttyS2" >> $@
 	echo "::respawn:/sbin/getty 115200 /dev/ttyS0" >> $@
 	echo "::ctrlaltdel:/sbin/reboot" >> $@
 	echo "::shutdown:/sbin/swapoff -a" >> $@
