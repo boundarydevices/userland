@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: zlib.make,v 1.6 2007-05-11 19:23:41 ericn Exp $
+# $Id: zlib.make,v 1.7 2008-07-29 22:22:08 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -59,12 +59,7 @@ zlib_prepare_deps = \
 	$(STATEDIR)/zlib.extract
 
 ZLIB_PATH	=  PATH=$(CROSS_PATH)
-ZLIB_AUTOCONF 	= --prefix=$(INSTALLPATH) 
-
-ifdef CONFIG_ZLIB_SHARED
-   ZLIB_AUTOCONF 	+=  --shared
-else
-endif
+ZLIB_AUTOCONF 	= --prefix=$(INSTALLPATH) -shared
 
 $(STATEDIR)/zlib.prepare: $(zlib_prepare_deps)
 	@$(call targetinfo, $@)
@@ -95,7 +90,7 @@ zlib_install: $(STATEDIR)/zlib.install
 $(STATEDIR)/zlib.install: $(STATEDIR)/zlib.compile
 	@$(call targetinfo, $@)
 	install -d $(INSTALLPATH)/include
-	cd $(ZLIB_DIR) && $(ZLIB_PATH) make install
+	cd $(ZLIB_DIR) && $(ZLIB_PATH) make DESTDIR=$(INSTALLPATH) install
 	touch $@
 
 # ----------------------------------------------------------------------------
