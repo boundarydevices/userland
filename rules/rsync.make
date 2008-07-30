@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: rsync.make,v 1.4 2008-07-25 03:40:23 ericn Exp $
+# $Id: rsync.make,v 1.5 2008-07-30 19:34:19 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-RSYNC			= rsync-2.6.9
+RSYNC			= rsync-3.0.3
 RSYNC_URL 	= http://samba.anu.edu.au/ftp/rsync/$(RSYNC).tar.gz
 RSYNC_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(RSYNC).tar.gz
 RSYNC_DIR		= $(BUILDDIR)/$(RSYNC)
