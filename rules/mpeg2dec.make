@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mpeg2dec.make,v 1.11 2008-07-27 15:45:16 ericn Exp $
+# $Id: mpeg2dec.make,v 1.12 2008-07-30 20:00:10 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -98,11 +98,11 @@ mpeg2dec_prepare_deps = \
 MPEG2DEC_PATH	=  PATH=$(CROSS_PATH)
 MPEG2DEC_ENV =  $(CROSS_ENV) 
 ifeq (y,$(KERNEL_FB_SM501))
-#       MPEG2DEC_ENV += CFLAGS+="-DHAVE_IWMMXT=1 -mcpu=iwmmxt"
-        MPEG2DEC_ENV += CFLAGS+="-mcpu=iwmmxt"
+#       MPEG2DEC_ENV+= CFLAGS+="-DHAVE_IWMMXT=1 -mcpu=iwmmxt"
+        MPEG2DEC_ENV+=CFLAGS=-mcpu=iwmmxt
 endif
 ifeq (y,$(KERNEL_FB_DAVINCI))
-        MPEG2DEC_ENV += $(CROSS_ENV) CFLAGS+="-mcpu=arm926ej-s"
+        MPEG2DEC_ENV+=CFLAGS=-mcpu=arm926ej-s
 endif
 
 #
