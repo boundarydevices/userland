@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: libungif.make,v 1.4 2008-07-24 16:49:25 ericn Exp $
+# $Id: libungif.make,v 1.5 2008-07-30 19:21:16 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -111,14 +111,6 @@ $(STATEDIR)/libungif.compile: $(libungif_compile_deps)
 # ----------------------------------------------------------------------------
 
 libungif_install: $(STATEDIR)/libungif.install
-
-ifdef LIBUNGIF_SHARED
-   INSTPOST = echo "Installing shared library"
-else
-   INSTPOST = echo "NOT Installing shared library" \
-      && rm -f $(INSTALLPATH)/lib/libungif.so* \
-      && rm -f $(INSTALLPATH)/lib/libungif.la 
-endif
 
 $(STATEDIR)/libungif.install: $(STATEDIR)/libungif.compile
 	@$(call targetinfo, $@)

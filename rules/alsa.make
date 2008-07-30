@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: alsa.make,v 1.6 2007-10-08 21:06:10 ericn Exp $
+# $Id: alsa.make,v 1.7 2008-07-30 19:21:06 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -65,7 +65,7 @@ ALSA_AUTOCONF = \
    --enable-shared=yes \
    --enable-static=yes \
    --disable-sdl \
-   --includedir=$(INSTALLPATH)/include
+   --prefix=/
 
 $(STATEDIR)/alsa.prepare: $(alsa_prepare_deps)
 	@$(call targetinfo, $@)
