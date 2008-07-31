@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: e2fsprogs.make,v 1.6 2008-07-31 17:31:35 ericn Exp $
+# $Id: e2fsprogs.make,v 1.7 2008-07-31 17:37:19 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -128,7 +128,7 @@ ifdef CONFIG_E2FSPROGS_MKFS
 	$(E2FSPROGS_PATH) $(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/sbin/mke2fs
 endif
 ifdef CONFIG_E2FSPROGS_E2FSCK
-	install $(E2FSPROGS_BUILD_DIR)/e2fsck/e2fsck.shared $(ROOTDIR)/sbin/e2fsck
+	install $(E2FSPROGS_BUILD_DIR)/e2fsck/e2fsck $(ROOTDIR)/sbin/e2fsck
 	$(E2FSPROGS_PATH) $(CROSSSTRIP) -R .note -R .comment $(ROOTDIR)/sbin/e2fsck
 endif
 	touch $@
