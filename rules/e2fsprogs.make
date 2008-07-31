@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: e2fsprogs.make,v 1.5 2007-10-08 21:06:10 ericn Exp $
+# $Id: e2fsprogs.make,v 1.6 2008-07-31 17:31:35 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -19,7 +19,7 @@ endif
 #
 # Paths and names 
 #
-E2FSPROGS_VERSION		= 1.38
+E2FSPROGS_VERSION		= 1.41.0
 E2FSPROGS			= e2fsprogs-$(E2FSPROGS_VERSION)
 E2FSPROGS_SUFFIX		= tar.gz
 E2FSPROGS_URL			= http://easynews.dl.sourceforge.net/sourceforge/e2fsprogs/$(E2FSPROGS).$(E2FSPROGS_SUFFIX)
