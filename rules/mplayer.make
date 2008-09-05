@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.17 2008-07-27 17:08:34 ericn Exp $
+# $Id: mplayer.make,v 1.18 2008-09-05 19:03:04 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -209,10 +209,18 @@ MPLAYER_AUTOCONF = \
         --extra-libs="$(MPLAYER_LIBS)"
 
 ifeq (y,$(KERNEL_FB_SM501))
-MPLAYER_AUTOCONF += --enable-sm501_bd \
-                    --enable-iwmmxt \
+MPLAYER_AUTOCONF += --enable-sm501_bd
+endif
+
+ifeq (y,$(KERNEL_PXA27x))
+MPLAYER_AUTOCONF += --enable-iwmmxt \
                     --enable-armpld                    
 endif
+
+ifeq (y,$(KERNEL_FB_PXA_YUV))
+MPLAYER_AUTOCONF += --enable-pxa27x                    
+endif
+
 ifeq (y,$(KERNEL_FB_DAVINCI))
 MPLAYER_AUTOCONF += --enable-davinci \
                     --enable-armv5te \
@@ -246,9 +254,9 @@ mplayer_install: $(STATEDIR)/mplayer.install
 
 $(STATEDIR)/mplayer.install: $(STATEDIR)/mplayer.compile
 	@$(call targetinfo, $@)
-	install -d $(INSTALLPATH)/include
+	echo "--------------------------------------- installing mplayer from $(MPLAYER_DIR)"
 	cp -fv $(MPLAYER_DIR)/mplayer $(INSTALLPATH)/bin
-	$(MPLAYER_PATH) $(CROSSSTRIP) $(INSTALLPATH)/bin/mplayer
+	$(CROSSSTRIP) $(INSTALLPATH)/bin/mplayer
 	touch $@
 
 # ----------------------------------------------------------------------------
