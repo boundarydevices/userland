@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: ffmpeg.make,v 1.4 2007-07-07 19:20:19 ericn Exp $
+# $Id: ffmpeg.make,v 1.5 2008-09-18 00:54:36 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -19,8 +19,8 @@ endif
 #
 # Paths and names
 #
-FFMPEG_VERSION	= 20061207
-FFMPEG		= ffmpeg-$(FFMPEG_VERSION)
+FFMPEG_VERSION	= 20080917-r15352
+FFMPEG		= ffmpeg-svn-$(FFMPEG_VERSION)
 FFMPEG_SUFFIX		= tar.gz
 FFMPEG_URL		= http://boundarydevices.com/archives/$(FFMPEG).$(FFMPEG_SUFFIX)
 FFMPEG_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(FFMPEG).$(FFMPEG_SUFFIX)
@@ -76,23 +76,14 @@ FFMPEG_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 FFMPEG_AUTOCONF = \
-	--prefix=$(CROSS_LIB_DIR) \
    --arch=armv4l \
-   --cross-compile \
-   --cross-prefix=arm-linux- \
-   --cross-prefix=$(CONFIG_GNU_TARGET)- \
    --enable-static \
-   --prefix=$(INSTALLPATH) \
-   --incdir=$(INSTALLPATH)/include \
-   --mandir=$(INSTALLPATH)/man \
-   --libdir=$(INSTALLPATH)/lib \
+   --prefix=/usr \
    --disable-decoder=snow \
    --disable-encoder=snow \
-   --disable-v4l \
-   --disable-v4l2 \
+   --enable-swscale \
    --enable-gpl \
-   --enable-xvid 
-
+   --cross-prefix=$(CONFIG_GNU_TARGET)-
 
 $(STATEDIR)/ffmpeg.prepare: $(ffmpeg_prepare_deps)
 	@$(call targetinfo, $@)
@@ -116,7 +107,6 @@ ffmpeg_compile_deps = $(STATEDIR)/ffmpeg.prepare
 $(STATEDIR)/ffmpeg.compile: $(ffmpeg_compile_deps)
 	@$(call targetinfo, $@)
 	$(FFMPEG_PATH) make -C $(FFMPEG_DIR)
-	$(FFMPEG_PATH) make -C lib
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -127,16 +117,7 @@ ffmpeg_install: $(STATEDIR)/ffmpeg.install
 
 $(STATEDIR)/ffmpeg.install: $(STATEDIR)/ffmpeg.compile
 	@$(call targetinfo, $@)
-	mkdir -p $(INSTALLPATH)/include/libavformat
-	mkdir -p $(INSTALLPATH)/lib
-	cp -f $(FFMPEG_DIR)/libavformat/*.h $(INSTALLPATH)/include/libavformat
-	cp -f $(FFMPEG_DIR)/libavformat/libavformat.a $(INSTALLPATH)/lib/libavformat.a
-	mkdir -p $(INSTALLPATH)/include/libavcodec
-	cp -f $(FFMPEG_DIR)/libavcodec/*.h $(INSTALLPATH)/include/libavcodec
-	cp -f $(FFMPEG_DIR)/libavcodec/libavcodec.a $(INSTALLPATH)/lib/libavcodec.a
-	mkdir -p $(INSTALLPATH)/include/libavutil
-	cp -f $(FFMPEG_DIR)/libavutil/*.h $(INSTALLPATH)/include/libavutil
-	cp -f $(FFMPEG_DIR)/libavutil/libavutil.a $(INSTALLPATH)/lib/libavutil.a
+	cd $(FFMPEG_DIR) && make DESTDIR=$(INSTALLPATH) install
 	touch $@
 
 # ----------------------------------------------------------------------------
