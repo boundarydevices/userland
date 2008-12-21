@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: wireless_tools.make,v 1.1 2007-02-02 16:00:30 ericn Exp $
+# $Id: wireless_tools.make,v 1.2 2008-12-21 20:19:48 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,8 +18,8 @@ endif
 #
 # Paths and names 
 #
-WIRELESS_TOOLS			   = wireless_tools.28
-WIRELESS_TOOLS_URL 	   = http://pcmcia-cs.sourceforge.net/ftp/contrib/$(WIRELESS_TOOLS).tar.gz
+WIRELESS_TOOLS			   = wireless_tools.29
+WIRELESS_TOOLS_URL 	   = http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/$(WIRELESS_TOOLS).tar.gz
 WIRELESS_TOOLS_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(WIRELESS_TOOLS).tar.gz
 WIRELESS_TOOLS_DIR		= $(BUILDDIR)/$(WIRELESS_TOOLS)
 
