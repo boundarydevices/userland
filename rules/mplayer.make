@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.18 2008-09-05 19:03:04 ericn Exp $
+# $Id: mplayer.make,v 1.19 2008-12-21 20:19:26 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -128,9 +128,9 @@ MPLAYER_AUTOCONF = \
         --disable-joystick \
         --disable-vm \
         --disable-xf86keysym \
-	--disable-tv \
-        --disable-tv-v4l2 \
-        --disable-v4l2 \
+	--enable-tv \
+        --enable-tv-v4l2 \
+        --enable-v4l2 \
         --disable-tv-bsdbt848 \
         --disable-winsock2 \
 	--disable-smb \
@@ -209,7 +209,8 @@ MPLAYER_AUTOCONF = \
         --extra-libs="$(MPLAYER_LIBS)"
 
 ifeq (y,$(KERNEL_FB_SM501))
-MPLAYER_AUTOCONF += --enable-sm501_bd
+MPLAYER_AUTOCONF += --enable-sm501_bd \
+                    --enable-pxa27x
 endif
 
 ifeq (y,$(KERNEL_PXA27x))
