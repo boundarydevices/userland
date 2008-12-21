@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: alsa-utils.make,v 1.3 2007-10-08 21:06:10 ericn Exp $
+# $Id: alsa-utils.make,v 1.4 2008-12-21 20:20:39 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-ALSA_UTILS		= alsa-utils-1.0.9a
+ALSA_UTILS		= alsa-utils-1.0.17
 ALSA_UTILS_URL 	        = ftp://ftp.alsa-project.org/pub/utils/$(ALSA_UTILS).tar.bz2
 ALSA_UTILS_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(ALSA_UTILS).tar.bz2
 ALSA_UTILS_DIR		= $(BUILDDIR)/$(ALSA_UTILS)
