@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: wpa_supplicant.make,v 1.7 2008-04-10 23:52:49 ericn Exp $
+# $Id: wpa_supplicant.make,v 1.8 2009-02-24 18:14:13 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -20,11 +20,12 @@ ECHO?=`which echo`
 #
 # Paths and names 
 #
-#WPA_SUPPLICANT			= wpa_supplicant-0.5.8
-WPA_SUPPLICANT			= wpa_supplicant-0.5.8
+#WPA_SUPPLICANT			= wpa_supplicant-0.6.8
+WPA_SUPPLICANT			= wpa_supplicant-0.6.8
 WPA_SUPPLICANT_URL 	= http://hostap.epitest.fi/releases/$(WPA_SUPPLICANT).tar.gz
 WPA_SUPPLICANT_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(WPA_SUPPLICANT).tar.gz
-WPA_SUPPLICANT_DIR		= $(BUILDDIR)/$(WPA_SUPPLICANT)
+WPA_SUPPLICANT_BASE             = $(BUILDDIR)/$(WPA_SUPPLICANT)
+WPA_SUPPLICANT_DIR		= $(WPA_SUPPLICANT_BASE)/wpa_supplicant
 WPA_SUPPLICANT_CONFIG = $(CONFIG_ARCHIVEPATH)/wpas_config_20070128
 WPA_SUPPLICANT_CONFIG_URL = http://boundarydevices.com/wpas_config_20070128
 
@@ -53,7 +54,7 @@ $(WPA_SUPPLICANT_CONFIG):
 
 $(STATEDIR)/wpa_supplicant.extract: $(STATEDIR)/wpa_supplicant.get $(WPA_SUPPLICANT_CONFIG)
 	@$(call targetinfo, $@)
-	@$(call clean, $(WPA_SUPPLICANT_DIR))
+	@$(call clean, $(WPA_SUPPLICANT_BASE))
 	@cd $(BUILDDIR) && zcat $(WPA_SUPPLICANT_SOURCE) | tar -xvf -
 	@cd $(WPA_SUPPLICANT_DIR) && cp -fv $(WPA_SUPPLICANT_CONFIG) .config
 	@$(ECHO) -e "\nCC=$(CONFIG_CROSSPREFIX)-gcc" >> $(WPA_SUPPLICANT_DIR)/.config
@@ -116,6 +117,6 @@ $(STATEDIR)/wpa_supplicant.targetinstall: $(STATEDIR)/wpa_supplicant.install
 # ----------------------------------------------------------------------------
 
 wpa_supplicant_clean: 
-	rm -rf $(STATEDIR)/wpa_supplicant.* $(WPA_SUPPLICANT_DIR)
+	rm -rf $(STATEDIR)/wpa_supplicant.* $(WPA_SUPPLICANT_BASE)
 
 # vim: syntax=make
