@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: busybox.make,v 1.11 2008-09-05 19:04:10 ericn Exp $
+# $Id: busybox.make,v 1.12 2009-06-06 00:05:05 ericn Exp $
 #
 # Copyright (C) 2003 by Robert Schwebel <r.schwebel@pengutronix.de>
 #          
@@ -25,8 +25,8 @@ BUSYBOX_SUFFIX		= tar.bz2
 BUSYBOX_URL		= http://www.busybox.net/downloads/$(BUSYBOX).$(BUSYBOX_SUFFIX)
 BUSYBOX_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).$(BUSYBOX_SUFFIX)
 BUSYBOX_DIR		= $(BUILDDIR)/$(BUSYBOX)
-BUSYBOX_CONFIG_URL = http://boundarydevices.com/$(BUSYBOX).config.20080826
-BUSYBOX_CONFIG = $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).config.20080401
+BUSYBOX_CONFIG_URL = http://boundarydevices.com/$(BUSYBOX).config.20090605
+BUSYBOX_CONFIG = $(CONFIG_ARCHIVEPATH)/$(BUSYBOX).config.20090605
 
 # ----------------------------------------------------------------------------
 # Get
