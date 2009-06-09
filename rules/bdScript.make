@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: bdScript.make,v 1.43 2008-07-27 15:48:27 ericn Exp $
+# $Id: bdScript.make,v 1.44 2009-06-09 23:13:32 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -21,7 +21,7 @@ endif
 #
 BDSCRIPT_VERSION	= 20080727
 
-ifdef CONFIG_BDSCRIPT_CVS
+ifdef CONFIG_BDSCRIPT_GIT
    BDSCRIPT		= bdScript
 else
    BDSCRIPT		= bdScript-$(BDSCRIPT_VERSION)
@@ -36,13 +36,13 @@ BDSCRIPT_DIR		= $(BUILDDIR)/bdScript
 # Get
 # ----------------------------------------------------------------------------
 
-ifdef CONFIG_BDSCRIPT_CVS
+ifdef CONFIG_BDSCRIPT_GIT
    bdScript_get: $(STATEDIR)/bdScript.get
 
    $(STATEDIR)/bdScript.get:
 		@$(call targetinfo, $@)
 		mkdir -p $(BUILDDIR) $(STATEDIR)
-		cd $(BUILDDIR) && cvs checkout bdScript
+		cd $(BUILDDIR) && git-clone git.boundarydevices.com:/repository/bdScript
 		touch $@
 
 else
@@ -66,7 +66,7 @@ bdScript_extract: $(STATEDIR)/bdScript.extract
 
 bdScript_extract_deps = $(STATEDIR)/bdScript.get
 
-ifdef CONFIG_BDSCRIPT_CVS
+ifdef CONFIG_BDSCRIPT_GIT
    $(STATEDIR)/bdScript.extract: $(bdScript_extract_deps)
 		@$(call targetinfo, $@)
 		touch $@
