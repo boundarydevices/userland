@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: gdb.make,v 1.5 2007-10-08 21:07:21 ericn Exp $
+# $Id: gdb.make,v 1.6 2009-06-16 00:32:04 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -70,7 +70,7 @@ GDB_TARGET_CONFIGURE_VARS:= \
 
 gdb_PATH	=  PATH=$(CROSS_PATH)
 gdb_AUTOCONF 	= \
-	--host=$(CONFIG_GNU_HOST) \
+	--host=$(CONFIG_GNU_TARGET) \
 	--target=$(CONFIG_GNU_TARGET) \
 	--prefix=$(INSTALLPATH) \
    --exec-prefix=$(INSTALLPATH) \
@@ -128,8 +128,10 @@ gdb_compile: $(STATEDIR)/gdb.compile
 
 $(STATEDIR)/gdb.compile: $(STATEDIR)/gdb.prepare 
 	@$(call targetinfo, $@)
-	cd $(gdb_DIR) && $(GDB_TARGET_CONFIGURE_VARS) $(gdb_PATH) ./configure $(gdb_AUTOCONF)
-	cd $(gdb_DIR) && $(gdb_PATH) make all
+	cd $(gdb_DIR)/libiberty && $(GDB_TARGET_CONFIGURE_VARS) $(gdb_PATH) $(CROSS_ENV) ./configure $(gdb_AUTOCONF)
+	cd $(gdb_DIR) && $(GDB_TARGET_CONFIGURE_VARS) $(gdb_PATH) $(CROSS_ENV) ./configure $(gdb_AUTOCONF)
+	cd $(gdb_DIR)/intl && noconfigdirs=target-libiberty $(GDB_TARGET_CONFIGURE_VARS) $(gdb_PATH) $(CROSS_ENV) ./configure $(gdb_AUTOCONF)
+	cd $(gdb_DIR) && $(gdb_PATH) $(CROSS_ENV) make all
 	cd $(gdb_DIR)/gdb/gdbserver && make realclean && chmod a+x configure && $(GDB_TARGET_CONFIGURE_VARS) $(gdb_PATH) $(CROSS_ENV) ./configure $(gdbserver_AUTOCONF)
 	cd $(gdb_DIR)/gdb/gdbserver && $(CROSS_ENV) $(gdb_PATH) make all
 	touch $@

@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: freetype.make,v 1.5 2008-07-29 22:12:30 ericn Exp $
+# $Id: freetype.make,v 1.6 2009-06-16 00:32:04 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -88,6 +88,8 @@ endif
 $(STATEDIR)/freetype.prepare: $(freetype_prepare_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(FREETYPE_DIR)/config.cache)
+	echo CROSS_PATH=$(CROSS_PATH)
+	echo PATH=$(PATH)
 	cd $(FREETYPE_DIR) && \
 		$(FREETYPE_PATH) $(FREETYPE_ENV) \
 		./configure $(FREETYPE_AUTOCONF)

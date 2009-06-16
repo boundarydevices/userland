@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.19 2008-12-21 20:19:26 ericn Exp $
+# $Id: mplayer.make,v 1.20 2009-06-16 00:32:04 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -92,10 +92,13 @@ mplayer_prepare: $(STATEDIR)/mplayer.prepare
 
 mplayer_prepare_deps = \
 	$(STATEDIR)/mplayer.extract \
-	$(STATEDIR)/xvid.install \
         $(STATEDIR)/mad.install \
         $(STATEDIR)/alsa.install
-        
+
+ifneq (y,$(KERNEL_FB_DAVINCI))
+mplayer_prepare_deps += $(STATEDIR)/xvid.install
+endif
+
 MPLAYER_LIBS=
 ifeq (y, $(CONFIG_AUDIOFILE))
 MPLAYER_LIBS += -laudiofile
@@ -225,7 +228,14 @@ endif
 ifeq (y,$(KERNEL_FB_DAVINCI))
 MPLAYER_AUTOCONF += --enable-davinci \
                     --enable-armv5te \
-                    --enable-armpld                    
+                    --enable-armpld  \
+                    --disable-real \
+		    --disable-xvid \
+		    --disable-x264 \
+		    --disable-libmpeg2 \
+		    --disable-liba52 \
+		    --disable-tremor-internal \
+		    --disable-decoder=all 
 endif
 
 $(STATEDIR)/mplayer.prepare: $(mplayer_prepare_deps)

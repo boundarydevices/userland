@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: xvid.make,v 1.5 2008-07-24 21:32:25 ericn Exp $
+# $Id: xvid.make,v 1.6 2009-06-16 00:32:04 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -20,13 +20,13 @@ endif
 # Paths and names
 #
 
-XVID_VERSION   = 1.1.3
+XVID_VERSION   = 1.2.2
 XVID	         = xvidcore-$(XVID_VERSION)
 XVID_SUFFIX	   = tar.gz
 XVID_URLDIR    = http://downloads.xvid.org/downloads
 XVID_URL		   = $(XVID_URLDIR)/$(XVID).$(XVID_SUFFIX)
 XVID_SOURCE	   = $(CONFIG_ARCHIVEPATH)/$(XVID).$(XVID_SUFFIX)
-XVID_DIR		   = $(BUILDDIR)/$(XVID)
+XVID_DIR		   = $(BUILDDIR)/xvidcore
 XVID_PATCH      = xvid_cross.patch
 XVID_PATCH_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(XVID_PATCH)
 XVID_PATCH_URL	= http://boundarydevices.com/$(XVID_PATCH)
@@ -64,7 +64,7 @@ $(STATEDIR)/xvid.extract: $(xvid_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(XVID_DIR))
 	@cd $(BUILDDIR) && zcat $(XVID_SOURCE) | tar -xvf -
-	@cd $(BUILDDIR) && patch -p0 < $(XVID_PATCH_SOURCE)
+	# @cd $(BUILDDIR) && patch -p0 < $(XVID_PATCH_SOURCE)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -87,7 +87,7 @@ XVID_ENV 	=  $(CROSS_ENV)
 # autoconf
 #
 XVID_AUTOCONF = \
-	--host=$(CONFIG_GNU_HOST) \
+ 	--host=$(CONFIG_GNU_HOST) \
 	--prefix=$(CROSS_LIB_DIR) \
    --enable-shared=no \
    --enable-static=yes \
@@ -97,8 +97,6 @@ XVID_AUTOCONF = \
 $(STATEDIR)/xvid.prepare: $(xvid_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(XVID_DIR)/build/generic && \
-		$(XVID_PATH) $(XVID_ENV) \
-      ./bootstrap.sh && \
 		$(XVID_PATH) $(XVID_ENV) \
 		./configure $(XVID_AUTOCONF)
 	touch $@
