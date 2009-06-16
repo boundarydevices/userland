@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.20 2009-06-16 00:32:04 ericn Exp $
+# $Id: mplayer.make,v 1.21 2009-06-16 00:40:59 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -117,7 +117,7 @@ MPLAYER_PATH            = PATH=$(CROSS_PATH)
 MPLAYER_AUTOCONF = \
         --enable-cross-compile \
         --cc=$(CONFIG_CROSSPREFIX)-gcc \
-        --with-extraincdir="$(INSTALLPATH)/include -I$(INSTALLPATH)/include/directfb -I$(CONFIG_KERNELPATH)/include" \
+        --with-extraincdir="$(INSTALLPATH)/include -I$(INSTALLPATH)/include/directfb -I$(CONFIG_KERNELPATH)/include -I$(CONFIG_KERNELPATH)/arch/arm/include" \
         --with-extralibdir=$(INSTALLPATH)/lib:$(INSTALLPATH)/usr/local/lib \
         --host-cc=gcc \
         --target=arm-linux \
@@ -267,7 +267,7 @@ $(STATEDIR)/mplayer.install: $(STATEDIR)/mplayer.compile
 	@$(call targetinfo, $@)
 	echo "--------------------------------------- installing mplayer from $(MPLAYER_DIR)"
 	cp -fv $(MPLAYER_DIR)/mplayer $(INSTALLPATH)/bin
-	$(CROSSSTRIP) $(INSTALLPATH)/bin/mplayer
+	$(MPLAYER_PATH) $(CROSSSTRIP) $(INSTALLPATH)/bin/mplayer
 	touch $@
 
 # ----------------------------------------------------------------------------
