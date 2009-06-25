@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.21 2009-06-16 00:40:59 ericn Exp $
+# $Id: mplayer.make,v 1.22 2009-06-25 19:33:05 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -212,13 +212,12 @@ MPLAYER_AUTOCONF = \
         --extra-libs="$(MPLAYER_LIBS)"
 
 ifeq (y,$(KERNEL_FB_SM501))
-MPLAYER_AUTOCONF += --enable-sm501_bd \
-                    --enable-pxa27x
+MPLAYER_AUTOCONF += --enable-sm501_bd 
 endif
 
 ifeq (y,$(KERNEL_PXA27x))
 MPLAYER_AUTOCONF += --enable-iwmmxt \
-                    --enable-armpld                    
+                    --enable-armpld
 endif
 
 ifeq (y,$(KERNEL_FB_PXA_YUV))
