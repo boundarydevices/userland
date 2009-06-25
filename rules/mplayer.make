@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.22 2009-06-25 19:33:05 ericn Exp $
+# $Id: mplayer.make,v 1.23 2009-06-25 22:56:39 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -235,11 +235,15 @@ MPLAYER_AUTOCONF += --enable-davinci \
 		    --disable-liba52 \
 		    --disable-tremor-internal \
 		    --disable-decoder=all 
+	PATCH_DAVINCI=patch -p1 < dav_codecs.patch
+else
+	PATCH_DAVINCI=echo Not Davinci processor
 endif
 
 $(STATEDIR)/mplayer.prepare: $(mplayer_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(MPLAYER_DIR) && \
+		$(PATCH_DAVINCI)  && \
 		$(MPLAYER_PATH) \
 		$(CROSS_ENV) \
 		./configure $(MPLAYER_AUTOCONF)
