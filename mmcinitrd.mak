@@ -36,6 +36,7 @@ $(STARTSCRIPT): $(MMCDIR) $(TOPDIR)/mmc.rcs $(MMCDIR)/bin/netstart
 	cp -fv $(TOPDIR)/mmc.rcs $@
 	$(ZD1211MODPROBE)
 	echo netstart >> $@
+	echo "if [ -e /mmc/linux_init ]; then /mmc/linux_init ; fi" >> $@
 	chmod a+x $@
 
 $(MMCDIR)/bin/staticip: $(MMCDIR) $(TOPDIR)/staticip
