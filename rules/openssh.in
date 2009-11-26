@@ -17,11 +17,12 @@ config OPENSSH_SSHD
 
 config OPENSSH_SCP
 	bool "Install scp"
-   default y
+	default y
 	depends on OPENSSH
 
 config OPENSSH_SFTP_SERVER
 	bool "Install sftp-server"
+	default y
 	depends on OPENSSH
 
 config OPENSSH_KEYGEN
