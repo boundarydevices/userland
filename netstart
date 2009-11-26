@@ -2,7 +2,7 @@
 echo "---------- starting network devices -------------"
 interfaces=`ifconfig -a | grep Link | sed "s/[\\t ]*Link.*//g"` ;
 for i in $interfaces ; do
-        echo "start interface $i" ;
+        echo "start interface $i" > /dev/tty0 ;
         if [ "lo" != "$i" ]; then
                 echo -e "\tNot Loopback" ;
                 ifconfig $i up ;
