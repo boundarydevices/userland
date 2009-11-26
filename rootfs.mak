@@ -8,6 +8,9 @@
 #
 # History:
 # $Log: rootfs.mak,v $
+# Revision 1.37  2009-11-26 15:31:45  ericn
+# [rootfs] Add users, environment variables to .profile
+#
 # Revision 1.36  2008-07-29 00:14:03  ericn
 # only spawn /sbin/getty on ttyS0
 #
@@ -202,6 +205,9 @@ $(ROOTDIR)/.profile:  $(ROOTDIR)
 	echo "export CURLTMPSIZE=4000000" >> $@
 	echo "export LD_LIBRARY_PATH=/mmc:/lib:/usr/lib:/usr/local/lib" >> $@
 	echo "export PATH=/mmc:/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin" >> $@
+	echo "export TSDEV=/dev/input/event0" >> $@
+	echo "export FLASHLIBS=/lib/libFlashIO.so:/lib/libFlashInput.so" >> $@
+	echo "export TSEXITMS=1500" >> $@
 
 $(ROOTDIR)/etc/hosts: /etc/hosts
 	cp -f $< $@ 
@@ -233,14 +239,16 @@ PASSWORD_STRING = $(shell perl -e 'print crypt($(CONFIG_ROOTPASSWORD), "$(CRYPT_
 
 $(ROOTDIR)/etc/passwd: $(ROOTDIR)/etc
 	@echo "root:$(PASSWORD_STRING):0:0:Linux User,,,:/:/bin/sh" > $@
+	@echo "audio:x:1000:1000:Audio Pseudo-User,,,:/:/bin/false" >> $@
 ifdef CONFIG_OPENSSH
 	@echo "sshd:x:1:1:sshd:/:/bin/false" >> $(ROOTDIR)/etc/passwd
 endif
 
 $(ROOTDIR)/etc/group: $(ROOTDIR)/etc
-	@echo "0:x:0:root" > $@
+	@echo "root:x:0" > $@
+	@echo "audio:x:1000" >> $@
 ifdef CONFIG_OPENSSH
-	@echo "1:x:1:sshd" >> $@
+	@echo "sshd:x:1" >> $@
 endif
 
 $(ROOTDIR)/etc/ld.so.conf: $(ROOTDIR)/etc
@@ -342,10 +350,6 @@ endif
 	echo "ifconfig lo 127.0.0.1 netmask 255.0.0.0" >>$@
 	echo "mount /dev/pts" >>$@
 	echo "/bin/sshd -f /etc/sshd_config" >>$@
-	echo "if [ \"\$$DEBUG\" != \"\" ] ; then" >>$@
-	echo "#/bin/sh < /dev/console" >>$@
-	echo "fi" >>$@
-	echo "/bin/jsMenu" >>$@
 	chmod a+x $@
 
 $(ROOTDIR)/var:
