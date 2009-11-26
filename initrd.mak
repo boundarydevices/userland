@@ -24,6 +24,7 @@ ifeq (y,$(KERNEL_MODULES))
                 make -C $(CONFIG_KERNELPATH) \
                 INSTALL_MOD_PATH=$(INITRD_DIR) \
                 CROSS_COMPILE=$(CONFIG_CROSSPREFIX)- \
+                ARCH=$(CONFIG_ARCH) \
                 modules_install
         MODULES_DEP=module_init_tools_install
 else
