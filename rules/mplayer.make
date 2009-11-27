@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mplayer.make,v 1.23 2009-06-25 22:56:39 ericn Exp $
+# $Id: mplayer.make,v 1.24 2009-11-27 17:19:50 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -80,7 +80,7 @@ else
 		@$(call targetinfo, $@)
 		@$(call clean, $(MPLAYER_DIR))
 		rm -rf $(MPLAYER_DIR)
-		@cd $(BUILDDIR) && git-clone office:/repository/$(MPLAYER)
+		@cd $(BUILDDIR) && git-clone git.boundarydevices.com:/repository/$(MPLAYER)
 endif
 		touch $@
 

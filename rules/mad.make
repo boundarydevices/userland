@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: mad.make,v 1.15 2008-01-02 19:56:34 ericn Exp $
+# $Id: mad.make,v 1.16 2009-11-27 17:19:50 ericn Exp $
 #
 # Copyright (C) 2003 by Sascha Hauer <sascha.hauer@gyro-net.de>
 #          
@@ -76,6 +76,7 @@ $(STATEDIR)/mad.extract: $(mad_extract_deps)
 	@$(call targetinfo, $@)
 	@$(call clean, $(MAD_DIR))
 	cd $(BUILDDIR) && zcat $(MAD_SOURCE) | tar -xvf -
+	cd $(MAD_DIR) && sed -i 's/.*force-mem.*//' configure
 	@$(call clean, $(ID3_DIR))
 	cd $(BUILDDIR) && zcat $(ID3_SOURCE) | tar -xvf -
 	touch $@
