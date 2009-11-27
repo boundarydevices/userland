@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: strace.make,v 1.5 2008-04-01 22:36:57 ericn Exp $
+# $Id: strace.make,v 1.6 2009-11-27 19:58:00 ericn Exp $
 #
 # Copyright (C) 2002 by Pengutronix e.K., Hildesheim, Germany
 # See CREDITS for details about who has contributed to this project. 
@@ -18,7 +18,7 @@ endif
 #
 # Paths and names 
 #
-STRACE			= strace-4.5.15
+STRACE			= strace-4.5.19
 STRACE_URL 	= http://easynews.dl.sourceforge.net/sourceforge/strace/$(STRACE).tar.bz2
 STRACE_SOURCE	= $(CONFIG_ARCHIVEPATH)/$(STRACE).tar.bz2
 STRACE_DIR		= $(BUILDDIR)/$(STRACE)
