@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: jpeg.make,v 1.7 2007-10-08 21:06:10 ericn Exp $
+# $Id: jpeg.make,v 1.8 2009-11-29 18:30:58 ericn Exp $
 #
 # Copyright (C) 2004 by Boundary Devices
 #          
@@ -19,12 +19,10 @@ endif
 #
 # Paths and names 
 #
-JPEG			= JPEG-1.1.4
-JPEG_URL 	= ftp://ftp.uu.net/graphics/jpeg/jpegsrc.v6b.tar.gz
-JPEG_SOURCE	= $(CONFIG_ARCHIVEPATH)/jpegsrc.v6b.tar.gz
-JPEG_DIR		= $(BUILDDIR)/jpeg-6b
-JPEG_PATCH_URL = http://boundarydevices.com/jpeg-6b.patch
-JPEG_PATCH_SOURCE	= $(CONFIG_ARCHIVEPATH)/jpeg-6b.patch
+JPEG			= JPEG-V7
+JPEG_URL 	= http://www.ijg.org/files/jpegsrc.v7.tar.gz
+JPEG_SOURCE	= $(CONFIG_ARCHIVEPATH)/jpegsrc.v7.tar.gz
+JPEG_DIR		= $(BUILDDIR)/jpeg-7
 
 # ----------------------------------------------------------------------------
 # Get
@@ -32,18 +30,13 @@ JPEG_PATCH_SOURCE	= $(CONFIG_ARCHIVEPATH)/jpeg-6b.patch
 
 JPEG_get: $(STATEDIR)/JPEG.get
 
-$(STATEDIR)/JPEG.get: $(JPEG_SOURCE) $(JPEG_PATCH_SOURCE)
+$(STATEDIR)/JPEG.get: $(JPEG_SOURCE)
 	@$(call targetinfo, $@)
 	touch $@
 
 $(JPEG_SOURCE):
 	$(call targetinfo, $@)
 	cd $(CONFIG_ARCHIVEPATH) && wget $(JPEG_URL)
-
-$(JPEG_PATCH_SOURCE):
-	$(call targetinfo, $@)
-	$(shell ls -l $(CONFIG_ARCHIVEPATH)/jpeg*)
-	cd $(CONFIG_ARCHIVEPATH) && wget $(JPEG_PATCH_URL)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -55,7 +48,6 @@ $(STATEDIR)/JPEG.extract: $(STATEDIR)/JPEG.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(JPEG_DIR))
 	cd $(BUILDDIR) && tar -zxvf $(JPEG_SOURCE)
-	patch -d $(BUILDDIR) -p0 < $(JPEG_PATCH_SOURCE)
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -71,11 +63,6 @@ JPEG_PATH	=  PATH=$(CROSS_PATH)
 JPEG_AUTOCONF 	=  --enable-shared
 JPEG_AUTOCONF 	+= --prefix=$(INSTALLPATH)
 JPEG_AUTOCONF	+= --host=$(CONFIG_GNU_HOST)
-JPEG_AUTOCONF	+= --target=$(CONFIG_GNU_TARGET)
-JPEG_AUTOCONF	+= --exec-prefix=$(INSTALLPATH) \
-                  --includedir=$(INSTALLPATH)/include \
-                  --mandir=$(INSTALLPATH)/man \
-                  --infodir=$(INSTALLPATH)/info
 
 JPEG_ENV 	=  $(CROSS_ENV)
 
@@ -85,8 +72,6 @@ $(STATEDIR)/JPEG.prepare: $(JPEG_prepare_deps)
 		$(JPEG_PATH) \
 		$(JPEG_ENV) \
 		./configure $(JPEG_AUTOCONF)
-#	perl -i -p -e 's/=gcc/=$(CONFIG_GNU_TARGET)-gcc/g' $(JPEG_DIR)/Makefile
-#  perl -i -p -e 's/=ar/=$(CONFIG_GNU_TARGET)-ar/g' $(JPEG_DIR)/Makefile
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -108,10 +93,10 @@ JPEG_install: $(STATEDIR)/JPEG.install
 
 $(STATEDIR)/JPEG.install: $(STATEDIR)/JPEG.compile
 	@$(call targetinfo, $@)
-	cd $(JPEG_DIR) && $(JPEG_PATH) make install-lib
+	cd $(JPEG_DIR) && $(JPEG_PATH) make install
 	cd $(JPEG_DIR) && cp -f -v jpeglib.h jerror.h jconfig.h jmorecfg.h $(INSTALLPATH)/include
 	mkdir -p $(INSTALLPATH)/lib/pkgconfig/
-	$(call makepkgconfig, jpeg, "libJPEG", "6B", \
+	$(call makepkgconfig, jpeg, "libJPEG", "7", \
       "-L$(INSTALLPATH)/lib -ljpeg", "-I$(INSTALLPATH)/include", \
       $(INSTALLPATH)/lib/pkgconfig/jpeg.pc )
 	touch $@
