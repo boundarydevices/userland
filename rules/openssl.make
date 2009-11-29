@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssl.make,v 1.8 2005-12-17 19:42:13 ericn Exp $
+# $Id: openssl.make,v 1.9 2009-11-29 19:47:53 ericn Exp $
 #
 # Copyright (C) 2002 by Jochen Striepe for Pengutronix e.K., Hildesheim, Germany
 #               2003 by Pengutronix e.K., Hildesheim, Germany
@@ -20,8 +20,8 @@ endif
 #
 # Paths and names 
 #
-OPENSSL_VER             = 0.9.7
-OPENSSL			= openssl-$(OPENSSL_VER)c
+OPENSSL_VER             = 0.9.8
+OPENSSL			= openssl-$(OPENSSL_VER)k
 OPENSSL_URL 		= http://www.openssl.org/source/$(OPENSSL).tar.gz
 OPENSSL_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(OPENSSL).tar.gz
 OPENSSL_DIR 		= $(BUILDDIR)/$(OPENSSL)
@@ -52,7 +52,6 @@ $(STATEDIR)/openssl.extract: $(STATEDIR)/openssl.get
 	@$(call targetinfo, $@)
 	@$(call clean, $(OPENSSL_DIR))
 	cd $(BUILDDIR) && zcat $(OPENSSL_SOURCE) | tar -xvf -
-	perl -p -i -e 's/-m486//' $(OPENSSL_DIR)/Configure
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -66,27 +65,16 @@ openssl_prepare_deps =  \
 
 OPENSSL_PATH	= PATH=$(CROSS_PATH)
 OPENSSL_MAKEVARS = \
-	$(CROSS_ENV_CC) \
-	$(CROSS_ENV_RANLIB) \
-	AR='$(CONFIG_GNU_TARGET)-ar r' \
-	MANDIR=/man
-
-OPENSSL_AUTOCONF = \
-	--prefix=$(INSTALLPATH) \
-	-ldl \
-	--openssldir=/etc/ssl 
-
-ifdef CONFIG_OPENSSL_SHARED
-   OPENSSL_AUTOCONF	+= shared
-else
-   OPENSSL_AUTOCONF	+= no-shared
-endif
+	$(CROSS_ENV) \
+        INSTALL_PREFIX=$(INSTALLPATH) \
+        INSTALLTOP=$(INSTALLPATH)/usr/local/ssl
 
 $(STATEDIR)/openssl.prepare: $(openssl_prepare_deps)
 	@$(call targetinfo, $@)
 	cd $(OPENSSL_DIR) && \
 		$(OPENSSL_PATH) \
-		./Configure $(OPENSSL_AUTOCONF) $(THUD)
+		$(OPENSSL_MAKEVARS) \
+		./Configure linux-generic32 -DL_ENDIAN -shared
 	touch $@
 
 # ----------------------------------------------------------------------------
@@ -97,34 +85,19 @@ openssl_compile: $(STATEDIR)/openssl.compile
 
 $(STATEDIR)/openssl.compile: $(STATEDIR)/openssl.prepare 
 	@$(call targetinfo, $@)
-#
-# generate openssl.pc with correct path inside
-#
-	$(OPENSSL_PATH) make -C $(OPENSSL_DIR) INSTALLTOP=$(INSTALLPATH) openssl.pc
-	$(OPENSSL_PATH) make -C $(OPENSSL_DIR) $(OPENSSL_MAKEVARS)
+	$(OPENSSL_PATH) make -C $(OPENSSL_DIR) all
 	touch $@
 
 # ----------------------------------------------------------------------------
 # Install
 # ----------------------------------------------------------------------------
-
 openssl_install: $(STATEDIR)/openssl.install
 
 $(STATEDIR)/openssl.install: $(STATEDIR)/openssl.compile
 	@$(call targetinfo, $@)
-#
-# broken Makfile, generates dir with wrong permissions...
-# chmod 755 fixed that
-#
-	@mkdir -p $(INSTALLPATH)/lib/pkgconfig
-	@chmod 755 $(INSTALLPATH)/lib/pkgconfig
-	$(OPENSSL_PATH) make -C $(OPENSSL_DIR) install $(OPENSSL_MAKEVARS) \
-		INSTALL_PREFIX=$(INSTALLPATH) INSTALLTOP=''
-	@chmod 755 $(INSTALLPATH)/lib/pkgconfig
-#
-# FIXME:
-# 	OPENSSL=${D}/usr/bin/openssl /usr/bin/perl tools/c_rehash ${D}/etc/ssl/certs
-#
+	$(OPENSSL_PATH) make -C $(OPENSSL_DIR) \
+ 		INSTALL_PREFIX=$(INSTALLPATH) INSTALLTOP='/' \
+		install
 	touch $@
 
 # ----------------------------------------------------------------------------
