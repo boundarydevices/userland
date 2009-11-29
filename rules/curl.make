@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: curl.make,v 1.8 2008-01-04 22:04:34 ericn Exp $
+# $Id: curl.make,v 1.9 2009-11-29 18:31:20 ericn Exp $
 #
 # Copyright (C) 2003 by Boundary Devices
 #          
@@ -19,10 +19,10 @@ endif
 #
 # Paths and names
 #
-CURL_VERSION	= 7.10.8
+CURL_VERSION	= 7.19.7
 CURL		= curl-$(CURL_VERSION)
 CURL_SUFFIX		= tar.gz
-CURL_URL		= http://curl.haxx.se/download/archeology/$(CURL).$(CURL_SUFFIX)
+CURL_URL		= http://curl.haxx.se/download/$(CURL).$(CURL_SUFFIX)
 CURL_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(CURL).$(CURL_SUFFIX)
 CURL_DIR		= $(BUILDDIR)/$(CURL)
 
