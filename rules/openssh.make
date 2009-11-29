@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.19 2007-10-08 21:06:10 ericn Exp $
+# $Id: openssh.make,v 1.20 2009-11-29 00:41:43 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -26,7 +26,7 @@ endif
 #
 # Paths and names 
 #
-OPENSSH_VER    = 3.9p1
+OPENSSH_VER    = 5.3p1
 OPENSSH			= openssh-$(OPENSSH_VER)
 OPENSSH_URL 		= ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$(OPENSSH).tar.gz
 OPENSSH_SOURCE		= $(CONFIG_ARCHIVEPATH)/$(OPENSSH).tar.gz
@@ -40,7 +40,7 @@ OPENSSH_PATCH_URL    = http://boundarydevices.com/archives/openssh-$(OPENSSH_VER
 
 openssh_get: $(STATEDIR)/openssh.get
 
-openssh_get_deps = $(OPENSSH_SOURCE) $(OPENSSH_PATCH_SOURCE)
+openssh_get_deps = $(OPENSSH_SOURCE)
 
 $(STATEDIR)/openssh.get: $(openssh_get_deps)
 	@$(call targetinfo, openssh.get)
@@ -73,7 +73,6 @@ $(STATEDIR)/openssh.extract: $(openssh_extract_deps)
 	@$(call targetinfo, openssh.extract)
 	@$(call clean, $(OPENSSH_DIR))
 	cd $(BUILDDIR) && zcat $(OPENSSH_SOURCE) | tar -xvf -
-	@$(call patchin, $(OPENSSH))
 
 	OPENSSL_VERSION_NUMBER="`sed -n -e 's/.*OPENSSL_VERSION_NUMBER.*0x[0]*\([0-9a-f]*\)L/\1/p' \
 		$(INSTALLPATH)/include/openssl/opensslv.h`" \
