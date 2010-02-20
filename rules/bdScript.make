@@ -120,6 +120,9 @@ $(STATEDIR)/bdScript.prepare: $(bdScript_prepare_deps)
         >>$(BDSCRIPT_DIR)/config.mk ;
 	/bin/echo -e "\n\n#\n#Build directory\n#\nBUILDDIR=$(BUILDDIR)/" \
         >>$(BDSCRIPT_DIR)/config.mk
+ifndef CONFIG_BDSCRIPT_GIT
+	touch $(BDSCRIPT_DIR)/.git
+endif
 	touch $@
 
 # ----------------------------------------------------------------------------
