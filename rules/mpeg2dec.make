@@ -97,7 +97,7 @@ mpeg2dec_prepare_deps = \
 
 MPEG2DEC_PATH	=  PATH=$(CROSS_PATH)
 MPEG2DEC_ENV =  $(CROSS_ENV) 
-ifeq (y,$(KERNEL_FB_SM501))
+ifeq (y,$(KERNEL_PXA27x))
 #       MPEG2DEC_ENV+= CFLAGS+="-DHAVE_IWMMXT=1 -mcpu=iwmmxt"
         MPEG2DEC_ENV+=CFLAGS=-mcpu=iwmmxt
 endif
