@@ -11,7 +11,7 @@ config ARCH
 config CROSSPREFIX
    string
    prompt "Cross-compiler prefix"
-   default "arm-linux"
+   default "arm-v5t-linux-gnueabi"
    help
       This string is prepended to compiler, linker, archiver, etc.
       so gcc => arm-linux-gcc, etc
@@ -28,15 +28,15 @@ config ARCHIVEPATH
 config KERNELPATH
 	string
 	prompt "Kernel path"
-   default '/usr/local/arm/linux-2.6.11.11'
+   default '/home/user/linux-hydrogen'
    help
      This path defines where the kernel is installed.
-     (generally /usr/local/arm/linux-2.6.11.11)
+     (generally in your home directory)
 
 config TOOLCHAINPATH
 	string
 	prompt "Toolchain path"
-   default '/opt/crosstool/gcc-3.4.3-glibc-2.3.5/arm-linux/'
+   default '/opt/boundary/arm-v5t-linux-gnueabi/gcc-4.1.2-glibc-2.5-kernel-2.6.25/'
    help
      This path defines where the cross-toolchain will be installed.
      (generally /opt/crosstool/gcc-ver-glibc-ver/arm-linux/)
@@ -44,7 +44,7 @@ config TOOLCHAINPATH
 config GLIBC_PATH
         string
         prompt "glibc path"
-        default '/opt/crosstool/gcc-3.4.3-glibc-2.3.5/arm-linux/lib'
+        default '/opt/boundary/arm-v5t-linux-gnueabi/gcc-4.1.2-glibc-2.5-kernel-2.6.25/sysroot-arm-v5t-linux-gnueabi'
         help
                 This path is used to specify the toolchain (glibc)
                 library directory. This is "toolchainpath/lib" for
@@ -54,14 +54,14 @@ config GLIBC_PATH
 config GCC_PATH
         string
         prompt "gcc path"
-        default '/opt/crosstool/gcc-3.4.3-glibc-2.3.5/arm-linux/'
+        default '/opt/boundary/arm-v5t-linux-gnueabi/gcc-4.1.2-glibc-2.5-kernel-2.6.25/arm-v5t-linux-gnueabi'
         help
                 Location of libgcc_s.so
 
 config LD_LINUX_VER
         string
         prompt "ld-linux version"
-        default 2
+        default 3
         help
                 This is used to specify the version of ld-linux.so
 
@@ -77,11 +77,11 @@ config INSTALLPATH
 config GLIBC_VER
         string
         prompt "glibc version"
-        default 2.3.3
+        default 2.5
         help
                 This variable sets the glibc version number for building
                 the root filesystem. It is used to produce .so filenames
-                of the form "libc-2.3.3.so", and "libnsl-2.3.3.so".
+                of the form "libc-2.5.so", and "libnsl-2.5.so".
 
 config ROOT
 	string
@@ -94,7 +94,7 @@ config ROOT
 
 choice
    prompt "Board Type "
-      default NEONCRAM
+      default HYDROGEN
 
       config SCANPASS
       bool
@@ -122,7 +122,7 @@ choice
 	
       config HALOGEN
       bool
-      prompt "Halogen"
+      prompt "Hydrogen"
 
       config ARGON
       bool
