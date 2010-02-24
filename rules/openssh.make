@@ -1,5 +1,5 @@
 # -*-makefile-*-
-# $Id: openssh.make,v 1.20 2009-11-29 00:41:43 ericn Exp $
+# $Id: openssh.make,v 1.21 2010-02-24 16:31:50 ericn Exp $
 #
 # Copyright (C) 2002, 2003 by Pengutronix e.K., Hildesheim, Germany
 #
@@ -187,7 +187,6 @@ openssh_targetinstall_deps = \
 	$(STATEDIR)/openssh.compile \
    $(ROOTDIR)/lib/libnsl.so.1 \
    $(ROOTDIR)/lib/libresolv-$(GLIBC_VER).so \
-   $(ROOTDIR)/lib/libcrypto.so.0.9.7 \
    $(ROOTDIR)/lib/libutil.so.1 \
    $(ROOTDIR)/lib/libcrypt.so.1 \
    $(ROOTDIR)/lib/libc.so.6 \
